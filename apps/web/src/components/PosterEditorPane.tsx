@@ -74,10 +74,12 @@ import {
   DESIGN_TEMPLATES,
   PLATFORMS,
   posterCopy,
+  posterImageSlot,
   posterPrimitiveFromObject,
   platformFor,
 } from "@/lib/poster-design/templates";
 import { canRestorePosterDraft, classifyPosterUpdate, posterMemoContent, savePosterMemo } from "@/lib/poster-save";
+import { posterImageReplacementTarget, replacePosterImage } from "@/lib/poster-image-replacement";
 import { copyImageBlobToClipboard } from "@/lib/clipboard";
 import { compressImageForUpload } from "@/lib/image-compression";
 import {
@@ -211,6 +213,8 @@ export default function PosterEditorPane({
   const fileInput = useRef<HTMLInputElement>(null),
     canvas = useRef<Canvas | null>(null);
   const objectsRef = useRef<FabricObject[]>([]);
+  const replacementTarget = useRef<string | null>(null);
+  const requestImageUploadRef = useRef<(id?: string) => void>(() => {});
   const selectionSync = useRef(false);
   const session = useRef<MemoEditSession | null>(null),
     currentMemo = useRef(memo);
@@ -705,6 +709,14 @@ export default function PosterEditorPane({
       setSelectedIds(ids);
       if (ids.length) setRightTab("properties");
     };
+    instance.on("mouse:dblclick", (event) => {
+      const state = options.current;
+      if (state.readOnly || state.busy || state.tool !== "select" || state.spaceHeld) return;
+      const value = current.current.document;
+      const targetId = value.elements[objectsRef.current.indexOf(event.target!)]?.id;
+      const target = posterImageReplacementTarget(value, targetId, event.scenePoint, posterImageSlot(value));
+      if (target) requestImageUploadRef.current(target.id);
+    });
     instance.on("selection:created", pick);
     instance.on("selection:updated", pick);
     instance.on("selection:cleared", pick);
@@ -1170,7 +1182,13 @@ export default function PosterEditorPane({
     const platform = PLATFORMS.find((entry) => entry.id === id);
     if (platform) void resize(platform.width, platform.height, id);
   };
-  const upload = (file: File) =>
+  const requestImageUpload = (id?: string) => {
+    if (!editable) return;
+    replacementTarget.current = id ?? null;
+    fileInput.current?.click();
+  };
+  requestImageUploadRef.current = requestImageUpload;
+  const upload = (file: File, replaceId: string | null = null) =>
     run(async () => {
       if (
         file.size > 10 * 1024 * 1024 ||
@@ -1178,7 +1196,7 @@ export default function PosterEditorPane({
       )
         throw new Error(t("poster.imageLimit"));
       if (!navigator.onLine) throw new Error(t("poster.offline"));
-      if (current.current.document.elements.length >= 500)
+      if (!replaceId && current.current.document.elements.length >= 500)
         throw new Error(t("poster.invalid"));
       const bitmap = await createImageBitmap(file);
       const width = bitmap.width,
@@ -1196,6 +1214,17 @@ export default function PosterEditorPane({
           (value.height * 0.5) / height,
           1,
         );
+      if (replaceId) {
+        const target = posterImageReplacementTarget(value, replaceId, undefined, posterImageSlot(value));
+        if (!target) {
+          await repository.deleteResource(resource.id).catch(() => undefined);
+          throw new Error(t("poster.invalid"));
+        }
+        const replacement = replacePosterImage(target, resource.id, width, height);
+        commit({ ...value, previewResourceId: undefined, elements: value.elements.map(element => element.id === replaceId ? replacement : element) });
+        syncSelection([replaceId]);
+        return;
+      }
       add({
         id: crypto.randomUUID(),
         name: file.name.slice(0, 120),
@@ -1631,7 +1660,7 @@ export default function PosterEditorPane({
         {toolButton(
           t("poster.image"),
           <ImagePlus className="h-4 w-4" />,
-          () => fileInput.current?.click(),
+          () => requestImageUpload(),
           !editable,
           false,
           true,
@@ -1729,7 +1758,9 @@ export default function PosterEditorPane({
         onChange={(event) => {
           const file = event.target.files?.[0];
           event.target.value = "";
-          if (file && editable) void upload(file);
+          const targetId = replacementTarget.current;
+          replacementTarget.current = null;
+          if (file && editable) void upload(file, targetId);
         }}
       />
       <div className="flex min-h-0 flex-1 overflow-hidden">
@@ -1761,7 +1792,7 @@ export default function PosterEditorPane({
                 <PosterAssetsPanel
                   repository={repository}
                   disabled={!editable}
-                  onUpload={() => fileInput.current?.click()}
+                  onUpload={() => requestImageUpload()}
                   onResource={(resource) => {
                     void readResource(resource.id)
                       .then((blob) =>
