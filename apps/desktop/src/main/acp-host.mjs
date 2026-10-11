@@ -120,6 +120,7 @@ const resolutionDeps = (deps = {}) => ({
   access: deps.accessSync ?? accessSync,
   realpath: deps.realpathSync ?? realpathSync,
   stat: deps.statSync ?? statSync,
+  exists: deps.existsSync ?? existsSync,
   pathEnv: deps.pathEnv ?? process.env.PATH ?? "",
   delimiter: deps.delimiter ?? path.delimiter,
   sep: deps.sep ?? path.sep,
@@ -204,6 +205,12 @@ function resolveWorkBuddy(id, deps) {
       const actual = deps.realpath(candidate);
       if (!deps.stat(actual).isFile()) continue;
       deps.access(actual, fsConstants.R_OK);
+      if (deps.platform === "darwin") {
+        const executable = path.resolve(path.dirname(actual), "../../../../MacOS/Electron");
+        if (deps.exists(executable)) {
+          return { ok: true, command: workBuddyCommand(executable, actual, id, true) };
+        }
+      }
       return { ok: true, command: workBuddyCommand(deps.executablePath, actual, id) };
     } catch { /* Try another installed WorkBuddy application. */ }
   }
@@ -213,10 +220,10 @@ function resolveWorkBuddy(id, deps) {
     : { ok: false, state: "not_installed" };
 }
 
-function workBuddyCommand(executablePath, bundledCli, id) {
+function workBuddyCommand(executablePath, bundledCli, id, nativeBootstrap = false) {
   const edition = id === "workbuddyCn" ? { CODEBUDDY_INTERNET_ENVIRONMENT: "internal" } : {};
   return bundledCli
-    ? { command: executablePath, args: [bundledCli, "--acp"], env: { ...edition, ELECTRON_RUN_AS_NODE: "1" }, ...(id === "workbuddyIntl" ? { unsetEnv: ["CODEBUDDY_INTERNET_ENVIRONMENT"] } : {}) }
+    ? { command: executablePath, args: [...(nativeBootstrap ? [fileURLToPath(new URL("./workbuddy-launch.cjs", import.meta.url))] : []), bundledCli, "--acp"], env: { ...edition, ELECTRON_RUN_AS_NODE: "1" }, ...(id === "workbuddyIntl" ? { unsetEnv: ["CODEBUDDY_INTERNET_ENVIRONMENT"] } : {}) }
     : { command: executablePath, args: ["--acp"], env: edition, ...(id === "workbuddyIntl" ? { unsetEnv: ["CODEBUDDY_INTERNET_ENVIRONMENT"] } : {}) };
 }
 
