@@ -51,13 +51,14 @@ describe("shared companion MCP adapter", () => {
   test("poster CRUD reuses scoped queries, guarded edits, recoverable trash and restoration", async () => {
     const f = await setup();
     const tools = createCompanionTools({ ...f, scope, signal: new AbortController().signal, assertActive: async () => {}, sources: [] });
-    const created = await tools.create_poster_memo.execute({ notebookId: "ideas", title: "Energy poster", heading: "Protect your energy" });
+    const created = await tools.create_poster_memo.execute({ notebookId: "ideas", title: "Energy poster", heading: "Protect your energy", layout: "list", sections: [{ heading: "Rest", body: "Make time to recharge" }, { heading: "Focus", body: "Keep space for important work" }]  });
     const listed = await tools.list_memos.execute({ poster: true });
     expect(listed.memos.map(memo => memo.id)).toContain(created.id);
     expect(listed.memos.find(memo => memo.id === created.id).poster).toBe(true);
     expect(await tools.get_memo.execute({ memoId: created.id })).toMatchObject({ poster: true, message: expect.stringContaining("get_poster") });
     await tools.get_poster.execute({ memoId: created.id });
     const poster = await getMemoDetail(f.db, scope.workspaceId, created.id);
+    expect(parsePosterDocument(poster.contentMarkdown).elements.find(element => element.id === "section-1-body").text).toBe("Make time to recharge");
     const heading = parsePosterDocument(poster.contentMarkdown).elements.find(element => element.role === "title");
     await tools.update_poster.execute({ memoId: created.id, expectedRevision: poster.revision, edits: [{ id: heading.id, patch: { text: "Focus on what matters" } }] });
     expect(parsePosterDocument((await getMemoDetail(f.db, scope.workspaceId, created.id)).contentMarkdown).copy.title).toBe("Focus on what matters");
