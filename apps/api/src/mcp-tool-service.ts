@@ -1,4 +1,4 @@
-import { applyPosterEdits } from "./mcp-poster-tools";
+import { applyPosterEdits, compilePosterMemo } from "./mcp-poster-tools";
 import { hasPosterDocumentMarker, parsePosterDocument, serializePosterDocument } from "@edgeever/shared";
 import {
   AiPromptTemplateCreateSchema,
@@ -509,6 +509,15 @@ export const callMcpTool = async (
         diagramKind: document.kind,
         diagram: diagramSemanticGraph(document),
       };
+    }
+    case "create_poster_memo": {
+      assertScope(auth, "write:memos");
+      const { args: input, document } = compilePosterMemo(args);
+      const memo = await createMemoRecord(c.env.storage.db, auth.workspaceId, {
+        notebookId: input.notebookId, title: input.title,
+        contentMarkdown: serializePosterDocument(document), tags: input.tags,
+      }, getAuditActor(c), getActorLabel(c));
+      return { memo: { id: memo.id, title: memo.title, notebookId: memo.notebookId, revision: memo.revision }, poster: true, template: input.template, format: input.format };
     }
     case "get_poster": {
       assertScope(auth, "read:memos");

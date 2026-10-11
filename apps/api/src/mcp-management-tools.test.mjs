@@ -72,6 +72,25 @@ const createFixture = (scopes = ["read:memos", "write:memos"]) => {
 };
 
 describe("MCP template and AI instruction management", () => {
+  test("creates an actual editable poster from copy without encoded source", async () => {
+    const { sqlite, auth, context } = createFixture();
+    sqlite.query("INSERT INTO notebooks (id, workspace_id, name) VALUES (?, ?, ?)").run("nb_posters", "ws_mcp", "Posters");
+    const input = { notebookId: "nb_posters", title: "时间管理与精力分配", heading: "精力管理大于时间管理", subtitle: "把最好的精力留给最重要的事。", template: "bold", format: "square" };
+    const created = await callMcpTool(context, auth, "create_poster_memo", input);
+    expect(created.poster).toBe(true);
+    const saved = await callMcpTool(context, auth, "get_memo", { memoId: created.memo.id });
+    const poster = parsePosterDocument(saved.memo.contentMarkdown);
+    expect(poster).toMatchObject({ width: 1080, height: 1080, copy: { title: input.heading, subtitle: input.subtitle } });
+    const read = await callMcpTool(context, auth, "get_poster", { memoId: created.memo.id });
+    const heading = read.poster.elements.find(element => element.role === "title");
+    const updated = await callMcpTool(context, auth, "update_poster", { memoId: created.memo.id, expectedRevision: read.memo.revision, edits: [{ id: heading.id, patch: { text: "保护你的精力" } }] });
+    expect(parsePosterDocument(updated.memo.contentMarkdown).copy.title).toBe("保护你的精力");
+    await expect(callMcpTool(context, { ...auth, scopes: ["read:memos"] }, "create_poster_memo", input)).rejects.toThrow();
+    await expect(callMcpTool(context, { ...auth, workspaceId: "ws_other" }, "create_poster_memo", input)).rejects.toThrow();
+    const before = sqlite.query("SELECT COUNT(*) AS count FROM memos").get().count;
+    await expect(callMcpTool(context, auth, "create_poster_memo", { ...input, heading: "x".repeat(81) })).rejects.toThrow();
+    expect(sqlite.query("SELECT COUNT(*) AS count FROM memos").get().count).toBe(before);
+  });
   test("poster tools preserve untouched elements, previews, scopes and revision guards", async () => {
     const { sqlite, auth, context } = createFixture();
     sqlite.query("INSERT INTO notebooks (id, workspace_id, name) VALUES (?, ?, ?)").run("nb_posters", "ws_mcp", "Posters");

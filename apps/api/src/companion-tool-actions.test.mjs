@@ -49,7 +49,7 @@ async function setup() {
 
 describe("shared companion MCP adapter", () => {
   test("reuses the exact reviewed MCP definitions, with no administration or upload tools", () => {
-    expect(COMPANION_MCP_TOOLS).toHaveLength(49);
+    expect(COMPANION_MCP_TOOLS).toHaveLength(50);
     for (const definition of COMPANION_MCP_TOOLS) expect(MCP_TOOLS.includes(definition)).toBe(true);
     for (const name of ["upload_memo_image", "upload_memo_attachment", "empty_trash", "share_memo"]) {
       expect(() => validateCompanionTool(name, {})).toThrow();
@@ -115,7 +115,7 @@ describe("shared companion MCP adapter", () => {
   test("read and dry-run tools reuse MCP without writing or requiring a proposal", async () => {
     const f = await setup();
     const tools = createCompanionTools({ ...f, scope, signal: new AbortController().signal, assertActive: async () => {}, sources: [] });
-    expect(Object.keys(tools)).toHaveLength(51);
+    expect(Object.keys(tools)).toHaveLength(52);
     expect(await tools.get_memo.execute({ memoId: f.notes[0].id })).toMatchObject({ content: "One original content" });
     expect(await tools.trash_memos.execute({ memoIds: [f.notes[0].id], dryRun: true })).toMatchObject({ dryRun: true });
     expect(await getMemoDetail(f.db, scope.workspaceId, f.notes[0].id)).not.toBeNull();
@@ -350,7 +350,7 @@ describe("shared companion MCP adapter", () => {
     expect(definition.description).toContain("use exactly that kind");
     expect(definition.description).toContain("等待分类");
     const plain = companionToolDefinitions(f.input);
-    for (const name of ["create_memo", "create_diagram_memo", "create_infographic_memo", "use_note_template"]) {
+    for (const name of ["create_memo", "create_diagram_memo", "create_infographic_memo", "create_poster_memo", "use_note_template"]) {
       const tool = plain.find(item => item.name === name);
       expect(tool.inputSchema.required ?? []).not.toContain("notebookId");
       expect(tool.description).toContain("等待分类");
@@ -377,6 +377,10 @@ describe("shared companion MCP adapter", () => {
     const tools = createCompanionTools({ ...f, scope, signal: new AbortController().signal, assertActive: async () => {}, sources: [] });
     const note = await tools.create_memo.execute({ title: "Inbox note", contentMarkdown: "Saved without asking" });
     expect(note.memo.notebookId).toBe(inboxId);
+    const poster = await tools.create_poster_memo.execute({ title: "精力管理", heading: "精力管理大于时间管理", subtitle: "把精力留给重要的事" });
+    expect(poster).toMatchObject({ applied: true, notebookId: inboxId, poster: true });
+    const savedPoster = await getMemoDetail(f.db, scope.workspaceId, poster.id);
+    expect(parsePosterDocument(savedPoster.contentMarkdown).copy.title).toBe("精力管理大于时间管理");
     const diagram = await tools.create_diagram_memo.execute({
       title: "模型蒸馏",
       kind: "flowchart",

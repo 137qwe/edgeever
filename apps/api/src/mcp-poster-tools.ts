@@ -1,6 +1,41 @@
 import { z } from "zod";
-import { PosterDocumentSchema, PosterGradientSchema, type PosterDocument } from "@edgeever/shared";
+import { createPosterDocument, POSTER_FORMATS, POSTER_TEMPLATES, PosterDocumentSchema, PosterGradientSchema, type PosterDocument } from "@edgeever/shared";
 import { AppError } from "./app-error";
+
+const creation = z.object({
+  notebookId: z.string().min(1),
+  title: z.string().min(1).max(160),
+  heading: z.string().trim().min(1).max(80),
+  subtitle: z.string().max(240).default(""),
+  template: z.enum(POSTER_TEMPLATES).default("editorial"),
+  format: z.enum(["portrait", "square", "wechat", "video", "story"]).default("portrait"),
+  tags: z.array(z.string()).max(100).optional(),
+}).strict();
+
+// Agents supply copy, not the encoded document or hand-written canvas geometry.
+export function compilePosterMemo(input: unknown) {
+  const parsed = creation.safeParse(input);
+  if (!parsed.success) throw new AppError("invalid_params", "Invalid poster input. Supply notebookId, title and a short heading; use create_poster_memo, never encoded Markdown.", 400);
+  const args = parsed.data;
+  const format = POSTER_FORMATS.find(format => format.id === args.format)!;
+  const document = createPosterDocument(args.heading, args.subtitle, args.template, format.width, format.height);
+  document.templateId = args.template;
+  document.copy = { title: args.heading, subtitle: args.subtitle, badge: "" };
+  for (const element of document.elements) {
+    if (element.type !== "text") continue;
+    element.role = element.id === "heading" ? "title" : "subtitle";
+    element.sourceText = element.text;
+    // Reserve separate title/body regions and fit conservative CJK line widths.
+    // Explicit newlines count too, so long copy does not overlap the other block.
+    const height = document.height * (element.role === "title" ? 0.38 : 0.22);
+    const lines = () => element.text.split("\n").reduce((count, line) => count + Math.max(1, Math.ceil(Array.from(line).length * element.fontSize / element.width)), 0);
+    while (element.fontSize > 16 && lines() * element.fontSize * 1.4 > height) element.fontSize--;
+    if (lines() * element.fontSize * 1.4 > height) throw new AppError("invalid_params", "Poster copy does not fit. Shorten the text or remove extra line breaks.", 400);
+    element.height = height;
+    element.lineHeight = 1.4;
+  }
+  return { args, document: PosterDocumentSchema.parse(document) };
+}
 
 const patch = z.object({
   text: z.string().max(8000).optional(),

@@ -1,6 +1,21 @@
 import { expect, test } from "bun:test";
-import { createPosterDocument } from "@edgeever/shared";
-import { applyPosterEdits } from "./mcp-poster-tools";
+import { createPosterDocument, POSTER_FORMATS, POSTER_TEMPLATES, parsePosterDocument, serializePosterDocument } from "@edgeever/shared";
+import { applyPosterEdits, compilePosterMemo } from "./mcp-poster-tools";
+
+test("poster creation round-trips every template and format with long CJK copy", () => {
+  for (const template of POSTER_TEMPLATES) for (const format of POSTER_FORMATS) {
+    const { document } = compilePosterMemo({ notebookId: "inbox", title: "Poster", heading: "精力管理".repeat(20), subtitle: "保护精力".repeat(60), template, format: format.id });
+    expect(parsePosterDocument(serializePosterDocument(document))).toEqual(document);
+    const texts = document.elements.filter(element => element.type === "text");
+    for (const text of texts) {
+      const lines = text.text.split("\n").reduce((n, line) => n + Math.max(1, Math.ceil(Array.from(line).length * text.fontSize / text.width)), 0);
+      expect(lines * text.fontSize * text.lineHeight).toBeLessThanOrEqual(text.height);
+      expect(text.y + text.height).toBeLessThanOrEqual(document.height);
+    }
+    expect(texts[0].y + texts[0].height).toBeLessThan(texts[1].y);
+  }
+  expect(() => compilePosterMemo({ notebookId: "inbox", title: "Poster", heading: "Title", subtitle: "保护精力\n".repeat(40), format: "wechat" })).toThrow("does not fit");
+});
 
 test("poster edits reject locked elements, duplicate IDs, unknown patch keys and invalid geometry", () => {
   const poster = createPosterDocument("Hello");

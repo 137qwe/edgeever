@@ -1,4 +1,4 @@
-import { ARCHITECTURE_RESOURCE_ICONS, INFOGRAPHIC_NOTE_TEMPLATES, TABLE_FIELD_TYPES } from "@edgeever/shared";
+import { ARCHITECTURE_RESOURCE_ICONS, INFOGRAPHIC_NOTE_TEMPLATES, POSTER_FORMATS, POSTER_TEMPLATES, TABLE_FIELD_TYPES } from "@edgeever/shared";
 
 const DIAGRAM_IR_NODE_TYPES = [
   "topic",
@@ -204,7 +204,7 @@ const MCP_TOOL_DEFINITIONS = [
   },
   {
     name: "create_memo",
-    description: "Create a memo in a notebook.",
+    description: "Create a prose Markdown memo in a notebook. For an editable poster/海报笔记, use create_poster_memo instead; never substitute poster-style prose.",
     inputSchema: {
       type: "object",
       required: ["notebookId"],
@@ -364,6 +364,20 @@ const MCP_TOOL_DEFINITIONS = [
     },
   },
   {
+    name: "create_poster_memo",
+    description: "Create an editable poster note (海报笔记). Use this when asked to generate a poster, not create_memo or update_memo with poster-style prose. Supply concise heading and subtitle; EdgeEver generates valid canvas geometry and encoded source using its built-in templates. Do not inspect other notes or local files to reverse-engineer the poster format. If this tool fails, report the error; never silently substitute an ordinary Markdown note. Use get_poster then update_poster only for subsequent edits.",
+    inputSchema: {
+      type: "object", required: ["notebookId", "title", "heading"], additionalProperties: false,
+      properties: {
+        notebookId: { type: "string", minLength: 1 }, title: { type: "string", minLength: 1, maxLength: 160 },
+        heading: { type: "string", minLength: 1, maxLength: 80 }, subtitle: { type: "string", maxLength: 240 },
+        template: { type: "string", enum: [...POSTER_TEMPLATES] },
+        format: { type: "string", enum: POSTER_FORMATS.map(format => format.id) },
+        tags: { type: "array", maxItems: 100, items: { type: "string" } },
+      },
+    },
+  },
+  {
     name: "get_poster",
     description: "Read an editable poster's canvas, element IDs, text, colors and geometry. Read before update_poster; never decode or replace poster Markdown.",
     inputSchema: { type: "object", required: ["memoId"], additionalProperties: false, properties: { memoId: { type: "string", minLength: 1 } } },
@@ -504,7 +518,7 @@ const MCP_TOOL_DEFINITIONS = [
   },
   {
     name: "update_memo",
-    description: "Update memo title, Markdown, tags, notebook, or pinned state.",
+    description: "Update memo title, Markdown, tags, notebook, or pinned state. To generate an editable poster/海报笔记, call create_poster_memo; to edit one, use get_poster then update_poster. Never manually encode poster source or replace a poster request with ordinary prose.",
     inputSchema: {
       type: "object",
       required: ["memoId"],
@@ -1030,6 +1044,7 @@ const NON_DESTRUCTIVE_MCP_TOOLS = new Set([
   "create_table_memo",
   "create_diagram_memo",
   "create_infographic_memo",
+  "create_poster_memo",
   "import_memos",
   "restore_memos",
   "move_memos",
