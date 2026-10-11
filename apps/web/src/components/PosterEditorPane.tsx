@@ -713,6 +713,29 @@ export default function PosterEditorPane({
       const state = options.current;
       if (state.readOnly || state.busy || state.tool !== "select" || state.spaceHeld) return;
       const value = current.current.document;
+      // Semantic groups use ActiveSelection for moving the card together. Resolve
+      // the actual text under the pointer before entering Fabric's editing mode.
+      const candidates = event.target instanceof ActiveSelection
+        ? [...event.target.getObjects()].reverse()
+        : event.target ? [event.target] : [];
+      const textObject = candidates.find((object): object is Textbox => {
+        const element = value.elements[objectsRef.current.indexOf(object)];
+        return object instanceof Textbox && element?.type === "text" && !element.locked
+          && element.visible !== false && object.containsPoint(event.scenePoint);
+      });
+      if (textObject) {
+        if (!textObject.isEditing) {
+          const element = value.elements[objectsRef.current.indexOf(textObject)];
+          syncSelection([element.id]);
+          textObject.enterEditing(event.e);
+          const cursor = textObject.getSelectionStartFromPointer(event.e);
+          textObject.setSelectionStart(cursor);
+          textObject.setSelectionEnd(cursor);
+          textObject.hiddenTextarea?.focus();
+          instance.requestRenderAll();
+        }
+        return;
+      }
       const targetId = value.elements[objectsRef.current.indexOf(event.target!)]?.id;
       const target = posterImageReplacementTarget(value, targetId, event.scenePoint, posterImageSlot(value));
       if (target) requestImageUploadRef.current(target.id);
