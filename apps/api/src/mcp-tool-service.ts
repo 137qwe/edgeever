@@ -164,6 +164,7 @@ export type McpToolDependencies = {
       offset: number;
       includeContent: boolean;
       includeDeleted: boolean;
+      poster?: boolean | null;
     },
   ) => Promise<unknown>;
   mergeMemosRecord: (
@@ -200,6 +201,7 @@ export type McpToolDependencies = {
       updatedBefore?: string | null;
       isPinned?: boolean | null;
       hasResources?: boolean | null;
+      poster?: boolean | null;
       limit: number;
     },
   ) => Promise<MemoSummary[]>;
@@ -282,6 +284,7 @@ export const callMcpTool = async (
           updatedAfter: getOptionalString(args.updatedAfter),
           updatedBefore: getOptionalString(args.updatedBefore),
           isPinned: typeof args.isPinned === "boolean" ? args.isPinned : null,
+          poster: typeof args.poster === "boolean" ? args.poster : null,
           hasResources: typeof args.hasResources === "boolean" ? args.hasResources : null,
           limit: clampNumber(Number(args.limit ?? 20), 1, 50),
         }),
@@ -296,6 +299,7 @@ export const callMcpTool = async (
         offset: clampNumber(Number(args.offset ?? 0), 0, 100_000),
         includeContent: args.includeContent === true,
         includeDeleted: args.includeDeleted === true,
+        poster: typeof args.poster === "boolean" ? args.poster : null,
       });
     }
     case "get_memo": {

@@ -72,6 +72,31 @@ const createFixture = (scopes = ["read:memos", "write:memos"]) => {
 };
 
 describe("MCP template and AI instruction management", () => {
+  test("poster queries filter before pagination and include existing posters without matching prose titles", async () => {
+    const { sqlite, auth, context } = createFixture();
+    sqlite.query("INSERT INTO notebooks (id, workspace_id, name) VALUES (?, ?, ?)").run("nb_posters", "ws_mcp", "Posters");
+    const create = input => callMcpTool(context, auth, "create_memo", { notebookId: "nb_posters", ...input });
+    const first = await create({ title: "精力管理", contentMarkdown: serializePosterDocument(createPosterDocument("精力管理")) });
+    const second = await callMcpTool(context, auth, "create_poster_memo", { notebookId: "nb_posters", title: "精力分配", heading: "保护精力" });
+    const prose = await create({ title: "精力管理海报说明", contentMarkdown: "这只是普通笔记" });
+    const page = await callMcpTool(context, auth, "list_memos", { poster: true, limit: 1 });
+    expect(page.memos).toHaveLength(1);
+    expect(page.memos[0].poster).toBe(true);
+    expect(page.hasMore).toBe(true);
+    const next = await callMcpTool(context, auth, "list_memos", { poster: true, limit: 1, offset: page.nextOffset });
+    expect(new Set([page.memos[0].id, next.memos[0].id])).toEqual(new Set([first.memo.id, second.memo.id]));
+    expect(next.hasMore).toBe(false);
+    const full = await callMcpTool(context, auth, "list_memos", { poster: true, includeContent: true });
+    expect(full.memos.every(memo => parsePosterDocument(memo.contentMarkdown))).toBe(true);
+    const found = await callMcpTool(context, auth, "search_memos", { poster: true, query: "精力" });
+    expect(new Set(found.memos.map(memo => memo.id))).toEqual(new Set([first.memo.id, second.memo.id]));
+    expect(found.memos.every(memo => memo.poster)).toBe(true);
+    const excluded = await callMcpTool(context, auth, "search_memos", { poster: false });
+    expect(excluded.memos.map(memo => memo.id)).toEqual([prose.memo.id]);
+    expect((await callMcpTool(context, auth, "list_memos", { poster: false })).memos.map(memo => memo.id)).toEqual([prose.memo.id]);
+    expect((await callMcpTool(context, { ...auth, workspaceId: "ws_other" }, "search_memos", { poster: true })).memos).toEqual([]);
+    expect((await callMcpTool(context, { ...auth, workspaceId: "ws_other" }, "list_memos", { poster: true })).memos).toEqual([]);
+  });
   test("creates an actual editable poster from copy without encoded source", async () => {
     const { sqlite, auth, context } = createFixture();
     sqlite.query("INSERT INTO notebooks (id, workspace_id, name) VALUES (?, ?, ?)").run("nb_posters", "ws_mcp", "Posters");

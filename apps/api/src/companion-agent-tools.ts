@@ -492,6 +492,10 @@ export function createCompanionTools(args: { db: DatabaseAdapter; scope: Compani
               message: "This is an editable diagram. Change it with update_diagram, not update_memo.",
             });
           }
+          if (memo.poster) {
+            return done({ id: memo.id, title: memo.title, notebookId: memo.notebookId, tags: memo.tags, revision: memo.revision,
+              poster: true, message: "This is an editable poster. Read its canvas with get_poster and edit with update_poster; do not decode or replace Markdown." });
+          }
           const content = takeNoteText(memo.contentMarkdown, 8000);
           if (content.length === memo.contentMarkdown.length) inspected.set(memo.id, memo.revision); else inspected.delete(memo.id);
           return done({ id: memo.id, title: memo.title, notebookId: memo.notebookId, tags: memo.tags, revision: memo.revision,
@@ -517,6 +521,7 @@ export function createCompanionTools(args: { db: DatabaseAdapter; scope: Compani
               notebookId: memo.notebookId,
               notebookName: await notebookName(memo.notebookId),
               tags: memo.tags,
+              poster: memo.poster,
               createdAt: memo.createdAt,
               updatedAt: memo.updatedAt,
               excerpt: takeNoteText(memo.excerpt, 180),

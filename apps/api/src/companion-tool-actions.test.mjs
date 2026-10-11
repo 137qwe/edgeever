@@ -48,6 +48,29 @@ async function setup() {
 }
 
 describe("shared companion MCP adapter", () => {
+  test("poster CRUD reuses scoped queries, guarded edits, recoverable trash and restoration", async () => {
+    const f = await setup();
+    const tools = createCompanionTools({ ...f, scope, signal: new AbortController().signal, assertActive: async () => {}, sources: [] });
+    const created = await tools.create_poster_memo.execute({ notebookId: "ideas", title: "Energy poster", heading: "Protect your energy" });
+    const listed = await tools.list_memos.execute({ poster: true });
+    expect(listed.memos.map(memo => memo.id)).toContain(created.id);
+    expect(listed.memos.find(memo => memo.id === created.id).poster).toBe(true);
+    expect(await tools.get_memo.execute({ memoId: created.id })).toMatchObject({ poster: true, message: expect.stringContaining("get_poster") });
+    await tools.get_poster.execute({ memoId: created.id });
+    const poster = await getMemoDetail(f.db, scope.workspaceId, created.id);
+    const heading = parsePosterDocument(poster.contentMarkdown).elements.find(element => element.role === "title");
+    await tools.update_poster.execute({ memoId: created.id, expectedRevision: poster.revision, edits: [{ id: heading.id, patch: { text: "Focus on what matters" } }] });
+    expect(parsePosterDocument((await getMemoDetail(f.db, scope.workspaceId, created.id)).contentMarkdown).copy.title).toBe("Focus on what matters");
+    await tools.trash_memos.execute({ memoIds: [created.id], dryRun: true });
+    expect(await getMemoDetail(f.db, scope.workspaceId, created.id)).not.toBeNull();
+    await tools.trash_memos.execute({ memoIds: [created.id] });
+    expect(await getMemoDetail(f.db, scope.workspaceId, created.id)).toBeNull();
+    expect((await tools.search_memos.execute({ poster: true })).memos.map(memo => memo.id)).not.toContain(created.id);
+    const trashed = await tools.list_memos.execute({ poster: true, includeDeleted: true });
+    expect(trashed.memos.map(memo => memo.id)).toContain(created.id);
+    await tools.restore_memos.execute({ memoIds: [created.id] });
+    expect(parsePosterDocument((await getMemoDetail(f.db, scope.workspaceId, created.id)).contentMarkdown).copy.title).toBe("Focus on what matters");
+  });
   test("reuses the exact reviewed MCP definitions, with no administration or upload tools", () => {
     expect(COMPANION_MCP_TOOLS).toHaveLength(50);
     for (const definition of COMPANION_MCP_TOOLS) expect(MCP_TOOLS.includes(definition)).toBe(true);
