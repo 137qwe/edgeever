@@ -1,3 +1,4 @@
+import { posterPatchInputSchema, posterOperationsInputSchema } from "./mcp-poster-schema";
 import { ARCHITECTURE_RESOURCE_ICONS, INFOGRAPHIC_NOTE_TEMPLATES, POSTER_FORMATS, POSTER_TEMPLATES, TABLE_FIELD_TYPES } from "@edgeever/shared";
 
 const DIAGRAM_IR_NODE_TYPES = [
@@ -380,13 +381,38 @@ const MCP_TOOL_DEFINITIONS = [
     },
   },
   {
+    name: "request_poster_render",
+    description: "Queue a fresh PNG preview on an online desktop/Web client. Read get_poster and pass expectedRevision. Optional templateId applies a full browser design template, preserving additional decorations; use only for an explicit template change. Requires write:memos and write:resources. Returns a job, not an image. No online client means pending; query get_poster_render_job and only claim rendered after completed, then get_poster_preview. Pending expires after 10 minutes; rendering after 2 minutes. Do not busy-poll.",
+    inputSchema: { type: "object", required: ["memoId", "expectedRevision"], additionalProperties: false, properties: { memoId: { type: "string", minLength: 1 }, expectedRevision: { type: "integer", minimum: 0 }, templateId: { type: "string", description: "ID from browserDesignTemplates in get_poster_capabilities" } } },
+  },
+  {
+    name: "get_poster_render_job",
+    description: "Read client render status: pending, rendering, completed or failed. Completion provides resultRevision; read get_poster_preview for the current image. A pending task needs an online desktop/Web workspace. Poll at intervals of at least 5 seconds, never loop rapidly or claim success early.",
+    inputSchema: { type: "object", required: ["jobId"], additionalProperties: false, properties: { jobId: { type: "string", minLength: 1 } } },
+  },
+  {
+    name: "get_poster_capabilities",
+    description: "Discover supported poster templates, fonts, platform dimensions, limits, detailed editing fields, operations and rendering/export availability. Read before designing or guessing parameter values.",
+    inputSchema: { type: "object", additionalProperties: false, properties: {} },
+  },
+  {
+    name: "get_poster_preview",
+    description: "Read the current saved rendered preview of a poster. Returns available=false when it has not been rendered after edits. Never treat source data or an old preview as current. For a fresh image call request_poster_render; an online desktop/Web workspace renders it.",
+    inputSchema: { type: "object", required: ["memoId"], additionalProperties: false, properties: { memoId: { type: "string", minLength: 1 } } },
+  },
+  {
+    name: "export_poster",
+    description: "Export a poster's editable JSON source or its current saved preview image. This does not render a new image; saved_preview fails clearly when no current browser-rendered preview exists. Return the source as a .json file, not as a raster image. Image URLs require normal authenticated resource access.",
+    inputSchema: { type: "object", required: ["memoId", "format"], additionalProperties: false, properties: { memoId: { type: "string", minLength: 1 }, format: { type: "string", enum: ["source", "saved_preview"] } } },
+  },
+  {
     name: "get_poster",
     description: "Read an editable poster's canvas, element IDs, text, colors and geometry. Read before update_poster; never decode or replace poster Markdown.",
     inputSchema: { type: "object", required: ["memoId"], additionalProperties: false, properties: { memoId: { type: "string", minLength: 1 } } },
   },
   {
     name: "update_poster",
-    description: "Edit an existing poster's text, colors, typography and element positions. Preserve unmentioned elements and locked elements. Read get_poster first and pass its expectedRevision. Use dryRun to preview. After changes the editor regenerates the preview image.",
+    description: "Edit an existing poster: typography, image crop, shapes, strokes, shadows, visibility, elements, layers, groups, canvas and platform sizes. Read get_poster_capabilities for supported fields and operation arguments. Edits run first, operations next in order, resize last. Use operations lock=false in a separate call before editing locked elements. apply_template replaces all elements and is only for an explicit template change. Image resource IDs must belong to this poster. Preserve unmentioned elements and locked elements. Read get_poster first and pass its expectedRevision. Use dryRun to validate without saving. Changes invalidate the saved preview; call request_poster_render to have an online desktop/Web client render a fresh one.",
     inputSchema: {
       type: "object", required: ["memoId", "expectedRevision"], additionalProperties: false,
       properties: {
@@ -395,17 +421,15 @@ const MCP_TOOL_DEFINITIONS = [
         backgroundGradient: { type: ["object", "null"], additionalProperties: false, required: ["kind", "from", "to"], properties: {
           kind: { type: "string", enum: ["linear", "radial"] }, from: { type: "string", pattern: "^#[0-9a-fA-F]{6}$" }, to: { type: "string", pattern: "^#[0-9a-fA-F]{6}$" }, angle: { type: "number", minimum: -360, maximum: 360 },
         } },
+        canvas: { type: "object", required: ["width", "height"], additionalProperties: false, properties: {
+          width: { type: "integer", minimum: 320, maximum: 4096 }, height: { type: "integer", minimum: 320, maximum: 4096 }, scaleElements: { type: "boolean" },
+        } },
+        platform: { type: "string", description: "Platform ID from get_poster_capabilities. Resizes the canvas and scales elements. Do not combine with canvas." },
+        operations: posterOperationsInputSchema,
         edits: { type: "array", maxItems: 100, items: {
           type: "object", required: ["id", "patch"], additionalProperties: false,
-          properties: { id: { type: "string", minLength: 1 }, patch: {
-            type: "object", additionalProperties: false, properties: {
-              text: { type: "string", maxLength: 8000 }, fill: { type: "string", pattern: "^#[0-9a-fA-F]{6}$" },
-              fontSize: { type: "number", minimum: 4, maximum: 8192 }, fontWeight: { type: "string", enum: ["normal", "bold"] }, textAlign: { type: "string", enum: ["left", "center", "right"] },
-              x: { type: "number", minimum: -8192, maximum: 8192 }, y: { type: "number", minimum: -8192, maximum: 8192 },
-              width: { type: "number", minimum: 1, maximum: 8192 }, height: { type: "number", minimum: 1, maximum: 8192 },
-              rotation: { type: "number", minimum: -360, maximum: 360 }, opacity: { type: "number", minimum: 0, maximum: 1 },
-            },
-          } },
+          properties: { id: { type: "string", minLength: 1 }, patch: posterPatchInputSchema,
+          },
         } },
       },
     },
@@ -1027,6 +1051,10 @@ const READ_ONLY_MCP_TOOLS = new Set([
   "get_table_records",
   "get_diagram",
   "get_poster",
+  "get_poster_capabilities",
+  "get_poster_render_job",
+  "get_poster_preview",
+  "export_poster",
   "list_memo_resources",
   "list_resources",
   "list_memo_revisions",

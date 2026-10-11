@@ -72,7 +72,7 @@ describe("shared companion MCP adapter", () => {
     expect(parsePosterDocument((await getMemoDetail(f.db, scope.workspaceId, created.id)).contentMarkdown).copy.title).toBe("Focus on what matters");
   });
   test("reuses the exact reviewed MCP definitions, with no administration or upload tools", () => {
-    expect(COMPANION_MCP_TOOLS).toHaveLength(50);
+    expect(COMPANION_MCP_TOOLS).toHaveLength(55);
     for (const definition of COMPANION_MCP_TOOLS) expect(MCP_TOOLS.includes(definition)).toBe(true);
     for (const name of ["upload_memo_image", "upload_memo_attachment", "empty_trash", "share_memo"]) {
       expect(() => validateCompanionTool(name, {})).toThrow();
@@ -138,7 +138,7 @@ describe("shared companion MCP adapter", () => {
   test("read and dry-run tools reuse MCP without writing or requiring a proposal", async () => {
     const f = await setup();
     const tools = createCompanionTools({ ...f, scope, signal: new AbortController().signal, assertActive: async () => {}, sources: [] });
-    expect(Object.keys(tools)).toHaveLength(52);
+    expect(Object.keys(tools)).toHaveLength(57);
     expect(await tools.get_memo.execute({ memoId: f.notes[0].id })).toMatchObject({ content: "One original content" });
     expect(await tools.trash_memos.execute({ memoIds: [f.notes[0].id], dryRun: true })).toMatchObject({ dryRun: true });
     expect(await getMemoDetail(f.db, scope.workspaceId, f.notes[0].id)).not.toBeNull();

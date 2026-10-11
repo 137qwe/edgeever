@@ -528,6 +528,7 @@ export function createCompanionTools(args: { db: DatabaseAdapter; scope: Compani
             }))),
           });
         }
+        if (definition.name === "get_poster_capabilities" || definition.name === "get_poster_preview" || definition.name === "export_poster") return done(result);
         const serialized = JSON.stringify(result);
         const text = serialized.slice(0, Math.min(8000, session.metadataRemaining));
         session.metadataRemaining -= text.length;
