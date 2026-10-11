@@ -37,7 +37,7 @@ describe("note image export helpers", () => {
     expect(markup).toContain("EdgeEver");
   });
 
-  test("includes terminal header bar when fontStyle is mono", () => {
+  test("keeps terminal decoration separate from manual font choice", () => {
     const markup = buildNoteImageCardMarkup({
       title: "Geek Note",
       notebook: "Dev",
@@ -49,9 +49,9 @@ describe("note image export helpers", () => {
       showBranding: false,
     });
 
-    expect(markup).toContain("edgeever-terminal-header");
-    expect(markup).toContain("dot-red");
-    expect(markup).toContain("dot-green");
+    expect(markup).not.toContain("edgeever-terminal-header");
+    expect(markup).not.toContain("dot-red");
+    expect(markup).not.toContain("dot-green");
     expect(markup).not.toContain("edgeever-card-footer");
   });
 
@@ -63,7 +63,7 @@ describe("note image export helpers", () => {
       cardWidth: "wide",
     });
 
-    expect(midnightCss).toContain(NOTE_IMAGE_THEMES.midnight.canvasBg);
+    expect(midnightCss).toContain(NOTE_IMAGE_THEMES.terminal.canvasBg);
     expect(midnightCss).toContain("800px");
     expect(midnightCss).toContain("JetBrains Mono");
   });

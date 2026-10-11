@@ -135,7 +135,7 @@ export const createNoteImage = async ({
   format,
   background,
   theme,
-  fontStyle = "serif",
+  fontStyle = "auto",
   fontSize = "lg",
   cardWidth = "wide",
   showTitle = true,

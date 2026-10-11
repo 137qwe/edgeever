@@ -25,28 +25,14 @@ import {
   type NoteImageTheme,
   type PreparedNoteImage,
 } from "@/lib/note-image-export";
+import { NOTE_IMAGE_THEME_OPTIONS, NOTE_IMAGE_THEMES, resolveNoteImageTypography } from "@edgeever/shared/note-image-card";
 import { getHtmlImageEmbedNoticeKind } from "@/lib/note-html-export";
 import { cn } from "@/lib/utils";
 
 export type ShareNoteImageSource = Omit<DownloadNoteImageOptions, "background" | "format">;
 
-const THEME_OPTIONS: Array<{
-  id: NoteImageTheme;
-  previewBg: string;
-  dotColor: string;
-  isDark?: boolean;
-}> = [
-  { id: "aurora", previewBg: "linear-gradient(135deg, #a7f3d0, #67e8f9, #c4b5fd)", dotColor: "#0d9488" },
-  { id: "sunset", previewBg: "linear-gradient(135deg, #fde68a, #fbcfe8, #fed7aa)", dotColor: "#ea580c" },
-  { id: "midnight", previewBg: "linear-gradient(135deg, #090d16, #1e1b4b)", dotColor: "#34d399", isDark: true },
-  { id: "editorial", previewBg: "linear-gradient(135deg, #f8f9fa, #e9ecef)", dotColor: "#111827" },
-  { id: "terminal", previewBg: "linear-gradient(135deg, #0d1117, #161b22)", dotColor: "#00f0a0", isDark: true },
-  { id: "film", previewBg: "linear-gradient(135deg, #f4ede4, #dfd0bf)", dotColor: "#ea580c" },
-  { id: "mint", previewBg: "linear-gradient(135deg, #ecfdf5, #a7f3d0)", dotColor: "#059669" },
-  { id: "lavender", previewBg: "linear-gradient(135deg, #f5f3ff, #ddd6fe, #c4b5fd)", dotColor: "#7c3aed" },
-];
-
 const FONT_OPTIONS: Array<{ id: NoteImageFontStyle; labelKey: string }> = [
+  { id: "auto", labelKey: "editor.imageShare.fontStyles.auto" },
   { id: "sans", labelKey: "editor.imageShare.fontStyles.sans" },
   { id: "serif", labelKey: "editor.imageShare.fontStyles.serif" },
   { id: "mono", labelKey: "editor.imageShare.fontStyles.mono" },
@@ -75,8 +61,8 @@ export const ShareNoteImageDialog = ({
 }) => {
   const { t } = useTranslation();
   const [format, setFormat] = useState<NoteImageFormat>("png");
-  const [theme, setTheme] = useState<NoteImageTheme>("aurora");
-  const [fontStyle, setFontStyle] = useState<NoteImageFontStyle>("serif");
+  const [theme, setTheme] = useState<NoteImageTheme>("mint");
+  const [fontStyle, setFontStyle] = useState<NoteImageFontStyle>("auto");
   const [fontSize, setFontSize] = useState<NoteImageFontSize>("lg");
   const [cardWidth, setCardWidth] = useState<NoteImageCardWidth>("wide");
   const [showTitle, setShowTitle] = useState(true);
@@ -103,8 +89,8 @@ export const ShareNoteImageDialog = ({
   useEffect(() => {
     if (!open) return;
     setFormat("png");
-    setTheme("aurora");
-    setFontStyle("serif");
+    setTheme("mint");
+    setFontStyle("auto");
     setFontSize("lg");
     setCardWidth("wide");
     setShowTitle(true);
@@ -271,26 +257,31 @@ export const ShareNoteImageDialog = ({
                 {t("editor.imageShare.theme")}
               </legend>
               <div className="grid grid-cols-2 gap-2">
-                {THEME_OPTIONS.map((item) => {
-                  const isSelected = theme === item.id;
-                  const label = t(`editor.imageShare.themes.${item.id}`);
+                {NOTE_IMAGE_THEME_OPTIONS.map((id) => {
+                  const isSelected = theme === id;
+                  const label = t(`editor.imageShare.themes.${id}`);
+                  const style = NOTE_IMAGE_THEMES[id];
+                  const typography = resolveNoteImageTypography(id, fontStyle);
                   return (
                     <button
-                      key={item.id}
+                      key={id}
                       aria-pressed={isSelected}
                       className={cn(
-                        "group relative flex items-center gap-2.5 rounded-lg border p-2 text-left text-xs font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
+                        "group relative flex flex-col items-stretch gap-2 rounded-lg border p-2 text-left text-xs font-medium transition-all outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
                         isSelected
                           ? "border-slate-900 bg-slate-50 text-slate-950 ring-1 ring-slate-900"
                           : "border-slate-200 bg-card text-slate-700 hover:border-slate-300 hover:bg-slate-50/70",
                       )}
                       type="button"
-                      onClick={() => setTheme(item.id)}
+                      onClick={() => setTheme(id)}
                     >
-                      <span
-                        className="h-6 w-6 shrink-0 rounded-md border border-black/10 shadow-sm"
-                        style={{ background: item.previewBg }}
-                      />
+                      <span aria-hidden="true" className="block rounded p-2" style={{ background: style.canvasBg }}>
+                        <span className="block rounded-sm border p-2" style={{ background: style.cardBg, border: style.cardBorder, color: style.textColor, fontFamily: typography.bodyFamily }}>
+                          <span className="block truncate text-[11px]" style={{ color: style.headingColor, fontFamily: typography.headingFamily, fontWeight: typography.headingWeight }}>{source.title || label}</span>
+                          <span className="mt-1 block truncate text-[9px]">{t("editor.imageShare.previewBody")}</span>
+                          <span className="mt-1 block truncate border-l-2 pl-1 text-[9px]" style={{ borderColor: style.quoteBorder, background: style.quoteBg }}>{t("editor.imageShare.previewQuote")}</span>
+                        </span>
+                      </span>
                       <span className="truncate">{label}</span>
                     </button>
                   );
@@ -304,7 +295,7 @@ export const ShareNoteImageDialog = ({
                 <Type className="h-3.5 w-3.5" />
                 {t("editor.imageShare.fontStyle")}
               </legend>
-              <div className="grid grid-cols-3 gap-1.5">
+              <div className="grid grid-cols-2 gap-1.5">
                 {FONT_OPTIONS.map((item) => (
                   <button
                     key={item.id}

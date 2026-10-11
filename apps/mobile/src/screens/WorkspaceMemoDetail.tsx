@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { DEFAULT_MEMO_TITLE, parseDiagramDocument, type MemoDetail, type Notebook, type TiptapDoc } from "@edgeever/shared";
 import {
+  NOTE_IMAGE_THEMES,
   type NoteImageTheme,
   type NoteImageFontStyle,
   type NoteImageFontSize,
@@ -217,19 +218,18 @@ const MOBILE_THEME_OPTIONS: Array<{
   labelZh: string;
   labelEn: string;
   previewBg: string;
-  dotColor: string;
 }> = [
-  { id: "aurora", labelZh: "极光渐变", labelEn: "Aurora", previewBg: "#a7f3d0", dotColor: "#0d9488" },
-  { id: "sunset", labelZh: "暮色晚霞", labelEn: "Sunset", previewBg: "#fde68a", dotColor: "#ea580c" },
-  { id: "midnight", labelZh: "暗夜曜石", labelEn: "Midnight", previewBg: "#090d16", dotColor: "#34d399" },
-  { id: "editorial", labelZh: "新闻特写", labelEn: "Editorial", previewBg: "#f1f3f5", dotColor: "#111827" },
-  { id: "terminal", labelZh: "极客终端", labelEn: "Terminal", previewBg: "#0d1117", dotColor: "#00f0a0" },
-  { id: "film", labelZh: "银盐胶片", labelEn: "Film", previewBg: "#f4ede4", dotColor: "#ea580c" },
-  { id: "mint", labelZh: "薄荷", labelEn: "Mint", previewBg: "#ecfdf5", dotColor: "#059669" },
-  { id: "lavender", labelZh: "紫雾流光", labelEn: "Lavender", previewBg: "#f5f3ff", dotColor: "#7c3aed" },
+  { id: "slate", labelZh: "纯白", labelEn: "Pure White", previewBg: "#ffffff" },
+  { id: "mint", labelZh: "薄荷", labelEn: "Mint", previewBg: "#ecfdf5" },
+  { id: "aurora", labelZh: "极光渐变", labelEn: "Aurora", previewBg: "#a7f3d0" },
+  { id: "sunset", labelZh: "暮色晚霞", labelEn: "Sunset", previewBg: "#fde68a" },
+  { id: "editorial", labelZh: "黑白编辑", labelEn: "Black & White", previewBg: "#f1f3f5" },
+  { id: "terminal", labelZh: "极客终端", labelEn: "Terminal", previewBg: "#0d1117" },
+  { id: "film", labelZh: "书页", labelEn: "Book Page", previewBg: "#f4ede4" },
 ];
 
 const MOBILE_FONT_OPTIONS: Array<{ id: NoteImageFontStyle; labelZh: string; labelEn: string }> = [
+  { id: "auto", labelZh: "跟随主题", labelEn: "Follow Theme" },
   { id: "serif", labelZh: "文艺衬线", labelEn: "Serif" },
   { id: "sans", labelZh: "现代无衬线", labelEn: "Sans" },
   { id: "mono", labelZh: "极客等宽", labelEn: "Mono" },
@@ -519,8 +519,8 @@ export const MemoDetailModal = ({
   const [imageExportStage, setImageExportStage] = useState<"prepare" | "render" | "transfer">("prepare");
   const [imageShareOptionsOpen, setImageShareOptionsOpen] = useState(false);
   const [imageShareFormat, setImageShareFormat] = useState<"jpeg" | "png">("png");
-  const [imageShareTheme, setImageShareTheme] = useState<NoteImageTheme>("aurora");
-  const [imageShareFontStyle, setImageShareFontStyle] = useState<NoteImageFontStyle>("serif");
+  const [imageShareTheme, setImageShareTheme] = useState<NoteImageTheme>("mint");
+  const [imageShareFontStyle, setImageShareFontStyle] = useState<NoteImageFontStyle>("auto");
   const [imageShareFontSize, setImageShareFontSize] = useState<NoteImageFontSize>("lg");
   const [imageShareCardWidth, setImageShareCardWidth] = useState<NoteImageCardWidth>("wide");
   const [imageShareTitle, setImageShareTitle] = useState(true);
@@ -1000,8 +1000,8 @@ export const MemoDetailModal = ({
       notebook: options.showNotebook === false ? "" : notebookName,
       tags: options.showTags === false ? [] : memo.tags,
       updatedAt: options.showUpdatedAt === false ? "" : new Date(memo.updatedAt).toLocaleString(resolvedLocale),
-      theme: options.theme ?? "aurora",
-      fontStyle: options.fontStyle ?? "serif",
+      theme: options.theme ?? "mint",
+      fontStyle: options.fontStyle ?? "auto",
       fontSize: options.fontSize ?? "lg",
       cardWidth: options.cardWidth ?? "wide",
       showTitle: options.showTitle ?? true,
@@ -1636,6 +1636,7 @@ export const MemoDetailModal = ({
                     <Pressable
                       key={item.id}
                       accessibilityRole="button"
+                      accessibilityState={{ selected: isSelected }}
                       onPress={() => setImageShareTheme(item.id)}
                       style={[
                         imageShareStyles.themeCard,
@@ -1643,8 +1644,12 @@ export const MemoDetailModal = ({
                         isSelected && imageShareStyles.themeCardActive,
                       ]}
                     >
-                      <View style={[imageShareStyles.themeDot, { backgroundColor: item.dotColor }]} />
-                      <Text numberOfLines={1} style={[imageShareStyles.themeLabel, isSelected && imageShareStyles.themeLabelActive]}>
+                      <View accessibilityElementsHidden style={{ width: 46, padding: 5, borderRadius: 3, backgroundColor: NOTE_IMAGE_THEMES[item.id].cardBg, borderWidth: 1, borderColor: NOTE_IMAGE_THEMES[item.id].dividerColor }}>
+                        <View style={{ height: 3, width: 28, backgroundColor: NOTE_IMAGE_THEMES[item.id].headingColor, marginBottom: 4 }} />
+                        <View style={{ height: 2, width: 32, backgroundColor: NOTE_IMAGE_THEMES[item.id].textColor, marginBottom: 4 }} />
+                        <View style={{ height: 6, borderLeftWidth: 2, borderLeftColor: NOTE_IMAGE_THEMES[item.id].quoteBorder, backgroundColor: NOTE_IMAGE_THEMES[item.id].quoteBg }} />
+                      </View>
+                      <Text numberOfLines={1} style={[imageShareStyles.themeLabel, { color: NOTE_IMAGE_THEMES[item.id].textColor }, isSelected && imageShareStyles.themeLabelActive]}>
                         {label}
                       </Text>
                     </Pressable>
@@ -1942,10 +1947,10 @@ const imageShareStyles = StyleSheet.create({
     gap: 8,
   },
   themeCard: {
-    width: "23%",
-    minWidth: 70,
+    width: "47%",
+    minWidth: 120,
     flexGrow: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
@@ -1959,18 +1964,12 @@ const imageShareStyles = StyleSheet.create({
     borderColor: "#16A06E",
     borderWidth: 2,
   },
-  themeDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
   themeLabel: {
     color: "#334155",
     fontSize: 12,
     fontWeight: "600",
   },
   themeLabelActive: {
-    color: "#0f172a",
     fontWeight: "700",
   },
   choice: {

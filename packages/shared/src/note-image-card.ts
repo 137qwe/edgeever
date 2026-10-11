@@ -1,7 +1,8 @@
 export type NoteImageFormat = "jpeg" | "png";
 export type NoteImageTheme = "slate" | "aurora" | "sunset" | "midnight" | "editorial" | "terminal" | "film" | "mint" | "lavender";
 export type NoteImageBackground = NoteImageTheme | "warm" | "notepad" | "xuan" | "polaroid";
-export type NoteImageFontStyle = "sans" | "serif" | "mono";
+export type NoteImageFontStyle = "auto" | "sans" | "serif" | "mono";
+export const NOTE_IMAGE_THEME_OPTIONS = ["slate", "mint", "aurora", "sunset", "editorial", "film", "terminal"] as const;
 export type NoteImageFontSize = "sm" | "md" | "lg";
 export type NoteImageCardWidth = "compact" | "standard" | "wide";
 
@@ -80,10 +81,10 @@ export type ThemeStyleConfig = {
 
 export const NOTE_IMAGE_THEMES: Record<NoteImageTheme, ThemeStyleConfig> = {
   slate: {
-    canvasBg: "linear-gradient(145deg, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%)",
+    canvasBg: "#ffffff",
     cardBg: "#ffffff",
-    cardBorder: "1px solid rgba(226, 232, 240, 0.85)",
-    cardShadow: "0 2px 4px rgba(15, 23, 42, 0.02), 0 12px 28px -4px rgba(15, 23, 42, 0.07), 0 24px 60px -12px rgba(15, 23, 42, 0.06)",
+    cardBorder: "1px solid #e2e8f0",
+    cardShadow: "none",
     textColor: "#1e293b",
     headingColor: "#0f172a",
     metaColor: "#64748b",
@@ -258,13 +259,13 @@ export const NOTE_IMAGE_THEMES: Record<NoteImageTheme, ThemeStyleConfig> = {
     metaColor: "#8b949e",
     metaBg: "#161b22",
     metaBorder: "#30363d",
-    accentColor: "#00f0a0",
+    accentColor: "#6ee7b7",
     accentSubtle: "rgba(0, 240, 160, 0.2)",
     linkBg: "rgba(0, 240, 160, 0.1)",
     dividerColor: "#21262d",
     codeBg: "#161b22",
     codeBorder: "#30363d",
-    codeColor: "#00f0a0",
+    codeColor: "#6ee7b7",
     quoteBg: "rgba(88, 166, 255, 0.08)",
     quoteBorder: "#58a6ff",
     tableThBg: "#161b22",
@@ -299,10 +300,27 @@ export const NOTE_IMAGE_THEMES: Record<NoteImageTheme, ThemeStyleConfig> = {
   },
 };
 
-export const NOTE_IMAGE_FONT_FAMILIES: Record<NoteImageFontStyle, string> = {
+export const NOTE_IMAGE_FONT_FAMILIES: Record<Exclude<NoteImageFontStyle, "auto">, string> = {
   sans: 'system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif',
   serif: '"Songti SC", "Noto Serif SC", "Source Han Serif SC", "STSong", "Hiragino Mincho ProN", Georgia, "Times New Roman", serif',
   mono: '"JetBrains Mono", "SF Mono", "Fira Code", Menlo, Monaco, Consolas, "Liberation Mono", monospace',
+};
+
+/** Theme typography is shared by previews, Web exports and native WebViews. */
+export const resolveNoteImageTypography = (theme: NoteImageTheme, fontStyle: NoteImageFontStyle = "auto") => {
+  const resolvedTheme = resolveTheme(undefined, theme);
+  const bodyStyle = fontStyle === "auto"
+    ? (resolvedTheme === "film" || resolvedTheme === "sunset" ? "serif" : "sans")
+    : fontStyle;
+  const headingStyle = fontStyle === "auto"
+    ? (resolvedTheme === "editorial" ? "serif" : resolvedTheme === "terminal" ? "mono" : bodyStyle)
+    : bodyStyle;
+  return {
+    bodyFamily: NOTE_IMAGE_FONT_FAMILIES[bodyStyle],
+    headingFamily: NOTE_IMAGE_FONT_FAMILIES[headingStyle],
+    headingWeight: headingStyle === "serif" ? 700 : 720,
+    lineHeightAdjustment: bodyStyle === "serif" ? 0.08 : bodyStyle === "mono" ? 0.02 : 0,
+  };
 };
 
 export const NOTE_IMAGE_FONT_SIZES: Record<
@@ -363,14 +381,16 @@ export const NOTE_IMAGE_FONT_SIZES: Record<
 };
 
 export const resolveTheme = (background?: NoteImageBackground, theme?: NoteImageTheme): NoteImageTheme => {
+  if (theme === "midnight") return "terminal";
+  if (theme === "lavender") return "mint";
   if (theme && NOTE_IMAGE_THEMES[theme]) return theme;
   if (theme === ("notepad" as unknown as NoteImageTheme) || theme === ("xuan" as unknown as NoteImageTheme)) return "editorial";
   if (theme === ("polaroid" as unknown as NoteImageTheme)) return "film";
   if (background === "warm") return "sunset";
   if (background === "notepad" || background === "xuan") return "editorial";
   if (background === "polaroid") return "film";
-  if (background && NOTE_IMAGE_THEMES[background as NoteImageTheme]) return background as NoteImageTheme;
-  return "aurora";
+  if (background && NOTE_IMAGE_THEMES[background as NoteImageTheme]) return resolveTheme(undefined, background as NoteImageTheme);
+  return "mint";
 };
 
 export const buildImageExportBasename = (title: string, fallback: string) => {
@@ -408,8 +428,8 @@ export const buildNoteImageCardMarkup = ({
   tags = [],
   updatedAt = "",
   bodyHtml,
-  theme = "aurora",
-  fontStyle = "serif",
+  theme = "mint",
+  fontStyle = "auto",
   showTitle = true,
   showNotebook = false,
   showTags = false,
@@ -437,9 +457,9 @@ export const buildNoteImageCardMarkup = ({
   showReadingTime?: boolean;
   readingTimeText?: string;
 }) => {
-  const isMono = fontStyle === "mono";
+  theme = resolveTheme(undefined, theme);
 
-  const terminalBarHtml = (isMono || theme === "terminal")
+  const terminalBarHtml = (theme === "terminal")
     ? `<div class="edgeever-terminal-header">
         <span class="edgeever-terminal-dot dot-red"></span>
         <span class="edgeever-terminal-dot dot-yellow"></span>
@@ -530,8 +550,8 @@ export const buildNoteImageCardMarkup = ({
 };
 
 export const generateCardCss = ({
-  theme = "aurora",
-  fontStyle = "serif",
+  theme = "mint",
+  fontStyle = "auto",
   fontSize = "lg",
   cardWidth = "wide",
 }: {
@@ -540,8 +560,9 @@ export const generateCardCss = ({
   fontSize: NoteImageFontSize;
   cardWidth: NoteImageCardWidth;
 }) => {
-  const themeCfg = NOTE_IMAGE_THEMES[theme] || NOTE_IMAGE_THEMES.aurora;
-  const fontFam = NOTE_IMAGE_FONT_FAMILIES[fontStyle] || NOTE_IMAGE_FONT_FAMILIES.sans;
+  theme = resolveTheme(undefined, theme);
+  const themeCfg = NOTE_IMAGE_THEMES[theme];
+  const typography = resolveNoteImageTypography(theme, fontStyle);
   const sizeCfg = NOTE_IMAGE_FONT_SIZES[fontSize] || NOTE_IMAGE_FONT_SIZES.md;
   const widthPx = NOTE_IMAGE_CARD_WIDTH_PIXELS[cardWidth] || NOTE_IMAGE_CARD_WIDTH_PIXELS.wide;
 
@@ -570,9 +591,11 @@ export const generateCardCss = ({
       --ee-brand-text: ${themeCfg.brandText};
       --ee-brand-mark: ${themeCfg.brandMark};
 
-      --ee-font-family: ${fontFam};
+      --ee-font-family: ${typography.bodyFamily};
+      --ee-heading-font-family: ${typography.headingFamily};
+      --ee-heading-weight: ${typography.headingWeight};
       --ee-base-size: ${sizeCfg.base};
-      --ee-line-height: ${sizeCfg.lineHeight};
+      --ee-line-height: ${(Number(sizeCfg.lineHeight) + typography.lineHeightAdjustment).toFixed(2)};
       --ee-title-size: ${sizeCfg.title};
       --ee-h1-size: ${sizeCfg.h1};
       --ee-h2-size: ${sizeCfg.h2};
@@ -613,7 +636,7 @@ export const generateCardCss = ({
     .edgeever-image-card {
       background: var(--ee-card-bg);
       border: var(--ee-card-border);
-      border-radius: 20px;
+      border-radius: ${theme === "editorial" || theme === "film" || theme === "slate" ? 4 : 20}px;
       box-shadow: var(--ee-card-shadow);
       padding: 40px 38px 36px;
       position: relative;
@@ -683,7 +706,8 @@ export const generateCardCss = ({
     .edgeever-card-title {
       margin: 0 0 16px;
       font-size: var(--ee-title-size);
-      font-weight: 780;
+      font-family: var(--ee-heading-font-family);
+      font-weight: var(--ee-heading-weight);
       line-height: 1.25;
       letter-spacing: -0.026em;
       color: var(--ee-heading-color);
@@ -714,7 +738,8 @@ export const generateCardCss = ({
     .edgeever-card-body h6 {
       color: var(--ee-heading-color);
       line-height: 1.28;
-      font-weight: 720;
+      font-family: var(--ee-heading-font-family);
+      font-weight: var(--ee-heading-weight);
       letter-spacing: -0.015em;
     }
     .edgeever-card-body h1 {
@@ -1004,12 +1029,6 @@ export const generateCardCss = ({
       color: var(--ee-brand-text);
     }
 
-    ${theme === "midnight" ? `
-    .edgeever-image-card[data-theme="midnight"] {
-      box-shadow: 0 0 0 1px rgba(52, 211, 153, 0.16), 0 24px 60px -12px rgba(0, 0, 0, 0.82);
-    }
-    ` : ""}
-
     ${theme === "editorial" ? `
     .edgeever-image-card[data-theme="editorial"] {
       border: 2px solid #111827;
@@ -1022,7 +1041,7 @@ export const generateCardCss = ({
       margin-bottom: 24px;
     }
     .edgeever-image-card[data-theme="editorial"] .edgeever-card-title {
-      font-family: "Songti SC", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+      font-family: var(--ee-heading-font-family);
       letter-spacing: -0.02em;
     }
     ` : ""}
@@ -1032,8 +1051,7 @@ export const generateCardCss = ({
       border: 1px solid rgba(0, 240, 160, 0.35);
       border-radius: 12px;
       box-shadow: 0 0 30px -5px rgba(0, 240, 160, 0.15), 0 24px 60px -12px rgba(0, 0, 0, 0.95);
-      background-image: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
-      background-size: 100% 3px, 6px 100%;
+
     }
     .edgeever-image-card[data-theme="terminal"] .edgeever-terminal-header {
       border-bottom: 1px solid rgba(0, 240, 160, 0.2);
@@ -1044,8 +1062,8 @@ export const generateCardCss = ({
     ${theme === "film" ? `
     .edgeever-image-card[data-theme="film"] {
       border: 1px solid rgba(214, 186, 155, 0.85);
-      border-radius: 14px;
-      box-shadow: 0 2px 8px rgba(60, 45, 30, 0.05), 0 20px 48px -10px rgba(60, 45, 30, 0.12);
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(60, 45, 30, 0.05);
     }
     .edgeever-image-card[data-theme="film"] .edgeever-card-title {
       color: #1c1917;

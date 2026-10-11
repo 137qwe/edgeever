@@ -2,6 +2,9 @@ import { describe, expect, test } from "bun:test";
 import {
   NOTE_IMAGE_BACKGROUND_COLORS,
   NOTE_IMAGE_THEMES,
+  NOTE_IMAGE_THEME_OPTIONS,
+  NOTE_IMAGE_FONT_FAMILIES,
+  resolveNoteImageTypography,
   buildImageExportBasename,
   buildNoteImageCardMarkup,
   estimateReadingStats,
@@ -18,7 +21,41 @@ describe("note-image-card shared module", () => {
     expect(resolveTheme(undefined, "xuan")).toBe("editorial");
     expect(resolveTheme(undefined, "polaroid")).toBe("film");
     expect(resolveTheme("warm", undefined)).toBe("sunset");
-    expect(resolveTheme(undefined, undefined)).toBe("aurora");
+    expect(resolveTheme(undefined, undefined)).toBe("mint");
+  });
+
+  test("retired themes resolve to active choices in both legacy inputs", () => {
+    expect(NOTE_IMAGE_THEME_OPTIONS).toHaveLength(7);
+    for (const [legacy, active] of [["midnight", "terminal"], ["lavender", "mint"]]) {
+      expect(NOTE_IMAGE_THEME_OPTIONS).not.toContain(legacy);
+      expect(resolveTheme(undefined, legacy)).toBe(active);
+      expect(resolveTheme(legacy)).toBe(active);
+      const css = generateCardCss({ theme: legacy, fontStyle: "auto", fontSize: "md", cardWidth: "standard" });
+      expect(css).toContain(NOTE_IMAGE_THEMES[active].canvasBg);
+      const markup = buildNoteImageCardMarkup({ title: "Legacy", bodyHtml: "<p>Content</p>", theme: legacy });
+      expect(markup).toContain(`data-theme="${active}"`);
+    }
+  });
+
+  test("theme typography pairs headings and body while explicit fonts override both", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
+      const auto = resolveNoteImageTypography(theme);
+      expect(auto.bodyFamily).toBe(NOTE_IMAGE_FONT_FAMILIES[theme === "film" || theme === "sunset" ? "serif" : "sans"]);
+      expect(auto.headingFamily).toBe(NOTE_IMAGE_FONT_FAMILIES[theme === "editorial" ? "serif" : theme === "terminal" ? "mono" : theme === "film" || theme === "sunset" ? "serif" : "sans"]);
+      for (const fontStyle of ["sans", "serif", "mono"]) {
+        const manual = resolveNoteImageTypography(theme, fontStyle);
+        expect(manual.bodyFamily).toBe(NOTE_IMAGE_FONT_FAMILIES[fontStyle]);
+        expect(manual.headingFamily).toBe(NOTE_IMAGE_FONT_FAMILIES[fontStyle]);
+        const css = generateCardCss({ theme, fontStyle, fontSize: "md", cardWidth: "standard" });
+        expect(css).toContain(`--ee-heading-font-family: ${manual.headingFamily}`);
+        expect(css).not.toMatch(/\n\s+font-family: "Songti SC"/);
+      }
+    }
+  });
+
+  test("manual mono font does not add terminal decoration to a light theme", () => {
+    const markup = buildNoteImageCardMarkup({ title: "Paper", bodyHtml: "<p>Content</p>", theme: "slate", fontStyle: "mono" });
+    expect(markup).not.toContain("edgeever-terminal-header");
   });
 
   test("retains valid colors for current themes and legacy slate exports", () => {
@@ -78,7 +115,7 @@ describe("note-image-card shared module", () => {
     expect(css).toContain("box-shadow: 6px 6px 0px #111827");
   });
 
-  test("generates terminal header for mono font style and terminal theme", () => {
+  test("generates terminal header for the terminal theme", () => {
     const markup = buildNoteImageCardMarkup({
       title: "Code Memo",
       notebook: "TerminalNote",
