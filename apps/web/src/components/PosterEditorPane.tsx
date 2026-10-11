@@ -70,7 +70,8 @@ import {
   renderPosterBlob,
 } from "@/lib/poster-canvas";
 import {
-  buildPosterDesign,
+  applyPosterDesign,
+  DESIGN_TEMPLATES,
   PLATFORMS,
   posterCopy,
   posterPrimitiveFromObject,
@@ -1142,29 +1143,8 @@ export default function PosterEditorPane({
     const editing = canvas.current?.getActiveObject();
     if (editing instanceof Textbox && editing.isEditing) editing.exitEditing();
     const value = current.current.document;
-    const built = await buildPosterDesign({
-      id,
-      ...posterCopy(value),
-      width,
-      height,
-      zh,
-    });
-    const extras = value.elements.filter(
-      (element) =>
-        !element.id.startsWith("design_") &&
-        !["heading", "subtitle", "accent"].includes(element.id),
-    );
-    const scaled = resizePosterDocument(
-      { ...value, elements: extras },
-      width,
-      height,
-    ).elements;
-    return {
-      ...built,
-      sourceMemoId: value.sourceMemoId,
-      platformId,
-      elements: [...built.elements, ...scaled],
-    };
+    const built = await applyPosterDesign(value, id, zh, width, height);
+    return { ...built, platformId };
   };
   const applyTemplate = (id: string) =>
     run(async () => {
@@ -1176,7 +1156,7 @@ export default function PosterEditorPane({
   const resize = (width: number, height: number, platformId?: string) =>
     run(async () => {
       const value = current.current.document;
-      const next = value.templateId
+      const next = value.templateId && DESIGN_TEMPLATES.some(template => template.id === value.templateId)
         ? await designAt(value.templateId, width, height, platformId)
         : { ...resizePosterDocument(value, width, height), platformId };
       syncSelection([]);

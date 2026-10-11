@@ -22,6 +22,7 @@ import { TEMPLATES, sourceOf, templatesFor } from "./vendor/qiaomu/templates";
 import { BadgeBox } from "./vendor/qiaomu/badge";
 import { resolvePair, usePairing } from "./vendor/qiaomu/typeset";
 import { POSTER_FONTS, loadDesignFonts } from "./fonts";
+import { composePosterTemplate, posterTemplateHeaderHeight } from "../poster-template-content";
 export { PLATFORMS, platformFor } from "./vendor/qiaomu/platforms";
 export const DESIGN_TEMPLATES = TEMPLATES;
 export { templatesFor };
@@ -254,4 +255,12 @@ export async function buildPosterDesign(input: {
   } finally {
     usePairing(undefined);
   }
+}
+
+export async function applyPosterDesign(document: PosterDocument, templateId: string, zh: boolean, width = document.width, height = document.height) {
+  if (!TEMPLATES.some(template => template.id === templateId)) throw new Error("Unknown poster template");
+  if (document.elements.some(element => element.locked)) throw new Error("Locked poster elements");
+  const headerHeight = posterTemplateHeaderHeight(document, height);
+  const cover = await buildPosterDesign({ id: templateId, ...posterCopy(document), width, height: Math.max(320, headerHeight), zh });
+  return composePosterTemplate(document, cover, width, height, headerHeight);
 }
