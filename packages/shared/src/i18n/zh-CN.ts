@@ -1733,7 +1733,6 @@ export const zhCN = {
       workbuddyCnLoginHint: "请登录 WorkBuddy，并在完成后检查连接。可使用微信或组织指定的登录方式。",
       workbuddyIntlLoginHint: "请登录 WorkBuddy，并在完成后检查连接。可使用 Google / GitHub 或组织指定的登录方式。",
       workbuddyCredentialsUnavailable: "无法读取 WorkBuddy 保存的登录凭据，ACP 当前不可用。请先改用其他本机 Agent；重复点击登录无法解决此问题。",
-      workbuddyConnectionReady: "已连接 WorkBuddy",
       workbuddyConnectedHint: "可开始聊天，将使用 WorkBuddy 中已登录的账号。",
       workbuddyLoginOptions: "登录选项",
       workbuddyLoginRequired: "请登录 WorkBuddy",
