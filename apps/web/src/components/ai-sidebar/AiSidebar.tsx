@@ -999,6 +999,8 @@ function AiSidebarSession({
         const noteAccessErrorKey = desktopAcpNoteAccessErrorKey(event.message);
         setError(noteAccessErrorKey ? t(noteAccessErrorKey)
           : event.message === "workbuddy_credentials_unavailable" ? t("aiAssistant.agentSource.workbuddyCredentialsUnavailable")
+          : event.message === "identity_status_unavailable" ? t("aiAssistant.agentSource.identityStatusUnavailable")
+          : event.message === "needs_login" && localAdapterId === "claudeCode" ? t("aiAssistant.agentSource.claudeCodeLoginHint")
           : event.message === "needs_login" ? t(localAdapterId === "workbuddyCn" || localAdapterId === "workbuddyIntl"
             ? "aiAssistant.sidebar.workbuddyLoginRequired" : "aiAssistant.sidebar.localLoginRequired")
             : event.message === "agent_refused" ? t("aiAssistant.sidebar.agentRefused") : event.message);
