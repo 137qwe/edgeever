@@ -1187,7 +1187,7 @@ export const enUS = {
     },
     trustWarning: {
       title: "Turn on community plugins?",
-      description: "Community plugins run third-party code on your behalf and inherit EdgeEver's access, including the ability to read and modify notes and connect to the internet. Enable only plugins you trust.",
+      description: "Plugins run with full client access. Enable only plugins you trust.",
       confirm: "Turn on community plugins",
     },
     toggle: "Enable or disable {{name}}",
@@ -1733,7 +1733,8 @@ export const enUS = {
       piAgent: "pi agent",
       pathLabel: "Antigravity executable",
       pathPlaceholder: "/absolute/path/to/antigravity-acp",
-      pathHint: "Enter the absolute path of an existing Antigravity ACP executable, or let EdgeEver install one on demand.",
+      choosePath: "Choose executable",
+      pathHint: "Choose an existing Antigravity ACP executable, or install the connector automatically.",
       install: "Install connector",
       installHint: "When a local agent is detected, its connector downloads from the official source. This may exceed 100 MiB; updates are checked automatically.",
       claudeCodeNotFound: "Claude Code ACP connector not found",

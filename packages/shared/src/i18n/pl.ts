@@ -1176,7 +1176,7 @@ export const pl = {
     },
     trustWarning: {
       title: "Włączyć wtyczki społeczności?",
-      description: "Wtyczki społeczności uruchamiają w Twoim imieniu kod innych firm i dziedziczą uprawnienia EdgeEver, w tym możliwość odczytu i modyfikowania notatek oraz łączenia z internetem. Włączaj tylko wtyczki, którym ufasz.",
+      description: "Wtyczki mają pełny dostęp do klienta. Włączaj tylko zaufane wtyczki.",
       confirm: "Włącz wtyczki społeczności",
     },
     toggle: "Włącz lub wyłącz {{name}}",
@@ -1722,7 +1722,8 @@ export const pl = {
       piAgent: "pi agent",
       pathLabel: "Plik wykonywalny Antigravity",
       pathPlaceholder: "/absolute/path/to/antigravity-acp",
-      pathHint: "Wpisz bezwzględną ścieżkę istniejącego pliku wykonywalnego Antigravity ACP lub pozwól EdgeEver zainstalować go w razie potrzeby.",
+      choosePath: "Wybierz program",
+      pathHint: "Wybierz istniejący program Antigravity ACP lub zainstaluj konektor automatycznie.",
       install: "Zainstaluj konektor",
       installHint: "Po wykryciu lokalnego agenta jego konektor jest pobierany z oficjalnego źródła. Może zajmować ponad 100 MiB; aktualizacje są sprawdzane automatycznie.",
       claudeCodeNotFound: "Nie znaleziono konektora Claude Code ACP",

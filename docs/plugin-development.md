@@ -5,7 +5,7 @@
 EdgeEver provides client plugin and no-code theme extension capabilities. Users can install extensions from the official marketplace, public GitHub repositories, or manifest URLs. Installed extensions sync across Web and desktop platforms with the current workspace and run while EdgeEver is open; Android and iOS native apps do not run plugins.
 
 > [!NOTE]
-> **Security Model**: Client plugins use a trusted-code model (similar to Obsidian). Enabling a plugin grants it trust to run within the client JavaScript environment and invoke plugin APIs. Capability declarations (`permissions`) in the manifest disclose the functional scope to users and do not enforce a hard sandbox. Theme packages are purely declarative JSON and execute no JavaScript.
+> **Security Model**: Client plugins use a trusted-code model (similar to Obsidian). Enabling a plugin grants it trust to run within the client JavaScript environment and invoke plugin APIs. Capability declarations (`permissions`) in the manifest disclose the functional scope to users and do not enforce a hard sandbox. The same applies to `networkHosts`: it describes intended destinations rather than restricting plugin code. Desktop plugins can also reach login credentials, local data and Agent capabilities through the client bridge. Theme packages are purely declarative JSON and execute no JavaScript.
 
 ---
 

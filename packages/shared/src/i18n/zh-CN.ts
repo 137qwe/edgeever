@@ -1187,7 +1187,7 @@ export const zhCN = {
     },
     trustWarning: {
       title: "开启社区插件？",
-      description: "社区插件会代表你运行第三方代码，并继承 EdgeEver 的访问能力，包括读取和修改笔记、连接互联网。请仅启用你信任的插件。",
+      description: "插件以完整客户端权限运行，请仅启用你信任的插件。",
       confirm: "开启社区插件",
     },
     toggle: "启用或停用 {{name}}",
@@ -1733,7 +1733,8 @@ export const zhCN = {
       piAgent: "pi agent",
       pathLabel: "Antigravity 可执行文件",
       pathPlaceholder: "/absolute/path/to/antigravity-acp",
-      pathHint: "如需使用已有的 Antigravity ACP 程序，可填写其绝对路径；也可以让 EdgeEver 按需安装。",
+      choosePath: "选择程序",
+      pathHint: "可选择已有的 Antigravity ACP 程序，或自动安装连接组件。",
       install: "安装连接组件",
       installHint: "检测到本机 Agent 后会从官方来源下载，可能超过 100 MiB；安装后会自动检查更新。",
       claudeCodeNotFound: "未找到 Claude Code ACP 连接组件",

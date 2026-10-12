@@ -1176,7 +1176,7 @@ export const ja = {
     },
     trustWarning: {
       title: "コミュニティプラグインをオンにしますか？",
-      description: "コミュニティプラグインはあなたの代わりにサードパーティのコードを実行し、EdgeEver のアクセス権を引き継ぎます。ノートの読み取りと変更、インターネット接続も含まれます。信頼できるプラグインだけを有効にしてください。",
+      description: "プラグインはクライアントの全権限で動作します。信頼するものだけを有効にしてください。",
       confirm: "コミュニティプラグインをオンにする",
     },
     toggle: "{{name}} を有効または無効にする",
@@ -1722,7 +1722,8 @@ export const ja = {
       piAgent: "pi agent",
       pathLabel: "Antigravity の実行ファイル",
       pathPlaceholder: "/absolute/path/to/antigravity-acp",
-      pathHint: "既存の Antigravity ACP 実行ファイルの絶対パスを入力するか、EdgeEver で必要時にインストールします。",
+      choosePath: "実行ファイルを選択",
+      pathHint: "既存の Antigravity ACP 実行ファイルを選ぶか、接続コンポーネントを自動インストールします。",
       install: "接続コンポーネントをインストール",
       installHint: "ローカルのエージェントを検出すると、公式配布元からダウンロードします。100 MiB を超える場合があり、インストール後は更新を自動確認します。",
       claudeCodeNotFound: "Claude Code ACP 接続コンポーネントが見つかりません",

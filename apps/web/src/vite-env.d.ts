@@ -125,6 +125,7 @@ interface EdgeEverDesktopBridge {
     updateError?: string;
     authMethods?: Array<{ id: string; name: string }>;
   }>>;
+  chooseAcpAdapterPath?(): Promise<string | null>;
   probeAcpAdapter?(input: { id: "codex" | "claudeCode" | "antigravity" | "openClaw" | "hermesAgent" | "grokBuild" | "deepseekHarness" | "piAgent" | "workbuddyCn" | "workbuddyIntl"; path?: string }): Promise<{
     id: "codex" | "claudeCode" | "antigravity" | "openClaw" | "hermesAgent" | "grokBuild" | "deepseekHarness" | "piAgent" | "workbuddyCn" | "workbuddyIntl";
     label: string;
