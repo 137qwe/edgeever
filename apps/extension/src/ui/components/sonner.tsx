@@ -21,10 +21,10 @@ export function Toaster({
     hotkey={hotkey}
     className="toaster group"
     icons={{
-      success: <CircleCheckIcon size={16} className="size-4" aria-hidden="true" />,
+      success: <CircleCheckIcon size={16} className="size-4 text-[var(--notification-success-icon)]" aria-hidden="true" />,
       info: <InfoIcon size={16} className="size-4" aria-hidden="true" />,
       warning: <TriangleAlertIcon size={16} className="size-4" aria-hidden="true" />,
-      error: <OctagonXIcon size={16} className="size-4" aria-hidden="true" />,
+      error: <OctagonXIcon size={16} className="size-4 text-[var(--notification-error-icon)]" aria-hidden="true" />,
       loading: <Loader2Icon size={16} className="size-4 animate-spin motion-reduce:animate-none" aria-hidden="true" />,
       ...icons,
     }}

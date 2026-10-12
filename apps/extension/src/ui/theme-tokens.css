@@ -13,7 +13,6 @@
   --border: #e0e0e0;
   --ring: #262626;
   --radius: 0.5rem;
-  --notification-error-background: #fff1f2;
-  --notification-error-foreground: #be123c;
-  --notification-error-border: #ffe4e6;
+  --notification-success-icon: #16a06e;
+  --notification-error-icon: #be123c;
 }
