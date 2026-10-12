@@ -1788,6 +1788,9 @@ const startApplication = async () => {
         baseUrl,
         sessionToken,
         accountId,
+        // Share the renderer's system proxy and desktop network behavior.
+        fetchImpl: (url, init) => net.fetch(url, { ...init, credentials: "omit" }),
+        onDiagnostic: (details) => { void writeDiagnostic("acp.note-access-failed", details); },
         isCurrent: () => configuredApiBaseUrl === baseUrl && desktopSessionToken === sessionToken && activeAccountId === accountId,
       };
     },

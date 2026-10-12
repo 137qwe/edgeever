@@ -761,16 +761,20 @@ describe("ACP stdio session", () => {
     const directory = await mkdtemp(path.join(tmpdir(), "edgeever-acp-mcp-status-"));
     try {
       const scriptPath = await writeFakeAgent(directory, { reportPath: path.join(directory, "report.json"), secretPath: path.join(directory, "secret.txt") });
+      let noteAccessFailure = "workspace_unavailable";
       const runtime = createAcpHostRuntime({
         adapterManager: { get: (id) => id === "codex" ? { version: "2.1.1", command: { command: process.execPath, args: [scriptPath] } } : null },
         pathEnv: "",
-        mcpAccess: () => { throw new Error("workspace_unavailable"); },
+        mcpAccess: () => { throw new Error(noteAccessFailure); },
       });
       expect((await runtime.probeAdapter({ id: "codex" })).state).toBe("available");
-      const events = collector();
-      await runtime.prompt({ adapterId: "codex", prompt: "Hello" }, events.emit);
-      expect((await events.waitFor((event) => event.type === "error")).message).toBe("workspace_unavailable");
-      expect(runtime.listAdapters().find((adapter) => adapter.id === "codex").state).toBe("available");
+      for (const message of ["workspace_unavailable", "note_access_network", "note_access_login_required", "note_access_changed"]) {
+        noteAccessFailure = message;
+        const events = collector();
+        await runtime.prompt({ adapterId: "codex", prompt: "Hello" }, events.emit);
+        expect((await events.waitFor((event) => event.type === "error")).message).toBe(message);
+        expect(runtime.listAdapters().find((adapter) => adapter.id === "codex").state).toBe("available");
+      }
     } finally {
       await rm(directory, { recursive: true, force: true });
     }
