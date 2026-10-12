@@ -52,7 +52,7 @@ export const PicGoSettingsItem = () => {
           <SelectTrigger className="h-9 w-full sm:w-80" aria-label={t("settings.picgo.title")}><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="edgeever">{t("settings.picgo.builtin")}</SelectItem>
-            <SelectItem value="picgo">PicGo</SelectItem>
+            <SelectItem value="picgo">{t("settings.picgo.external")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
