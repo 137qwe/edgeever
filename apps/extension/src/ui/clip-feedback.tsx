@@ -26,11 +26,11 @@ if (payload?.action === "toast") {
     shadow.append(style, mount);
     (document.documentElement ?? document.body).appendChild(host);
     const root = createRoot(mount);
-    flushSync(() => root.render(<Toaster theme="dark" position="bottom-right" offset={16} mobileOffset={16} visibleToasts={1} closeButton hotkey={[]} containerAriaLabel={payload.regionLabel} toastOptions={{ closeButtonAriaLabel: payload.closeLabel, style: { background: "#171717", color: "#fff", border: "1px solid #404040", pointerEvents: "auto" } }} />));
+    flushSync(() => root.render(<Toaster theme="light" position="bottom-right" offset={16} mobileOffset={16} visibleToasts={1} closeButton hotkey={[]} containerAriaLabel={payload.regionLabel} toastOptions={{ closeButtonAriaLabel: payload.closeLabel, style: { background: "#fff", color: "#334155", border: "1px solid #e2e8f0", pointerEvents: "auto" } }} />));
     service = {
       host,
       show(message, kind) {
-        const options = { id: "edgeever-clip", duration: kind === "error" ? 8000 : 4000, style: { background: kind === "error" ? "#b91c1c" : "#171717", color: "#fff", border: "1px solid #404040", pointerEvents: "auto" as const } };
+        const options = { id: "edgeever-clip", duration: kind === "error" ? 8000 : 4000, style: { background: kind === "error" ? "#fff1f2" : "#fff", color: kind === "error" ? "#be123c" : "#334155", border: kind === "error" ? "1px solid #ffe4e6" : "1px solid #e2e8f0", pointerEvents: "auto" as const } };
         if (kind === "error") toast.error(message, options);
         else if (kind === "success") toast.success(message, options);
         else toast(message, options);

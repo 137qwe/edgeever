@@ -3,8 +3,11 @@ import { CheckCircle2, LoaderCircle, CircleAlert } from "lucide-react";
 import { Button as SharedButton } from "../../../web/src/components/ui/button";
 export { Input } from "../../../web/src/components/ui/input";
 
-export function Button({ variant = "solid", className = "", ...props }: ComponentProps<typeof SharedButton>) {
-  return <SharedButton variant={variant} className={`${variant === "solid" ? "bg-primary text-primary-foreground hover:bg-neutral-800 border-primary" : "border-neutral-300 text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900"} ${className}`} {...props} />;
+export function Button({ variant = "soft", className = "", ...props }: ComponentProps<typeof SharedButton>) {
+  const styles = variant === "soft" || variant === "solid"
+    ? "border border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200 hover:text-slate-900"
+    : "border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900";
+  return <SharedButton variant={variant === "solid" ? "soft" : variant} className={`${styles} ${className}`} {...props} />;
 }
 
 export type Feedback = { message: string; kind?: "normal" | "success" | "error" };
