@@ -14,7 +14,7 @@
     "verify-origin-migration": "electron ../../scripts/renderer-origin-verifier"
   },
   "devDependencies": {
-    "electron": "^44.0.0",
+    "electron": "44.7.0",
     "electron-builder": "^26.0.12"
   },
   "dependencies": {
@@ -24,6 +24,6 @@
     "electron-updater": "^6.6.2",
     "fflate": "0.8.3",
     "npm": "11.6.2",
-    "zod": "^4.6.5"
+    "zod": "4.6.6"
   }
 }
