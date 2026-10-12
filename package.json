@@ -99,7 +99,8 @@
     "deploy:verify": "bun scripts/verify-deployment.mjs",
     "demo:sync": "bun scripts/sync-demo.mjs",
     "deploy:builds:setup": "bun scripts/cloudflare-workers-builds.mjs setup",
-    "deploy:site": "bun run build:site && wrangler pages deploy apps/site/dist --project-name=edgeever-official"
+    "deploy:site": "bun run build:site && wrangler pages deploy apps/site/dist --project-name=edgeever-official",
+    "verify:acp-npm-upgrade": "bun scripts/verify-acp-npm-upgrade.mjs"
   },
   "cloudflare": {
     "bindings": {
@@ -212,10 +213,15 @@
     "katex": "0.18.2",
     "sharp": "0.35.5",
     "mermaid": "11.16.1",
-    "fast-xml-parser": "5.11.2"
+    "fast-xml-parser": "5.11.2",
+    "js-yaml": "4.3.2",
+    "shell-quote": "1.12.0",
+    "tar": "7.5.22",
+    "http-cache-semantics": "4.3.0"
   },
   "patchedDependencies": {
     "mermaid@11.16.1": "patches/mermaid@11.16.1.patch",
-    "expo-sharing@57.0.22": "patches/expo-sharing@57.0.22.patch"
+    "expo-sharing@57.0.22": "patches/expo-sharing@57.0.22.patch",
+    "npm@11.21.0": "patches/npm@11.21.0.patch"
   }
 }
