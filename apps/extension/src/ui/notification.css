@@ -1,0 +1,10 @@
+/* Sonner provides layout, motion and interaction. Only theme tokens vary here. */
+.toaster [data-sonner-toast] {
+  pointer-events: auto;
+}
+
+.toaster [data-sonner-toast][data-type="error"] {
+  --normal-bg: var(--notification-error-background);
+  --normal-text: var(--notification-error-foreground);
+  --normal-border: var(--notification-error-border);
+}

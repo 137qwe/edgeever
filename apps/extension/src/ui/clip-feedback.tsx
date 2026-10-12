@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
-import { Toaster, toast } from "sonner";
+import { Toaster, toast, notificationDuration } from "./components/sonner";
 
 // Re-injection reuses the mounted component and its Sonner store. Keep both the
 // stylesheet and React tree inside the shadow root, away from the site's CSS.
@@ -26,11 +26,11 @@ if (payload?.action === "toast") {
     shadow.append(style, mount);
     (document.documentElement ?? document.body).appendChild(host);
     const root = createRoot(mount);
-    flushSync(() => root.render(<Toaster theme="light" position="bottom-right" offset={16} mobileOffset={16} visibleToasts={1} closeButton hotkey={[]} containerAriaLabel={payload.regionLabel} toastOptions={{ closeButtonAriaLabel: payload.closeLabel, style: { background: "#fff", color: "#334155", border: "1px solid #e2e8f0", pointerEvents: "auto" } }} />));
+    flushSync(() => root.render(<Toaster containerAriaLabel={payload.regionLabel} toastOptions={{ closeButtonAriaLabel: payload.closeLabel }} />));
     service = {
       host,
       show(message, kind) {
-        const options = { id: "edgeever-clip", duration: kind === "error" ? 8000 : 4000, style: { background: kind === "error" ? "#fff1f2" : "#fff", color: kind === "error" ? "#be123c" : "#334155", border: kind === "error" ? "1px solid #ffe4e6" : "1px solid #e2e8f0", pointerEvents: "auto" as const } };
+        const options = { id: "edgeever-clip", duration: notificationDuration[kind] };
         if (kind === "error") toast.error(message, options);
         else if (kind === "success") toast.success(message, options);
         else toast(message, options);

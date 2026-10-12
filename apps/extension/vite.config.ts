@@ -21,7 +21,7 @@ export default defineConfig({
     tailwindcss(),
     {
       name: "edgeever-extension-manifest",
-      async generateBundle() {
+      async generateBundle(_options, bundle) {
         this.emitFile({
           type: "asset",
           fileName: "manifest.json",
@@ -47,13 +47,20 @@ export default defineConfig({
             source: capture.outputFiles[0].contents,
           });
         }
+        // Reuse the generated Tailwind stylesheet so the shadcn component and
+        // its theme tokens behave identically in pages and in the shadow root.
+        const themeStyles = Object.values(bundle)
+          .filter((item) => item.type === "asset" && item.fileName.endsWith(".css"))
+          .map((item) => item.type === "asset" ? typeof item.source === "string" ? item.source : new TextDecoder().decode(item.source) : "")
+          .join("\n");
+        if (!themeStyles) throw new Error("Missing compiled extension theme for shadow notifications");
         const feedback = await buildStandaloneScript({
           entryPoints: [fileURLToPath(new URL("./src/ui/clip-feedback.tsx", import.meta.url))],
           bundle: true, format: "iife", platform: "browser", target: "es2022", minify: true, write: false,
           jsx: "automatic",
           define: {
             "process.env.NODE_ENV": '"production"',
-            __CLIP_FEEDBACK_CSS__: JSON.stringify(await readFile(require.resolve("sonner/dist/styles.css"), "utf8")),
+            __CLIP_FEEDBACK_CSS__: JSON.stringify(`${await readFile(require.resolve("sonner/dist/styles.css"), "utf8")}\n${themeStyles}`),
           },
           plugins: [{
             name: "shadow-only-sonner-styles",

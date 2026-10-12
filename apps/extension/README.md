@@ -29,7 +29,7 @@ HN usage and verification limits are documented in [English](../../docs/browser-
 
 ## UI architecture
 
-Extension pages use React, shared shadcn/ui-style Button and Input components, and Tailwind CSS 4 with a neutral theme. The webpage feedback UI uses Sonner inside a Shadow DOM, bundled as a standalone classic script. Its stylesheet stays inside the shadow root; image readers and content extractors do not load React. Permission requests remain in click handlers.
+Extension pages use React, shared shadcn/ui-style Button and Input components, and Tailwind CSS 4 with a neutral theme. The webpage feedback UI uses the official shadcn/ui Sonner component structure, adapted for an explicit extension theme, inside a Shadow DOM. Extension pages and notifications share theme tokens. The feedback entry only mounts the component and maps clipping states, and is bundled as a standalone classic script. Its stylesheet stays inside the shadow root; image readers and content extractors do not load React. Permission requests remain in click handlers.
 
 ## Localization
 
