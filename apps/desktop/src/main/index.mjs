@@ -51,6 +51,7 @@ import electronUpdater from "electron-updater";
 import { createUpdateDiagnostic } from "./update-diagnostics.mjs";
 import { normalizeUpdateProgress } from "./update-progress.mjs";
 import { inspectWindowsTaskbarShortcuts } from "./windows-taskbar-diagnostics.mjs";
+import { testPicGoConnection, createPicGoUploadQueue } from "./picgo.mjs";
 import { createPluginPublicNetworkRuntime } from "./plugin-public-network.mjs";
 import { createAiDirectRuntime } from "./ai-direct.mjs";
 import { createAcpHostRuntime, registerAcpIpc } from "./acp-host.mjs";
@@ -1721,6 +1722,27 @@ const startApplication = async () => {
     scheduledTaskScheduler.clear();
     await saveDesktopSessionToken("");
     return { stored: false };
+  });
+  ipcMain.handle("desktop:picgo-test", (event, endpoint) => {
+    if (event.sender !== mainWindow?.webContents) throw new Error("PicGo requests must come from the main window");
+    return testPicGoConnection(endpoint);
+  });
+  // Serialize uploads and error dialogs across rapid pastes and multi-image batches.
+  const queuePicGoUpload = createPicGoUploadQueue({
+    isActive: () => Boolean(mainWindow && !mainWindow.webContents.isDestroyed()),
+    chooseFailure: async (input) => {
+      const copy = input.copy;
+      const { response } = await dialog.showMessageBox(mainWindow, {
+        type: "warning", title: copy.title, message: copy.message,
+        detail: String(input.filename), buttons: [copy.retry, copy.fallback, copy.cancel],
+        defaultId: 2, cancelId: 2, noLink: true,
+      });
+      return response;
+    },
+  });
+  ipcMain.handle("desktop:picgo-upload", (event, input) => {
+    if (event.sender !== mainWindow?.webContents) throw new Error("PicGo requests must come from the main window");
+    return queuePicGoUpload(input, () => event.sender === mainWindow?.webContents && !event.sender.isDestroyed());
   });
   ipcMain.handle("desktop:public-network-fetch", async (event, requestId, input) => {
     if (event.sender !== mainWindow?.webContents) throw new Error("Public network requests must come from the main window");
