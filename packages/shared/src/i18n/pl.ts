@@ -945,6 +945,7 @@ export const pl = {
     renameAria: "Zmień nazwę {{name}}",
     deleteNotebook: "Usuń notatnik",
     deleteAria: "Usuń {{name}}",
+    inboxDeleteHint: "Inbox to domyślny notatnik dla notatek bez notatnika oraz notatek przywróconych po usunięciu ich pierwotnego notatnika, więc nie można go usunąć. Możesz zmienić jego nazwę.",
   },
   settings: {
     title: "Profil",

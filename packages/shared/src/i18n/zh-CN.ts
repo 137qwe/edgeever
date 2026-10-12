@@ -956,6 +956,7 @@ export const zhCN = {
     renameAria: "重命名 {{name}}",
     deleteNotebook: "删除笔记本",
     deleteAria: "删除 {{name}}",
+    inboxDeleteHint: "Inbox 是没有指定笔记本的笔记、以及原笔记本被删除后恢复的笔记的默认归宿，因此不能删除。你可以重命名它。",
   },
   settings: {
     title: "我的",
