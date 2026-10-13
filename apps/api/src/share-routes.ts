@@ -179,7 +179,7 @@ export const registerPublicShareRoutes = (app: Hono<AppEnv>) => {
        LIMIT 1`
     ).bind(token).first<PublicMemoShareRow>();
     if (!row) return notFound(c, "Shared note not found");
-    if (row.password_hash && !(await allowPasswordProtectedShare(c, token, row.workspace_id, row.password_hash))) {
+    if (row.password_hash && !(await allowPasswordProtectedShare(c, token, row.password_hash))) {
       return sharePasswordRequired(c);
     }
 
@@ -264,7 +264,7 @@ export const registerPublicShareRoutes = (app: Hono<AppEnv>) => {
        LIMIT 1`
     ).bind(token, c.req.param("resourceId")).first<SharedResourceRow>();
     if (!resource) return notFound(c, "Shared resource not found");
-    if (resource.password_hash && !(await allowPasswordProtectedShare(c, token, resource.workspace_id, resource.password_hash))) {
+    if (resource.password_hash && !(await allowPasswordProtectedShare(c, token, resource.password_hash))) {
       return sharePasswordRequired(c);
     }
 

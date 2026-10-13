@@ -489,3 +489,44 @@ describe("password-protected memo shares", () => {
     sqlite.close();
   });
 });
+
+
+test("workspace login cannot bypass a memo's password or attachment gate", async () => {
+  const { createHash } = await import("node:crypto");
+  const { sqlite, environment } = createDatabaseEnvironment();
+  try {
+    const app = createShareApp(environment);
+    const password = "testPass";
+    sqlite.query("UPDATE memo_shares SET password_hash = ? WHERE token = ?").run(await hashPassword(password), sourceToken);
+    sqlite.query("INSERT INTO users (id, username, password_hash) VALUES ('owner', 'owner', 'unused')").run();
+    sqlite.query("INSERT INTO workspace_members (workspace_id, user_id, role) VALUES ('ws_member', 'owner', 'owner')").run();
+    sqlite.query("INSERT INTO sessions (id, user_id, token_hash, expires_at) VALUES (?, 'owner', ?, ?)")
+      .run("session_owner", createHash("sha256").update("owner-session").digest("hex"), new Date(Date.now()+3600000).toISOString());
+    sqlite.query("INSERT INTO resources (id, memo_id, object_key, kind, byte_size) VALUES ('res_owner', 'memo_source', 'owner-key', 'image', 10)").run();
+    let blobReads = 0;
+    environment.storage.resources = { get: async () => {
+      blobReads++;
+      return { body: new Blob([new Uint8Array(10)]).stream(), size: 10, writeHttpMetadata: () => {} };
+    } };
+    const base = `/api/public/shares/${sourceToken}`;
+    for (const path of [base, `${base}/resources/res_owner/blob`]) {
+      for (const headers of [{ Cookie: "edgeever_session=owner-session" }, { Authorization: "Bearer owner-session" }]) {
+        const response = await app.request(path, { headers }, environment);
+        expect(response.status).toBe(403);
+        expect((await response.json()).error.code).toBe("share_password_required");
+      }
+    }
+    expect(blobReads).toBe(0);
+    const unlocked = await app.request(`${base}/unlock`, {
+      method: "POST", headers: { "Content-Type": "application/json", Cookie: "edgeever_session=owner-session" },
+      body: JSON.stringify({ password }),
+    }, environment);
+    expect(unlocked.status).toBe(200);
+    const cookie = readCookieValue(unlocked, "ee_share");
+    for (const path of [base, `${base}/resources/res_owner/blob`]) {
+      expect((await app.request(path, { headers: { Cookie: `edgeever_session=owner-session; ee_share=${cookie}` } }, environment)).status).toBe(200);
+    }
+  } finally {
+    sqlite.close();
+  }
+});

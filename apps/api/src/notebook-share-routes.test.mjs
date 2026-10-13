@@ -470,10 +470,10 @@ describe("password-protected notebook shares", () => {
   });
 });
 
-test("only an authenticated session in the shared workspace can preview without the share password", async () => {
+test("workspace login cannot bypass the notebook password; an unlock grant is still required", async () => {
   const { createHash } = await import("node:crypto");
   const f = fixture();
-  await f.app.request("/api/v1/notebooks/root/share", {
+  const enabled = await f.app.request("/api/v1/notebooks/root/share", {
     method: "PATCH", headers: { "content-type": "application/json" }, body: JSON.stringify({ passwordProtected: true }),
   }, f.environment);
   for (const [user, workspace] of [["owner", "ws_test"], ["other", "ws_other"]]) {
@@ -483,7 +483,18 @@ test("only an authenticated session in the shared workspace can preview without 
       [user, user, createHash("sha256").update(user).digest("hex"), new Date(Date.now()+3600000).toISOString()]);
   }
   for (const path of ["", "/memos/memo_child", "/resources/res_memo_child/blob"]) {
-    expect((await f.request(path, { headers: { Cookie: "edgeever_session=owner" } })).status).toBe(200);
+    expect((await f.request(path, { headers: { Cookie: "edgeever_session=owner" } })).status).toBe(403);
     expect((await f.request(path, { headers: { Cookie: "edgeever_session=other" } })).status).toBe(403);
+    expect((await f.request(path, { headers: { Authorization: "Bearer owner" } })).status).toBe(403);
+  }
+  const password = (await enabled.json()).share.password;
+  const unlocked = await f.request("/unlock", {
+    method: "POST", headers: { "content-type": "application/json", Cookie: "edgeever_session=owner" },
+    body: JSON.stringify({ password }),
+  });
+  expect(unlocked.status).toBe(200);
+  const cookie = unlocked.headers.get("set-cookie").split(";")[0];
+  for (const path of ["", "/memos/memo_child", "/resources/res_memo_child/blob"]) {
+    expect((await f.request(path, { headers: { Cookie: `edgeever_session=owner; ${cookie}` } })).status).toBe(200);
   }
 });

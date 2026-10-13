@@ -172,11 +172,9 @@ export const PublicSharePasswordForm = ({
   token,
   onUnlocked,
   unlock,
-  hintKey = "sharing.passwordRequiredHint",
 }: {
   token: string;
   unlock?: (password: string) => Promise<unknown>;
-  hintKey?: string;
   onUnlocked: () => Promise<unknown>;
 }) => {
   const { t } = useTranslation();
@@ -201,7 +199,6 @@ export const PublicSharePasswordForm = ({
       <section className="w-full max-w-md rounded-2xl border border-slate-200 bg-card p-8 shadow-sm">
         <LockKeyhole className="mx-auto h-9 w-9 text-slate-700" />
         <h1 className="mt-4 text-center text-xl font-semibold text-slate-900">{t("sharing.passwordRequiredTitle")}</h1>
-        <p className="mt-2 text-center text-sm leading-6 text-slate-500">{t(hintKey)}</p>
         <form className="mt-6 space-y-3" onSubmit={submit}>
           <Input
             type="password"

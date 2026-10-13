@@ -69,7 +69,6 @@ export const PublicNotebookSharePage = () => {
     return <PublicSharePasswordForm
       key={token}
       token={token}
-      hintKey="sharing.notebookPasswordRequiredHint"
       unlock={(password) => api.unlockPublicNotebookShare(token, password)}
       onUnlocked={async () => {
         await directory.refetch();

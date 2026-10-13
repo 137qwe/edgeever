@@ -1,6 +1,5 @@
 import { getCookie, setCookie } from "hono/cookie";
 import type { AppContext } from "./api-context";
-import { authenticateRequest } from "./auth-service";
 import { createShareAccessCookieValue, isValidShareAccessCookieValue, SHARE_ACCESS_COOKIE, SHARE_ACCESS_MAX_AGE_SECONDS } from "./share-access";
 
 const shareAccessCookiePath = (token: string) => `/api/public/shares/${encodeURIComponent(token)}`;
@@ -16,18 +15,9 @@ export const setShareAccessCookie = async (c: AppContext, token: string, passwor
   });
 };
 
-const hasShareAccessCookie = async (c: AppContext, token: string, passwordHash: string) =>
-  isValidShareAccessCookieValue(getCookie(c, SHARE_ACCESS_COOKIE), passwordHash, token);
-
-const isShareOwner = async (c: AppContext, workspaceId: string) => {
-  const auth = await authenticateRequest(c, false);
-  return auth?.workspaceId === workspaceId;
-};
-
+/** Public share access requires a password unlock grant, even for the author. */
 export const allowPasswordProtectedShare = async (
   c: AppContext,
   token: string,
-  workspaceId: string,
   passwordHash: string,
-) => (await hasShareAccessCookie(c, token, passwordHash)) || isShareOwner(c, workspaceId);
-
+) => isValidShareAccessCookieValue(getCookie(c, SHARE_ACCESS_COOKIE), passwordHash, token);

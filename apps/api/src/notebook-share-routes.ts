@@ -184,7 +184,7 @@ export const registerPublicNotebookShareRoutes = (app: Hono<AppEnv>) => {
     if (!gate) return notFound(c, "Shared notebook not found");
     // Only the password submission bypasses the gate; all reads, including blobs, share it.
     const unlocking = c.req.method === "POST" && c.req.path === `/api/public/notebook-shares/${token}/unlock`;
-    if (!unlocking && gate.password_hash && !(await allowPasswordProtectedShare(c, token, gate.workspace_id, gate.password_hash))) {
+    if (!unlocking && gate.password_hash && !(await allowPasswordProtectedShare(c, token, gate.password_hash))) {
       return apiError(c, "share_password_required", "Password required to view this shared notebook", 403);
     }
     await next();
