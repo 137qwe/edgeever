@@ -233,7 +233,6 @@ export const NotebookTreeItem = ({
             ) : (
               <span className="h-6 w-5 shrink-0" aria-hidden="true" />
             )}
-            <TooltipProvider><Tooltip><TooltipTrigger asChild>
               <button
                 data-notebook-tree-button
                 className="flex min-w-0 flex-1 items-center gap-2 text-left"
@@ -286,7 +285,13 @@ export const NotebookTreeItem = ({
                 >
                   {node.name}
                 </span>
-                {publicNotebook ? <Globe className={cn("h-3.5 w-3.5 shrink-0", selected ? "text-slate-700" : "text-slate-500")} aria-label={t("sharing.notebookPublic")} /> : null}
+                {publicNotebook ? (
+                  <Globe
+                    className={cn("h-3.5 w-3.5 shrink-0", selected ? "text-slate-700" : "text-slate-500")}
+                    role="img"
+                    aria-label={t("sharing.notebookPublic")}
+                  />
+                ) : null}
                 <span
                   className={cn(
                     "shrink-0 tabular-nums text-xs font-normal transition-colors duration-200",
@@ -297,7 +302,6 @@ export const NotebookTreeItem = ({
                   {formatNotebookMemoCount({ directCount: node.directMemoCount, totalCount: node.memoCount, hasChildren }, showDescendantNotes)}
                 </span>
               </button>
-            </TooltipTrigger><TooltipContent>{publicNotebook ? t("sharing.notebookPublic") : node.name}</TooltipContent></Tooltip></TooltipProvider>
             <div ref={actionsRef} className="relative shrink-0">
                 <TooltipProvider><Tooltip><TooltipTrigger asChild>
                   <button
