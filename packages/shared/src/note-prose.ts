@@ -165,7 +165,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   violet: palette({
-    accent: "#656FE6",
+    accent: "#7351CF",
     text: "#3F3F46",
     muted: "#3F3F46",
     surface: "#F4F4F5",

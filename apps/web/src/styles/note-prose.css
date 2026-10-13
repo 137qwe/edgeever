@@ -1,4 +1,8 @@
 /* Named hues tint links, inline code, bold, and checked task boxes. Body, quotes, rules, tables, and code chrome stay native. */
+:root.dark .edgeever-editor[data-note-palette="violet"] {
+  --note-palette-accent: #B39AE8 !important;
+}
+
 .edgeever-editor[data-note-palette]:not([data-note-palette="native"]) .ProseMirror a:not(.edgeever-attachment-link) {
   color: var(--note-palette-link);
   text-decoration-color: color-mix(in srgb, var(--note-palette-link) 45%, transparent);
