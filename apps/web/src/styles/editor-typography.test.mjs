@@ -77,7 +77,7 @@ describe("editor typography contract", () => {
     const boldRules = declarationsForSelector(prose, ".ProseMirror strong");
 
     expect(boldRules).toMatch(/color:\s*var\(--note-palette-accent\)/);
-    expect(prose).not.toMatch(/--note-palette-dark-accent/);
+    expect(prose).toMatch(/--note-palette-accent:\s*var\(--note-palette-dark-accent\)\s*!important/);
     expect(prose).not.toContain('data-note-palette="custom"');
   });
 

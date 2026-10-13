@@ -110,7 +110,7 @@ const palette = (colors: NoteProsePaletteColors): NoteProsePaletteColors => colo
 
 export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteColors> = {
   clay: palette({
-    accent: "#E02D32",
+    accent: "#C13C42",
     text: "#374151",
     muted: "#374151",
     surface: "#FFF7F7",
@@ -121,7 +121,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   orange: palette({
-    accent: "#E07A2D",
+    accent: "#A65B24",
     text: "#3A2E28",
     muted: "#746055",
     surface: "#FFF4EA",
@@ -132,7 +132,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   dawn: palette({
-    accent: "#D9A521",
+    accent: "#8A6716",
     text: "#3D2A1B",
     muted: "#74613C",
     surface: "#FFFDF8",
@@ -143,18 +143,18 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   teal: palette({
-    accent: "#22B8A7",
+    accent: "#20AD9D",
     text: "#3E4C4A",
     muted: "#5C6E6B",
     surface: "#F2FBFA",
     divider: "#CDEFEA",
-    link: "#1A8F82",
+    link: "#14796E",
     codeBackground: "#ECFBF8",
-    codeText: "#1A8F82",
+    codeText: "#14796E",
     background: "#FFFFFF",
   }),
   azure: palette({
-    accent: "#2F80ED",
+    accent: "#356CC4",
     text: "#374151",
     muted: "#4B5563",
     surface: "#F5F8FC",
@@ -176,7 +176,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   pink: palette({
-    accent: "#D4537E",
+    accent: "#BB456E",
     text: "#3A2E34",
     muted: "#746068",
     surface: "#FDF2F6",
@@ -187,7 +187,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   slate: palette({
-    accent: "#89798B",
+    accent: "#796B7C",
     text: "#5C505E",
     muted: "#5C505E",
     surface: "#FAFAFA",
@@ -197,6 +197,18 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     codeText: "#6B5C6D",
     background: "#FFFFFF",
   }),
+};
+
+// Dark reading surfaces need lighter accents than the white-background palette.
+export const NOTE_PROSE_DARK_ACCENTS: Record<NoteProsePaletteId, string> = {
+  clay: "#F08B8E",
+  orange: "#E7A16A",
+  dawn: "#D9B65C",
+  teal: "#70C7B8",
+  azure: "#8CB4F0",
+  violet: "#B39AE8",
+  pink: "#E794B0",
+  slate: "#BCACBF",
 };
 
 const LEGACY_EDITOR_THEME_PALETTES: Record<string, NoteProsePaletteChoice> = {
@@ -362,6 +374,10 @@ export const noteProseCssVariables = (prose: ResolvedNoteProse): Record<string, 
   const colors = noteProsePaletteColors(prose);
   if (!colors) return variables;
   variables["--note-palette-accent"] = colors.accent;
+  variables["--note-palette-light-accent"] = colors.accent;
+  if (prose.palette !== "native") {
+    variables["--note-palette-dark-accent"] = NOTE_PROSE_DARK_ACCENTS[prose.palette];
+  }
   variables["--note-palette-text"] = colors.text;
   variables["--note-palette-muted"] = colors.muted;
   variables["--note-palette-surface"] = colors.surface;

@@ -1,6 +1,7 @@
 /* Named hues tint links, inline code, bold, and checked task boxes. Body, quotes, rules, tables, and code chrome stay native. */
-:root.dark .edgeever-editor[data-note-palette="violet"] {
-  --note-palette-accent: #B39AE8 !important;
+:root.dark .edgeever-editor[data-note-palette]:not([data-note-palette="native"]) {
+  /* Override the light accent supplied by inline account prose variables. */
+  --note-palette-accent: var(--note-palette-dark-accent) !important;
 }
 
 .edgeever-editor[data-note-palette]:not([data-note-palette="native"]) .ProseMirror a:not(.edgeever-attachment-link) {

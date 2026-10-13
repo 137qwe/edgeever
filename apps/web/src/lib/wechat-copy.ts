@@ -1049,7 +1049,9 @@ export const readEditorCopyContext = (from?: HTMLElement | null) => {
   const palette = container?.dataset.notePalette;
   let colors: NoteProsePaletteColors | null = null;
   if (style && palette && palette !== "native") {
-    const accent = readPaletteColor(style, "--note-palette-accent");
+    // Publishing uses a light surface even when the editor is in dark mode.
+    const accent = readPaletteColor(style, "--note-palette-light-accent")
+      || readPaletteColor(style, "--note-palette-accent");
     const text = readPaletteColor(style, "--note-palette-text");
     if (accent && text) {
       colors = {
