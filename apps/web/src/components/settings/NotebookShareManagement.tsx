@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Globe, LoaderCircle, Settings2 } from "lucide-react";
+import { Notebook, LoaderCircle, Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getNotebookDescendantIds, type NotebookShare } from "@edgeever/shared";
@@ -11,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ShareManagementActions } from "./ShareManagementActions";
 import { Button } from "@/components/ui/button";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import {
@@ -47,14 +48,14 @@ export const NotebookShareManagement = ({
     refetchOnMount: "always",
   });
   return (
-    <section className="border-t border-slate-100">
-      <h3 className="flex items-center gap-2 px-4 pt-4 text-sm font-medium">
-        <Globe className="h-4 w-4" />
-        {t("sharing.notebookManagementTitle")}
-      </h3>
-      <div className="px-4 pt-3">
+    <section aria-labelledby="notebook-shares-heading" className="border-t border-slate-100">
+      <div className="flex min-h-14 flex-wrap items-center justify-between gap-2 px-4 py-3">
+        <h3 id="notebook-shares-heading" className="flex items-center gap-2 text-xs font-medium text-slate-700">
+          <Notebook className="h-4 w-4 text-slate-500" />
+          {t("sharing.notebookManagementTitle")}
+        </h3>
         {selecting ? (
-          <>
+          <div className="flex w-full items-center gap-2 sm:w-64">
             <Select
               onValueChange={(id) => {
                 const notebook = options.find((item) => item.id === id);
@@ -87,26 +88,27 @@ export const NotebookShareManagement = ({
                 {t("sharing.retry")}
               </Button>
             ) : null}
-          </>
+          </div>
         ) : (
           <Button
             size="sm"
             variant="outline"
             onClick={() => setSelecting(true)}
           >
+            <Plus className="h-3.5 w-3.5" />
             {t("sharing.notebookTitle")}
           </Button>
         )}
       </div>
       {query.isPending ? (
-        <div className="p-4">
+        <div className="px-4 pb-4">
           <LoaderCircle
             className="h-4 w-4 animate-spin"
             aria-label={t("sharing.managementLoading")}
           />
         </div>
       ) : query.isError ? (
-        <div className="space-y-2 p-4">
+        <div className="space-y-2 px-4 pb-4">
           <p role="alert" className="text-xs text-rose-600">
             {t("sharing.managementLoadFailed")}
           </p>
@@ -119,7 +121,7 @@ export const NotebookShareManagement = ({
           </Button>
         </div>
       ) : !query.data.shares.length ? (
-        <p className="p-4 text-xs text-slate-500">
+        <p className="px-4 pb-4 text-xs text-slate-500">
           {t("sharing.notebookManagementEmpty")}
         </p>
       ) : (
@@ -127,35 +129,15 @@ export const NotebookShareManagement = ({
           {query.data.shares.map((share) => (
             <div
               key={share.notebookId}
-              className="flex flex-wrap items-center justify-between gap-3 p-4"
+              className="flex flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
             >
-              <span className="min-w-0 break-words text-sm">
+              <span className="min-w-0 flex-1 break-words text-xs font-medium text-slate-900">
                 {share.notebookName}
               </span>
-              <div className="flex gap-2">
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    window.open(
-                      getPublicNotebookShareUrl(share.token),
-                      "_blank",
-                      "noopener,noreferrer",
-                    )
-                  }
-                >
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  {t("sharing.open")}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="soft"
-                  onClick={() => setManaged(share)}
-                >
-                  <Settings2 className="h-3.5 w-3.5" />
-                  {t("sharing.manage")}
-                </Button>
-              </div>
+              <ShareManagementActions
+                onOpen={() => window.open(getPublicNotebookShareUrl(share.token), "_blank", "noopener,noreferrer")}
+                onManage={() => setManaged(share)}
+              />
             </div>
           ))}
         </div>

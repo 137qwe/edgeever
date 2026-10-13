@@ -2567,6 +2567,7 @@ export const pl = {
     notebookNoteUnavailableHint: "Notatka mogła zostać przeniesiona poza katalog publiczny, usunięta lub link jest nieprawidłowy.",
     notebookWelcome: "Wybierz notatkę ze spisu treści, aby rozpocząć czytanie.",
     notebookEmpty: "Ten notatnik nie ma jeszcze notatek do czytania.",
+    memoManagementTitle: "Udostępnione notatki",
     notebookManagementTitle: "Udostępnione notatniki",
     notebookManagementEmpty: "Żadne notatniki nie są obecnie udostępniane.",
 

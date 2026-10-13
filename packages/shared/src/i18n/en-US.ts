@@ -2578,6 +2578,7 @@ export const enUS = {
     notebookNoteUnavailableHint: "This note may have moved outside the public directory, been deleted, or the link is invalid.",
     notebookWelcome: "Choose a note from the contents to start reading.",
     notebookEmpty: "This notebook has no notes to read yet.",
+    memoManagementTitle: "Note shares",
     notebookManagementTitle: "Notebook shares",
     notebookManagementEmpty: "No notebooks are currently shared.",
 

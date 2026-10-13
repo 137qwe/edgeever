@@ -2576,6 +2576,7 @@ export const zhCN = {
     notebookNoteUnavailableHint: "这篇笔记可能已移出公开目录、删除，或链接无效。",
     notebookWelcome: "从目录选择一篇笔记开始阅读。",
     notebookEmpty: "这个笔记本中还没有可阅读的笔记。",
+    memoManagementTitle: "笔记分享",
     notebookManagementTitle: "笔记本分享",
     notebookManagementEmpty: "当前没有正在分享的笔记本。",
 

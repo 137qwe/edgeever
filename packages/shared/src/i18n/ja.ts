@@ -2567,6 +2567,7 @@ export const ja = {
     notebookNoteUnavailableHint: "ノートが公開範囲外に移動・削除されたか、リンクが無効です。",
     notebookWelcome: "目次からノートを選んでください。",
     notebookEmpty: "閲覧できるノートがまだありません。",
+    memoManagementTitle: "ノートの共有",
     notebookManagementTitle: "ノートブックの共有",
     notebookManagementEmpty: "共有中のノートブックはありません。",
 
