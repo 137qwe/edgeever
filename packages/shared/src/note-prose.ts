@@ -142,7 +142,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
     background: "#FFFFFF",
   }),
   azure: palette({
-    accent: "#356CC4",
+    accent: "#2663EB",
     text: "#374151",
     muted: "#4B5563",
     surface: "#F5F8FC",

@@ -1014,7 +1014,7 @@ export const pl = {
       clay: "Cynobrowy pomarańcz",
       dawn: "Złoty",
       teal: "Morski",
-      azure: "Niebieski",
+      azure: "Królewski błękit",
       violet: "Fioletowy",
       pink: "Różowy",
       slate: "Szary",

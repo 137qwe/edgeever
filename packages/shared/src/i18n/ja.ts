@@ -1014,7 +1014,7 @@ export const ja = {
       clay: "朱橙",
       dawn: "金",
       teal: "青緑",
-      azure: "青",
+      azure: "ロイヤルブルー",
       violet: "紫",
       pink: "ピンク",
       slate: "グレー",

@@ -1025,7 +1025,7 @@ export const enUS = {
       clay: "Vermilion orange",
       dawn: "Gold",
       teal: "Teal",
-      azure: "Blue",
+      azure: "Royal blue",
       violet: "Purple",
       pink: "Pink",
       slate: "Gray",

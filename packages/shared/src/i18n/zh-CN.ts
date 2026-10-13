@@ -1025,7 +1025,7 @@ export const zhCN = {
       clay: "朱橙",
       dawn: "金色",
       teal: "青色",
-      azure: "蓝色",
+      azure: "宝蓝",
       violet: "紫色",
       pink: "粉色",
       slate: "灰色",
