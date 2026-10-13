@@ -1022,8 +1022,7 @@ export const zhCN = {
     editorBodyPaletteTitle: "正文配色",
     editorBodyPalettes: {
       native: "原生",
-      clay: "红色",
-      orange: "橙色",
+      clay: "朱橙",
       dawn: "金色",
       teal: "青色",
       azure: "蓝色",

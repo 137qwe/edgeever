@@ -1011,8 +1011,7 @@ export const ja = {
     editorBodyPaletteTitle: "本文の配色",
     editorBodyPalettes: {
       native: "標準",
-      clay: "赤",
-      orange: "オレンジ",
+      clay: "朱橙",
       dawn: "金",
       teal: "青緑",
       azure: "青",

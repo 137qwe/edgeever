@@ -1011,8 +1011,7 @@ export const pl = {
     editorBodyPaletteTitle: "Kolory tekstu",
     editorBodyPalettes: {
       native: "Natywne",
-      clay: "Czerwony",
-      orange: "Pomarańczowy",
+      clay: "Cynobrowy pomarańcz",
       dawn: "Złoty",
       teal: "Morski",
       azure: "Niebieski",

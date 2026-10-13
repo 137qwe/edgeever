@@ -1022,8 +1022,7 @@ export const enUS = {
     editorBodyPaletteTitle: "Text colors",
     editorBodyPalettes: {
       native: "Native",
-      clay: "Red",
-      orange: "Orange",
+      clay: "Vermilion orange",
       dawn: "Gold",
       teal: "Teal",
       azure: "Blue",

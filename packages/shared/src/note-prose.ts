@@ -8,7 +8,6 @@ export const DEFAULT_NOTE_PROSE_LINE_HEIGHT: NoteProseLineHeight = 1.65;
 
 export const NOTE_PROSE_PALETTE_IDS = [
   "clay",
-  "orange",
   "dawn",
   "teal",
   "azure",
@@ -110,25 +109,14 @@ const palette = (colors: NoteProsePaletteColors): NoteProsePaletteColors => colo
 
 export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteColors> = {
   clay: palette({
-    accent: "#C13C42",
-    text: "#374151",
-    muted: "#374151",
-    surface: "#FFF7F7",
-    divider: "#FFD6D6",
-    link: "#B42318",
-    codeBackground: "#FFF1F1",
-    codeText: "#B42318",
-    background: "#FFFFFF",
-  }),
-  orange: palette({
-    accent: "#A65B24",
+    accent: "#FF4C01",
     text: "#3A2E28",
     muted: "#746055",
-    surface: "#FFF4EA",
-    divider: "#F6D7BE",
-    link: "#B45309",
-    codeBackground: "#FFF4EA",
-    codeText: "#B45309",
+    surface: "#FFF4EE",
+    divider: "#F6D5C6",
+    link: "#C63C00",
+    codeBackground: "#FFF4EE",
+    codeText: "#C63C00",
     background: "#FFFFFF",
   }),
   dawn: palette({
@@ -201,8 +189,7 @@ export const NOTE_PROSE_PALETTES: Record<NoteProsePaletteId, NoteProsePaletteCol
 
 // Dark reading surfaces need lighter accents than the white-background palette.
 export const NOTE_PROSE_DARK_ACCENTS: Record<NoteProsePaletteId, string> = {
-  clay: "#F08B8E",
-  orange: "#E7A16A",
+  clay: "#FF996E",
   dawn: "#D9B65C",
   teal: "#70C7B8",
   azure: "#8CB4F0",
@@ -262,6 +249,8 @@ export const parseNoteProseLineHeight = (value: unknown): NoteProseLineHeight | 
 };
 
 export const parseNoteProsePalette = (value: unknown): NoteProsePaletteChoice | null => {
+  // Red and orange now share the existing red identifier for older clients.
+  if (value === "orange") return "clay";
   // Removed palettes and the custom color editor read as native.
   if (value === "emerald" || value === "green" || value === "plum" || value === "custom") return "native";
   return typeof value === "string" && (NOTE_PROSE_PALETTE_CHOICES as readonly string[]).includes(value)
