@@ -24,6 +24,9 @@ export type NotebookShare = {
   token: string;
   createdAt: string;
   updatedAt: string;
+  passwordProtected: boolean;
+  /** Returned only when enabling or regenerating the password. */
+  password?: string;
 };
 
 export type PublicNotebookShare = {

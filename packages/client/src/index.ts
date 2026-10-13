@@ -843,6 +843,10 @@ export const createEdgeEverClient = (options: EdgeEverClientOptions = {}) => {
       request<{ share: PublicNotebookShare }>(`/api/public/notebook-shares/${encodeURIComponent(token)}`),
     getPublicNotebookMemo: (token: string, memoId: string) =>
       request<{ share: PublicMemoShare; memoUrls: Record<string, string> }>(`/api/public/notebook-shares/${encodeURIComponent(token)}/memos/${encodeURIComponent(memoId)}`),
+    unlockPublicNotebookShare: (token: string, password: string) =>
+      request<{ ok: true }>(`/api/public/notebook-shares/${encodeURIComponent(token)}/unlock`, { method: "POST", body: JSON.stringify({ password }) }),
+    updateNotebookShare: (id: string, input: { passwordProtected: boolean }) =>
+      request<{ share: NotebookShare }>(`/api/v1/notebooks/${encodeURIComponent(id)}/share`, { method: "PATCH", body: JSON.stringify(input) }),
     listNotebookShares: () => request<{ shares: NotebookShare[] }>("/api/v1/notebook-shares"),
     getNotebookShare: (id: string) => request<{ share: NotebookShare | null }>(`/api/v1/notebooks/${encodeURIComponent(id)}/share`),
     createNotebookShare: (id: string) => request<{ share: NotebookShare }>(`/api/v1/notebooks/${encodeURIComponent(id)}/share`, { method: "POST" }),

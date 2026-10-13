@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
-import { PublicShareArticle } from "./PublicSharePage";
+import { isSharePasswordError, PublicSharePasswordForm, PublicShareArticle } from "./PublicSharePage";
 import { PublicNotebookSite } from "./PublicNotebookSite";
 import { withEnvironmentTitlePrefix } from "@/lib/environment-title";
 
@@ -23,7 +23,7 @@ export const PublicNotebookSharePage = () => {
   const memo = useQuery({
     queryKey: ["public-notebook-memo", token, memoId],
     queryFn: () => api.getPublicNotebookMemo(token, memoId!),
-    enabled: Boolean(memoId),
+    enabled: Boolean(memoId) && directory.isSuccess,
     retry: false,
     staleTime: 0,
     refetchOnMount: "always",
@@ -65,6 +65,17 @@ export const PublicNotebookSharePage = () => {
         />
       </main>
     );
+  if (isSharePasswordError(directory.error, "share_password_required") || isSharePasswordError(memo.error, "share_password_required"))
+    return <PublicSharePasswordForm
+      key={token}
+      token={token}
+      hintKey="sharing.notebookPasswordRequiredHint"
+      unlock={(password) => api.unlockPublicNotebookShare(token, password)}
+      onUnlocked={async () => {
+        await directory.refetch();
+        if (memoId) await memo.refetch();
+      }}
+    />;
   if (!share)
     return (
       <main className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 p-6">

@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { SharePasswordControls } from "./SharePasswordControls";
 import { Input } from "@/components/ui/input";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -32,6 +33,7 @@ export const ShareNotebookDialog = ({
 }) => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const [secret, setSecret] = useState<{ token: string; updatedAt: string; password: string } | null>(null);
   const [copyResult, setCopyResult] = useState<boolean | null>(null);
   const queryKey = [
     "notebook-share",
@@ -54,17 +56,26 @@ export const ShareNotebookDialog = ({
       void invalidate();
     },
   });
+  const passwordMutation = useMutation({
+    mutationFn: (passwordProtected: boolean) => api.updateNotebookShare(notebookId, { passwordProtected }),
+    onSuccess: (data) => {
+      queryClient.setQueryData(queryKey, { share: { ...data.share, password: undefined } });
+      setSecret(data.share.password ? { token: data.share.token, updatedAt: data.share.updatedAt, password: data.share.password } : null);
+      void invalidate();
+    },
+  });
   const revoke = useMutation({
     mutationFn: () => api.revokeNotebookShare(notebookId),
     onSuccess: () => {
       queryClient.setQueryData(queryKey, { share: null });
+      setSecret(null);
       setCopyResult(null);
       void invalidate();
     },
   });
   const share = query.data?.share;
-  const busy = query.isFetching || create.isPending || revoke.isPending;
-  const failed = query.isError || create.isError || revoke.isError;
+  const busy = query.isFetching || create.isPending || revoke.isPending || passwordMutation.isPending;
+  const failed = query.isError || create.isError || revoke.isError || passwordMutation.isError;
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
@@ -75,8 +86,8 @@ export const ShareNotebookDialog = ({
           </DialogTitle>
           <DialogDescription>{notebookName}</DialogDescription>
         </DialogHeader>
-        <p className="rounded-lg bg-amber-50 p-3 text-sm leading-6 text-amber-900">
-          {t("sharing.notebookScopeHint")}
+        <p className="rounded-lg bg-muted p-3 text-sm leading-6 text-muted-foreground">
+          {t(share?.passwordProtected ? "sharing.notebookProtectedScopeHint" : "sharing.notebookScopeHint")}
         </p>
         {inherited ? (
           <p className="text-sm leading-6 text-slate-600">
@@ -95,6 +106,15 @@ export const ShareNotebookDialog = ({
               readOnly
               aria-label={t("sharing.linkLabel")}
             />
+            <SharePasswordControls
+              key={share.token}
+              passwordProtected={share.passwordProtected}
+              password={secret?.token === share.token && secret.updatedAt === share.updatedAt ? secret.password : ""}
+              busy={busy}
+              shareUrl={getPublicNotebookShareUrl(share.token)}
+              onChange={(enabled) => passwordMutation.mutate(enabled)}
+            />
+            <p className="text-xs leading-5 text-slate-500">{t("sharing.notebookPasswordScopeHint")}</p>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant="outline"

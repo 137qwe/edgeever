@@ -1,4 +1,6 @@
 import {
+  NotebookShareUpdateSchema,
+  PublicShareUnlockSchema,
   collectMemoLinkIds,
   accountNoteProseFromRow,
   publicNoteProseFromAccount,
@@ -11,14 +13,18 @@ import {
   type NoteProseAccountRow,
   type TiptapDoc,
 } from "@edgeever/shared";
+import { zValidator } from "@hono/zod-validator";
 import type { Hono } from "hono";
 import type { AppEnv } from "./api-context";
-import { randomToken } from "./auth-crypto";
+import { hashPassword, verifyPassword, randomToken } from "./auth-crypto";
 import { audit } from "./audit";
 import { createId, isoNow, parseJsonArray } from "./entity-utils";
-import { notFound } from "./http-errors";
+import { apiError, notFound } from "./http-errors";
 import { getAuditActor, getWorkspaceId, requireUser } from "./request-auth";
 import { serveSharedResource } from "./share-routes";
+import { allowPasswordProtectedShare, setShareAccessCookie } from "./share-http-access";
+import { isShareUnlockBlocked, nextShareUnlockFailure, type ShareUnlockState } from "./share-access";
+import { generateSharePassword } from "./share-password";
 
 // Every public query starts at the live share, and constrains every level to
 // its workspace. Deleted ancestors stop traversal; UNION also tolerates cycles.
@@ -32,20 +38,23 @@ const publicTreeSql = `WITH RECURSIVE tree(id, workspace_id) AS (
 )`;
 
 type ShareRow = {
+  password_hash: string | null;
   notebook_id: string;
   notebook_name: string;
   token: string;
   created_at: string;
   updated_at: string;
 };
-const mapShare = (row: ShareRow): NotebookShare => ({
+const mapShare = (row: ShareRow, password?: string): NotebookShare => ({
+  passwordProtected: Boolean(row.password_hash),
+  ...(password ? { password } : {}),
   notebookId: row.notebook_id,
   notebookName: row.notebook_name,
   token: row.token,
   createdAt: row.created_at,
   updatedAt: row.updated_at,
 });
-const selectShareSql = `SELECT ns.notebook_id, n.name AS notebook_name, ns.token, ns.created_at, ns.updated_at
+const selectShareSql = `SELECT ns.notebook_id, n.name AS notebook_name, ns.password_hash, ns.token, ns.created_at, ns.updated_at
   FROM notebook_shares ns JOIN notebooks n ON n.id = ns.notebook_id AND n.workspace_id = ns.workspace_id
   WHERE ns.workspace_id = ? AND n.is_deleted = 0`;
 const validToken = (token: string) => /^[A-Za-z0-9_-]{43}$/.test(token);
@@ -59,7 +68,7 @@ export const registerNotebookShareRoutes = (app: Hono<AppEnv>) => {
       .bind(getWorkspaceId(c))
       .all<ShareRow>();
     c.header("Cache-Control", "private, no-store");
-    return c.json({ shares: rows.results.map(mapShare) });
+    return c.json({ shares: rows.results.map((row) => mapShare(row)) });
   });
   app.get("/api/v1/notebooks/:id/share", async (c) => {
     const denied = requireUser(c);
@@ -118,6 +127,27 @@ export const registerNotebookShareRoutes = (app: Hono<AppEnv>) => {
     c.header("Cache-Control", "private, no-store");
     return c.json({ share: mapShare(row) });
   });
+  app.patch("/api/v1/notebooks/:id/share", zValidator("json", NotebookShareUpdateSchema), async (c) => {
+    const denied = requireUser(c);
+    if (denied) return denied;
+    const workspaceId = getWorkspaceId(c);
+    const notebookId = c.req.param("id");
+    const existing = await c.env.storage.db.prepare(`${selectShareSql} AND ns.notebook_id = ?`)
+      .bind(workspaceId, notebookId).first<ShareRow>();
+    if (!existing) return notFound(c, "Active share not found");
+    const password = c.req.valid("json").passwordProtected ? generateSharePassword() : undefined;
+    const passwordHash = password ? await hashPassword(password) : null;
+    const now = isoNow();
+    await c.env.storage.db.prepare(`UPDATE notebook_shares SET password_hash = ?, unlock_failed_count = 0,
+      unlock_window_started_at = NULL, unlock_blocked_until = NULL, updated_at = ?
+      WHERE notebook_id = ? AND workspace_id = ?`).bind(passwordHash, now, notebookId, workspaceId).run();
+    const actor = getAuditActor(c);
+    await audit(c.env.storage.db, actor.actorType, actor.actorId,
+      password ? (existing.password_hash ? "notebook.share_password_rotate" : "notebook.share_password_set") : "notebook.share_password_clear",
+      "notebook", notebookId, {});
+    c.header("Cache-Control", "private, no-store");
+    return c.json({ share: mapShare({ ...existing, password_hash: passwordHash, updated_at: now }, password) });
+  });
   app.delete("/api/v1/notebooks/:id/share", async (c) => {
     const denied = requireUser(c);
     if (denied) return denied;
@@ -145,7 +175,38 @@ export const registerPublicNotebookShareRoutes = (app: Hono<AppEnv>) => {
   app.use("/api/public/notebook-shares/*", async (c, next) => {
     c.header("Cache-Control", "private, no-store");
     c.header("X-Robots-Tag", "noindex, nofollow, noarchive");
+    const token = c.req.path.split("/")[4] ?? "";
+    if (!validToken(token)) return notFound(c, "Shared notebook not found");
+    const gate = await c.env.storage.db.prepare(`SELECT ns.workspace_id, ns.password_hash FROM notebook_shares ns
+      JOIN notebooks n ON n.id = ns.notebook_id AND n.workspace_id = ns.workspace_id
+      WHERE ns.token = ? AND n.is_deleted = 0`).bind(token)
+      .first<{ workspace_id: string; password_hash: string | null }>();
+    if (!gate) return notFound(c, "Shared notebook not found");
+    // Only the password submission bypasses the gate; all reads, including blobs, share it.
+    const unlocking = c.req.method === "POST" && c.req.path === `/api/public/notebook-shares/${token}/unlock`;
+    if (!unlocking && gate.password_hash && !(await allowPasswordProtectedShare(c, token, gate.workspace_id, gate.password_hash))) {
+      return apiError(c, "share_password_required", "Password required to view this shared notebook", 403);
+    }
     await next();
+  });
+  app.post("/api/public/notebook-shares/:token/unlock", zValidator("json", PublicShareUnlockSchema), async (c) => {
+    const token = c.req.param("token");
+    const gate = await c.env.storage.db.prepare(`SELECT password_hash, unlock_failed_count, unlock_window_started_at, unlock_blocked_until
+      FROM notebook_shares WHERE token = ?`).bind(token).first<ShareUnlockState & { password_hash: string | null }>();
+    if (!gate) return notFound(c, "Shared notebook not found");
+    if (!gate.password_hash) return apiError(c, "share_password_not_required", "This shared notebook does not require a password", 400);
+    const rateLimited = () => apiError(c, "share_unlock_rate_limited", "Too many share password attempts. Try again later.", 429);
+    if (isShareUnlockBlocked(gate.unlock_blocked_until)) return rateLimited();
+    if (!(await verifyPassword(c.req.valid("json").password, gate.password_hash))) {
+      const failure = nextShareUnlockFailure(gate);
+      await c.env.storage.db.prepare(`UPDATE notebook_shares SET unlock_failed_count = ?, unlock_window_started_at = ?, unlock_blocked_until = ?
+        WHERE token = ?`).bind(failure.failureCount, failure.windowStartedAt, failure.blockedUntil, token).run();
+      return failure.blockedUntil ? rateLimited() : apiError(c, "share_password_invalid", "Incorrect share password", 403);
+    }
+    await c.env.storage.db.prepare(`UPDATE notebook_shares SET unlock_failed_count = 0, unlock_window_started_at = NULL, unlock_blocked_until = NULL
+      WHERE token = ?`).bind(token).run();
+    await setShareAccessCookie(c, token, gate.password_hash, `/api/public/notebook-shares/${token}`);
+    return c.json({ ok: true });
   });
   app.get("/api/public/notebook-shares/:token", async (c) => {
     const token = c.req.param("token");

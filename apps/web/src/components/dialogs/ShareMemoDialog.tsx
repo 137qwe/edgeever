@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Copy, ExternalLink, Link2, LoaderCircle, RefreshCw, Share2, Trash2 } from "lucide-react";
+import { Check, Copy, ExternalLink, Link2, LoaderCircle, Share2, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+import { SharePasswordControls } from "./SharePasswordControls";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
 
@@ -178,60 +178,8 @@ export const ShareMemoDialog = ({
                 </Button>
               </div>
 
-              <div className="space-y-3 rounded-lg border border-slate-200 px-3 py-3">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-xs font-normal leading-5 text-slate-900">{t("sharing.passwordToggle")}</div>
-                  <Switch
-                    checked={share.passwordProtected}
-                    disabled={isWorking}
-                    onCheckedChange={(enabled) => passwordMutation.mutate(enabled)}
-                    aria-label={t("sharing.passwordToggle")}
-                  />
-                </div>
-                {share.passwordProtected ? (
-                  <div className="space-y-2">
-                    <div className="flex gap-2">
-                      <Input
-                        value={revealedPassword}
-                        readOnly
-                        placeholder={t("sharing.passwordSet")}
-                        aria-label={t("sharing.passwordLabel")}
-                        className="min-w-0 font-mono text-xs tracking-wide"
-                      />
-                      <Button
-                        variant={copyState === "copied" && copyTarget === "password" ? "solid" : copyState === "error" && copyTarget === "password" ? "danger" : "outline"}
-                        className="min-w-28"
-                        disabled={!revealedPassword}
-                        aria-live="polite"
-                        onClick={() => void copyValue("password", revealedPassword)}
-                      >
-                        {copyState === "copied" && copyTarget === "password" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                        {t(copiedLabel("password", "sharing.passwordCopy"))}
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        disabled={isWorking}
-                        title={t("sharing.regeneratePassword")}
-                        aria-label={t("sharing.regeneratePassword")}
-                        onClick={() => passwordMutation.mutate(true)}
-                      >
-                        {passwordMutation.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                    {revealedPassword ? (
-                      <Button
-                        variant="ghost"
-                        className="h-8 px-0 text-xs text-slate-600 hover:bg-transparent hover:text-slate-900"
-                        onClick={() => void copyValue("both", `${shareUrl}\n${t("sharing.passwordPrefix")}${revealedPassword}`)}
-                      >
-                        {copyState === "copied" && copyTarget === "both" ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-                        {t(copiedLabel("both", "sharing.copyLinkAndPassword"))}
-                      </Button>
-                    ) : null}
-                  </div>
-                ) : null}
-              </div>
+              <SharePasswordControls passwordProtected={share.passwordProtected} password={revealedPassword}
+                busy={isWorking} shareUrl={shareUrl} onChange={(enabled) => passwordMutation.mutate(enabled)} />
 
               <p className="text-xs leading-5 text-slate-500">{t("sharing.liveContentHint")}</p>
               <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">

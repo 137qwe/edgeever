@@ -1,10 +1,8 @@
 import { accountNoteProseFromRow, collectMemoLinkIds, isPdfAttachment, MemoShareUpdateSchema, NoteBodyFontUpdateSchema, NoteProseUpdateSchema, parsePublishedNoteBodyFont, publicNoteProseFromAccount, PublicShareUnlockSchema, resolveMemoContentDoc, resolvePlayableMediaMimeType, sanitizeNoteProseCss, type AccountNoteProse, type ManagedMemoShare, type MemoShare, type NoteProseAccountRow, type PublicMemoShare, type TiptapDoc } from "@edgeever/shared";
 import { zValidator } from "@hono/zod-validator";
 import type { Hono } from "hono";
-import { getCookie, setCookie } from "hono/cookie";
 import type { AppContext, AppEnv } from "./api-context";
 import { audit } from "./audit";
-import { authenticateRequest } from "./auth-service";
 import { hashPassword, randomToken, verifyPassword } from "./auth-crypto";
 import { parseByteRange, rangeNotSatisfiable } from "./byte-range";
 import { createId, isoNow, parseJsonArray } from "./entity-utils";
@@ -13,13 +11,10 @@ import { resolveObjectStorage } from "./object-storage";
 import { getAuditActor, getWorkspaceId, requireUser } from "./request-auth";
 import { contentDispositionAttachment, contentDispositionInline } from "./resource-service";
 import {
-  createShareAccessCookieValue,
   isShareUnlockBlocked,
-  isValidShareAccessCookieValue,
   nextShareUnlockFailure,
-  SHARE_ACCESS_COOKIE,
-  SHARE_ACCESS_MAX_AGE_SECONDS,
 } from "./share-access";
+import { allowPasswordProtectedShare, setShareAccessCookie } from "./share-http-access";
 import { generateSharePassword } from "./share-password";
 
 const SHARE_TOKEN_BYTES = 32;
@@ -93,34 +88,6 @@ const sharePasswordInvalid = (c: AppContext) =>
 
 const shareUnlockRateLimited = (c: AppContext) =>
   apiError(c, "share_unlock_rate_limited", "Too many share password attempts. Try again later.", 429);
-
-const shareAccessCookiePath = (token: string) => `/api/public/shares/${encodeURIComponent(token)}`;
-
-const setShareAccessCookie = async (c: AppContext, token: string, passwordHash: string) => {
-  const value = await createShareAccessCookieValue(passwordHash, token);
-  setCookie(c, SHARE_ACCESS_COOKIE, value, {
-    httpOnly: true,
-    secure: new URL(c.req.url).protocol === "https:",
-    sameSite: "Lax",
-    path: shareAccessCookiePath(token),
-    maxAge: SHARE_ACCESS_MAX_AGE_SECONDS,
-  });
-};
-
-const hasShareAccessCookie = async (c: AppContext, token: string, passwordHash: string) =>
-  isValidShareAccessCookieValue(getCookie(c, SHARE_ACCESS_COOKIE), passwordHash, token);
-
-const isShareOwner = async (c: AppContext, workspaceId: string) => {
-  const auth = await authenticateRequest(c, false);
-  return auth?.workspaceId === workspaceId;
-};
-
-const allowPasswordProtectedShare = async (
-  c: AppContext,
-  token: string,
-  workspaceId: string,
-  passwordHash: string,
-) => hasShareAccessCookie(c, token, passwordHash) || isShareOwner(c, workspaceId);
 
 const loadShareGate = async (c: AppContext, token: string) =>
   c.env.storage.db.prepare(
