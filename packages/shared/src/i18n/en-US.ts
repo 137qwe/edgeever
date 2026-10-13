@@ -963,7 +963,7 @@ export const enUS = {
     renameAria: "Rename {{name}}",
     deleteNotebook: "Delete notebook",
     deleteAria: "Delete {{name}}",
-    inboxDeleteHint: "Inbox is the default notebook for notes without one, and for notes restored after their original notebook was deleted, so it can't be deleted. You can rename it.",
+    inboxDeleteHint: "Stores unfiled notes by default. Can be renamed, but not deleted.",
   },
   settings: {
     title: "Me",

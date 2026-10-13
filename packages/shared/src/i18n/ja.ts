@@ -952,7 +952,7 @@ export const ja = {
     renameAria: "{{name}} の名前を変更",
     deleteNotebook: "ノートブックを削除",
     deleteAria: "{{name}} を削除",
-    inboxDeleteHint: "Inbox は所属先のないノート、および元のノートブックが削除された後に復元したノートの既定の保存先のため、削除できません。名前の変更は可能です。",
+    inboxDeleteHint: "未分類のノートの既定の保存先です。名前は変更できますが、削除はできません。",
   },
   settings: {
     title: "マイ",
