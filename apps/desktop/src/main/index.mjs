@@ -30,7 +30,7 @@ import {
   mountedInstallerCandidates,
 } from "./installation-location.mjs";
 import { userDataDirectoryFromArguments } from "./user-data-directory.mjs";
-import { isAllowedAppNavigation, isAllowedPrintPreviewUrl } from "./window-open-policy.mjs";
+import { isAllowedAppNavigation, isAllowedPrintPreviewUrl, isResourceDownloadUrl } from "./window-open-policy.mjs";
 import { showWindow } from "./window-visibility.mjs";
 import { globalShortcutAccelerator, normalizeGlobalShortcutBinding, replaceGlobalShortcut, toggleMainWindow } from "./global-shortcut.mjs";
 import { trayIconPath } from "./tray-icon.mjs";
@@ -1575,7 +1575,10 @@ const createWindow = async () => {
     if (isAllowedAppNavigation(url, rendererEntryUrl)) return;
     event.preventDefault();
   };
-  mainWindow.webContents.on("will-navigate", guardNavigation);
+  mainWindow.webContents.on("will-navigate", (event, url) => {
+    guardNavigation(event, url);
+    if (isResourceDownloadUrl(url)) mainWindow.webContents.downloadURL(url);
+  });
   mainWindow.webContents.on("will-redirect", guardNavigation);
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {

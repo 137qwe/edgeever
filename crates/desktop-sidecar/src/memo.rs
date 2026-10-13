@@ -603,17 +603,35 @@ pub(crate) fn update_memo(database: &Connection, params: &Value) -> Result<Value
     let guarded = params.get("expectedLocalSnapshot");
     if let Some(expected) = guarded {
         previous = memo_value(&tx, &memo_id, true)?;
-        let fields = ["revision", "contentHash", "title", "tags", "contentMarkdown", "contentJson"];
-        if previous.get("isDeleted").and_then(Value::as_bool).unwrap_or(false)
-            || fields.iter().any(|key| expected.get(*key).is_none() || previous.get(*key) != expected.get(*key)) {
-            return Err("NOTE_CONFLICT: The note changed locally. Read it again before editing.".to_owned());
+        let fields = [
+            "revision",
+            "contentHash",
+            "title",
+            "tags",
+            "contentMarkdown",
+            "contentJson",
+        ];
+        if previous
+            .get("isDeleted")
+            .and_then(Value::as_bool)
+            .unwrap_or(false)
+            || fields
+                .iter()
+                .any(|key| expected.get(*key).is_none() || previous.get(*key) != expected.get(*key))
+        {
+            return Err(
+                "NOTE_CONFLICT: The note changed locally. Read it again before editing.".to_owned(),
+            );
         }
         let conflicts: i64 = tx.query_row(
             "SELECT COUNT(*) FROM _edgeever_sidecar_outbox WHERE entity_id = ?1 AND status = 'conflict'",
             [&memo_id], |row| row.get(0),
         ).map_err(|e| e.to_string())?;
         if conflicts > 0 {
-            return Err("NOTE_CONFLICT: Resolve the note's sync conflict before editing from a plugin.".to_owned());
+            return Err(
+                "NOTE_CONFLICT: Resolve the note's sync conflict before editing from a plugin."
+                    .to_owned(),
+            );
         }
     }
     insert_revision(&tx, &previous, "desktop")?;
