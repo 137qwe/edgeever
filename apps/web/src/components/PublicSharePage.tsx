@@ -7,6 +7,7 @@ import { Clock3, FileText, LoaderCircle, LockKeyhole, ShieldCheck } from "lucide
 import { lazy, Suspense, useEffect, useMemo, useState, type CSSProperties, type FormEvent, type MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
+import { cn } from "@/lib/utils";
 import { ApiRequestError, api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -279,7 +280,17 @@ export const PublicSharePage = () => {
   return <main className="min-h-[100dvh] bg-slate-50"><PublicShareArticle share={share} token={token} /></main>;
 };
 
-export const PublicShareArticle = ({ share, token, access }: { share: PublicMemoShare; token: string; access?: ShareBodyAccess }) => {
+export const PublicShareArticle = ({
+  share,
+  token,
+  access,
+  layout = "standalone",
+}: {
+  share: PublicMemoShare;
+  token: string;
+  access?: ShareBodyAccess;
+  layout?: "standalone" | "site";
+}) => {
   const { t, i18n } = useTranslation();
   const publishedBodyFont = parsePublishedNoteBodyFont(share.bodyFont);
 
@@ -287,9 +298,14 @@ export const PublicShareArticle = ({ share, token, access }: { share: PublicMemo
     if (publishedBodyFont === undefined) return undefined;
     if (!publishedBodyFont) {
       delete document.documentElement.dataset.editorBodyFont;
-      document.documentElement.style.removeProperty("--editor-body-font-family");
+      document.documentElement.style.removeProperty(
+        "--editor-body-font-family",
+      );
     } else {
-      applyEditorBodyFontPreference({ choice: publishedBodyFont, customFamily: "" });
+      applyEditorBodyFontPreference({
+        choice: publishedBodyFont,
+        customFamily: "",
+      });
     }
     return () => {
       applyEditorBodyFontPreference();
@@ -298,40 +314,99 @@ export const PublicShareArticle = ({ share, token, access }: { share: PublicMemo
 
   const prose = resolveNoteProse(share.prose);
   return (
-    <div className="edgeever-public-share px-4 py-6 sm:px-8 sm:py-10">
-      <article className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-card shadow-sm">
-        <header className="border-b border-slate-200 px-5 py-6 sm:px-10 sm:py-8">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-slate-500">
-            <span className="flex shrink-0 items-center gap-1.5 font-semibold text-slate-700">
-              <ShieldCheck className="h-4 w-4" /> EdgeEver · {t("sharing.readOnly")}
-            </span>
+    <div
+      className={cn(
+        "edgeever-public-share",
+        layout === "site" ? "py-6 sm:py-8" : "px-4 py-6 sm:px-8 sm:py-10",
+      )}
+    >
+      <article
+        className={cn(
+          "mx-auto max-w-4xl overflow-hidden",
+          layout === "standalone" &&
+            "rounded-2xl border border-slate-200 bg-card shadow-sm",
+        )}
+      >
+        <header
+          className={cn(
+            "px-5 sm:px-10",
+            layout === "site"
+              ? "flex flex-col pb-5"
+              : "border-b border-slate-200 py-6 sm:py-8",
+          )}
+        >
+          <div
+            className={cn(
+              "flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-slate-500",
+              layout === "site" ? "order-2 mt-4" : "mb-5",
+            )}
+          >
+            {layout === "standalone" && (
+              <span className="flex shrink-0 items-center gap-1.5 font-semibold text-slate-700">
+                <ShieldCheck className="h-4 w-4" /> EdgeEver ·{" "}
+                {t("sharing.readOnly")}
+              </span>
+            )}
             <span className="flex items-center gap-1.5">
               <Clock3 className="h-4 w-4" />
               {t("sharing.publicUpdated", {
-                time: new Intl.DateTimeFormat(i18n.resolvedLanguage || i18n.language, { dateStyle: "medium", timeStyle: "short" }).format(new Date(share.updatedAt)),
+                time: new Intl.DateTimeFormat(
+                  i18n.resolvedLanguage || i18n.language,
+                  { dateStyle: "medium", timeStyle: "short" },
+                ).format(new Date(share.updatedAt)),
               })}
             </span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+          <h1
+            className={cn(
+              "break-words text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl",
+              layout === "site" && "order-1",
+            )}
+          >
             {share.title?.trim() || t("common.untitledMemo")}
           </h1>
           {share.tags.length > 0 ? (
-            <div className="mt-4 flex flex-wrap gap-2">
-              {share.tags.map((tag) => <span key={tag} className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600">#{tag}</span>)}
+            <div
+              className={cn(
+                "mt-4 flex flex-wrap gap-2",
+                layout === "site" && "order-3",
+              )}
+            >
+              {share.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-slate-100 px-2.5 py-1 text-xs text-slate-600"
+                >
+                  #{tag}
+                </span>
+              ))}
             </div>
           ) : null}
         </header>
         <div
-          className="edgeever-editor px-1 py-4 sm:px-4 sm:py-7"
+          className={cn(
+            "edgeever-editor",
+            layout === "site" ? "py-4 sm:py-5" : "px-1 py-4 sm:px-4 sm:py-7",
+          )}
           data-editor-theme="default"
           data-note-palette={prose.palette}
           style={noteProseCssVariables(prose) as CSSProperties}
         >
           {prose.customCss ? (
-            <style dangerouslySetInnerHTML={{ __html: sanitizeAndScopeCss(prose.customCss) }} />
+            <style
+              dangerouslySetInnerHTML={{
+                __html: sanitizeAndScopeCss(prose.customCss),
+              }}
+            />
           ) : null}
           <SharedDocument
-            locale={(i18n.resolvedLanguage || i18n.language || "zh-CN").startsWith("en") ? "en-US" : "zh-CN"}
+            locale={
+              (i18n.resolvedLanguage || i18n.language || "zh-CN").startsWith(
+                "en",
+              )
+                ? "en-US"
+                : "zh-CN"
+            }
             share={share}
             token={token}
             access={access}
