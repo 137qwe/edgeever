@@ -361,6 +361,13 @@ export const enUS = {
     "providerPaymentRequired": "The model provider reported insufficient credit. Check the account balance and try again.",
     "providerRateLimited": "The model provider rate-limited this request. Wait a moment and try again.",
     "providerRequestRejected": "The default model rejected this request. Confirm it supports tool calling, or choose a different default model.",
+    "failureDetails": {
+      "http": "The request was rejected. Check the provider URL, model ID, and supported request features.",
+      "network": "The model provider could not be reached. Check your network, proxy, and provider URL.",
+      "invalidResponse": "The provider returned an incompatible response. Check the selected API protocol and streaming support.",
+      "emptyResponse": "The model returned no text or completed tool calls.",
+      "responseLimit": "The model response exceeded the conversation limit.",
+    },
     "conflict": "A memory was changed elsewhere or the 50-memory limit was reached. Refresh and try again.",
     "historyFull": "Chats and discoveries reached the combined 500-record limit. Export and clear history before continuing.",
     "unavailable": "Preview requires a signed-in personal account on a non-demo instance.",

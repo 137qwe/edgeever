@@ -361,6 +361,13 @@ export const zhCN = {
     "providerPaymentRequired": "模型服务商返回额度不足，请检查账户余额后重试。",
     "providerRateLimited": "模型服务商限流，请稍后再试。",
     "providerRequestRejected": "默认模型拒绝了这次请求。请确认该模型支持工具调用，或更换默认模型。",
+    "failureDetails": {
+      "http": "请求被拒绝，请检查服务商地址、模型 ID 和请求功能支持。",
+      "network": "无法连接模型服务商，请检查网络、代理和服务商地址。",
+      "invalidResponse": "服务商返回了不兼容的响应，请检查所选 API 协议及流式响应支持。",
+      "emptyResponse": "模型未返回文本，也没有完成工具调用。",
+      "responseLimit": "模型响应超过了对话长度限制。",
+    },
     "conflict": "记忆已被其他操作修改，或超过 50 条上限。请刷新后再试。",
     "historyFull": "聊天与发现已达到合计 500 条历史上限，请先导出并清空历史。",
     "unavailable": "预览功能仅对非演示实例中已登录的个人账户开放。",
