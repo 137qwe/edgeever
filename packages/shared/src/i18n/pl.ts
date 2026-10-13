@@ -2818,7 +2818,7 @@ export const pl = {
     columns: {
       account: "Konto",
       role: "Rola",
-      storage: "Rozmiar załączników",
+      storage: "Zajęte miejsce",
       files: "Pliki",
       status: "Status",
       created: "Utworzono",
@@ -2827,12 +2827,11 @@ export const pl = {
     },
     toggleAccount: "Zmień status konta {{username}}",
     accountStorageUsage: "Załączniki: {{size}} · {{count}} plików",
-    storageUsage: "Rozmiar załączników wszystkich użytkowników",
-    storageUsageDescription: "Łączny rozmiar aktywnych obrazów i załączników wszystkich kont, w tym wyłączonych. Nie obejmuje Kosza i nie oznacza rzeczywistego zużycia ani wolnej przestrzeni u dostawcy.",
+    storageUsage: "Miejsce zajęte przez załączniki wszystkich użytkowników",
     storageUsageFailed: "Nie udało się wczytać rozmiaru załączników.",
 
     title: "Członkowie",
-    description: "Twórz odizolowane, osobiste przestrzenie notatek dla członków rodziny lub zespołu. Publiczna rejestracja pozostaje wyłączona.",
+    description: "Twórz odizolowane, osobiste przestrzenie notatek dla członków rodziny lub zespołu.",
     loading: "Wczytywanie kont...",
     createdAt: "Utworzono: {{time}}",
     lastLoginAt: "Ostatnie logowanie: {{time}}",

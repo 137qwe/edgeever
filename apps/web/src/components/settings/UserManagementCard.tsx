@@ -113,7 +113,6 @@ export const UserManagementCard = ({ demoMode }: UserManagementCardProps) => {
               </p>
             ) : null}
             {storageQuery.isError ? <p className="mt-1 text-xs text-rose-600" role="alert">{t("users.storageUsageFailed")}</p> : null}
-            <p className="mt-1 text-xs leading-5 text-slate-500">{t("users.storageUsageDescription")}</p>
           </div>
           {usersQuery.isLoading ? <p className="text-xs leading-5 text-slate-500">{t("users.loading")}</p> : null}
           {usersQuery.data ? <UserManagementTable

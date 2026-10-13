@@ -2829,7 +2829,7 @@ export const enUS = {
     columns: {
       account: "Account",
       role: "Role",
-      storage: "Attachments",
+      storage: "Used space",
       files: "Files",
       status: "Status",
       created: "Created",
@@ -2838,12 +2838,11 @@ export const enUS = {
     },
     toggleAccount: "Toggle account status for {{username}}",
     accountStorageUsage: "Attachments: {{size}} · {{count}} files",
-    storageUsage: "All users’ attachment storage",
-    storageUsageDescription: "Total size of active images and attachments across all accounts, including disabled accounts. Excludes Trash; this is not the storage provider’s actual usage or remaining capacity.",
+    storageUsage: "Attachment space used by all users",
     storageUsageFailed: "Could not load attachment storage usage.",
 
     title: "Members",
-    description: "Create isolated personal note spaces for family or team members. Public registration stays disabled.",
+    description: "Create isolated personal note spaces for family or team members.",
     loading: "Loading accounts...",
     createdAt: "Created {{time}}",
     lastLoginAt: "Last signed in {{time}}",
