@@ -50,6 +50,7 @@ import {
 } from "./windows-update-trust.mjs";
 import electronUpdater from "electron-updater";
 import { createUpdateDiagnostic } from "./update-diagnostics.mjs";
+import { createUpdateNetworkDiagnostics } from "./update-network-diagnostics.mjs";
 import { normalizeUpdateProgress } from "./update-progress.mjs";
 import { inspectWindowsTaskbarShortcuts } from "./windows-taskbar-diagnostics.mjs";
 import { testPicGoConnection, createPicGoUploadQueue } from "./picgo.mjs";
@@ -1110,9 +1111,20 @@ const desktopUpdateStatus = () => ({
   progress: updateProgress,
 });
 
+const updateNetworkDiagnostics = createUpdateNetworkDiagnostics({
+  write: writeDiagnostic,
+  onChange: () => {
+    const network = updateNetworkDiagnostics.snapshot();
+    if (updateError?.network?.checkId !== network.checkId) return;
+    updateError = { ...updateError, network };
+    publishDesktopUpdateStatus();
+  },
+});
+
 const recordUpdateError = (error, stage) => {
   updateError = createUpdateDiagnostic(error, {
     stage, version: app.getVersion(), platform: process.platform, arch: process.arch,
+    network: updateNetworkDiagnostics.snapshot(),
   });
 };
 
@@ -1146,7 +1158,7 @@ const trackDesktopUpdateDownload = (downloadPromise, reason) => {
       publishDesktopUpdateStatus();
       await writeDiagnostic("update.download-failed", { reason, message: error.message });
     })
-    .finally(() => { updateDownloadInFlight = null; });
+    .finally(() => { updateDownloadInFlight = null; updateNetworkDiagnostics.stop(); });
   return updateDownloadInFlight;
 };
 
@@ -1155,6 +1167,7 @@ const downloadTrustedDesktopUpdate = (reason) => {
   if (process.platform === "win32" && !trustedWindowsUpdate) {
     return Promise.reject(new Error("Windows update metadata has not passed the signature gate"));
   }
+  updateNetworkDiagnostics.setStage("download");
   return trackDesktopUpdateDownload(autoUpdater.downloadUpdate(), reason);
 };
 
@@ -1198,6 +1211,7 @@ const checkForDesktopUpdate = (reason, { force = false, throwOnError = false } =
   if (!force && now - lastUpdateCheckAt < updateCheckFocusThrottleMs) return Promise.resolve(null);
   lastUpdateCheckAt = now;
   updateError = null;
+  updateNetworkDiagnostics.beginCheck();
   publishDesktopUpdateStatus();
   let diagnosticStage = "check";
   void writeDiagnostic("update.check-started", { reason });
@@ -1205,6 +1219,7 @@ const checkForDesktopUpdate = (reason, { force = false, throwOnError = false } =
     .then(async (result) => {
       if (process.platform === "win32" && result?.isUpdateAvailable) {
         diagnosticStage = "verify-windows-metadata";
+        updateNetworkDiagnostics.setStage(diagnosticStage);
         trustedWindowsUpdate = await fetchTrustedWindowsUpdate({
           version: result.updateInfo.version,
           updateInfo: result.updateInfo,
@@ -1218,6 +1233,7 @@ const checkForDesktopUpdate = (reason, { force = false, throwOnError = false } =
         void downloadTrustedDesktopUpdate(reason);
       }
       if (result?.downloadPromise) {
+        updateNetworkDiagnostics.setStage("download");
         trackDesktopUpdateDownload(result.downloadPromise, reason);
       }
       return result;
@@ -1234,12 +1250,28 @@ const checkForDesktopUpdate = (reason, { force = false, throwOnError = false } =
       await writeDiagnostic("update.check-failed", { reason, message: error.message });
       throw error;
     })
-    .finally(() => { updateCheckInFlight = null; });
+    .finally(() => {
+      updateCheckInFlight = null;
+      if (!updateDownloadInFlight) updateNetworkDiagnostics.stop();
+    });
   return throwOnError ? updateCheckInFlight : updateCheckInFlight.catch(() => null);
 };
 
 const configureAutoUpdater = () => {
   if (!app.isPackaged || process.env.EDGE_EVER_DISABLE_AUTO_UPDATE === "1") return;
+  // Observe the exact session used by electron-updater, plus net.fetch metadata.
+  // No setProxy, request headers, bodies, credentials or response bodies are collected.
+  for (const [name, getSession] of [
+    ["electron-updater", () => autoUpdater.netSession],
+    ["default-metadata", () => session.defaultSession],
+  ]) {
+    try { updateNetworkDiagnostics.observeSession(getSession(), name); }
+    catch (error) {
+      void writeDiagnostic("update.network-diagnostics-unavailable", {
+        session: name, code: createUpdateDiagnostic(error, { stage: "diagnostics" }).code,
+      });
+    }
+  }
   if (linuxUpdateTestMode) {
     if (!/^http:\/\/127\.0\.0\.1:\d+\/$/.test(linuxUpdateTestFeedUrl)) {
       throw new Error("Linux update verification requires a loopback HTTP feed");

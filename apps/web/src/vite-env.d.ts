@@ -182,6 +182,29 @@ interface EdgeEverDesktopBridge {
   }) => void): () => void;
 }
 
+interface DesktopUpdateNetworkDiagnostic {
+  checkId: number;
+  startedAt: number | null;
+  elapsedMs: number;
+  observedSessions: string[];
+  proxyScope: string;
+  omittedRequests: number;
+  requests: Array<{
+    checkId: number;
+    requestId: string;
+    session: string;
+    stage: string;
+    url: string | null;
+    startedAt: number;
+    elapsedMs: number;
+    status: "pending" | "completed" | "failed" | "redirected";
+    httpStatus: number | null;
+    errorCode: string | null;
+    redirectUrl?: string | null;
+    proxy: { state: "pending" | "resolved" | "failed" | "timeout"; value: string | null; errorCode?: string };
+  }>;
+}
+
 interface DesktopUpdateDiagnostic {
   at: string;
   stage: string;
@@ -191,6 +214,7 @@ interface DesktopUpdateDiagnostic {
   code: string | null;
   message: string;
   source: string;
+  network?: DesktopUpdateNetworkDiagnostic;
 }
 
 interface DesktopUpdateDownloadProgress {
