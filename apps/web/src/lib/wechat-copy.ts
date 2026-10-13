@@ -58,9 +58,9 @@ const applyLegacyWeChatStyles = (
   const fontSize = `${metrics.fontSize}px`;
   const lineHeight = String(metrics.lineHeight);
   const codeSize = `${noteProseCodeFontSize(metrics.fontSize)}px`;
-  // A named hue only recolors links, inline code, and bold, matching the editor.
+  // A named hue only recolors links and bold, matching the editor.
   const link = colors?.link ?? LINK_COLOR;
-  const inlineCodeColor = colors?.codeText ?? CODE_COLOR;
+  const inlineCodeColor = CODE_COLOR;
   const accent = colors?.accent ?? BODY_COLOR;
   const bold = colors ? `font-weight: 800; color: ${accent};` : "font-weight: 800;";
   const textStyle = `font-family: ${PUBLISH_FONT}; font-size: ${fontSize}; line-height: ${lineHeight}; letter-spacing: -0.005em; color: ${BODY_COLOR};`;
