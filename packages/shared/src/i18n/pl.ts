@@ -2815,6 +2815,22 @@ export const pl = {
     revokeFailed: "Nie udało się wylogować urządzenia. Spróbuj ponownie.",
   },
   users: {
+    columns: {
+      account: "Konto",
+      role: "Rola",
+      storage: "Rozmiar załączników",
+      files: "Pliki",
+      status: "Status",
+      created: "Utworzono",
+      login: "Ostatnie logowanie",
+      actions: "Działania",
+    },
+    toggleAccount: "Zmień status konta {{username}}",
+    accountStorageUsage: "Załączniki: {{size}} · {{count}} plików",
+    storageUsage: "Rozmiar załączników wszystkich użytkowników",
+    storageUsageDescription: "Łączny rozmiar aktywnych obrazów i załączników wszystkich kont, w tym wyłączonych. Nie obejmuje Kosza i nie oznacza rzeczywistego zużycia ani wolnej przestrzeni u dostawcy.",
+    storageUsageFailed: "Nie udało się wczytać rozmiaru załączników.",
+
     title: "Członkowie",
     description: "Twórz odizolowane, osobiste przestrzenie notatek dla członków rodziny lub zespołu. Publiczna rejestracja pozostaje wyłączona.",
     loading: "Wczytywanie kont...",

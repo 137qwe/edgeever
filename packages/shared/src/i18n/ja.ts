@@ -2815,6 +2815,22 @@ export const ja = {
     revokeFailed: "端末をサインアウトできませんでした。再試行してください。",
   },
   users: {
+    columns: {
+      account: "アカウント",
+      role: "権限",
+      storage: "添付容量",
+      files: "ファイル数",
+      status: "状態",
+      created: "作成日",
+      login: "最終ログイン",
+      actions: "操作",
+    },
+    toggleAccount: "{{username}} のアカウント状態を切り替える",
+    accountStorageUsage: "添付ファイル：{{size}} · {{count}} ファイル",
+    storageUsage: "全ユーザーの添付ファイル容量",
+    storageUsageDescription: "無効なアカウントを含む全アカウントの有効な画像と添付ファイルの合計です。ゴミ箱は含まず、ストレージサービスの実際の使用量や空き容量を示すものではありません。",
+    storageUsageFailed: "添付ファイル容量を読み込めませんでした。",
+
     title: "メンバー",
     description: "家族やチーム向けに、分離された個人ノート空間を作成します。公開登録はオフのままです。",
     loading: "アカウントを読み込み中...",

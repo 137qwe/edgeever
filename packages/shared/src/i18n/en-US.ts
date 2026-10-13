@@ -2826,6 +2826,22 @@ export const enUS = {
     revokeFailed: "Unable to sign out the device. Please try again.",
   },
   users: {
+    columns: {
+      account: "Account",
+      role: "Role",
+      storage: "Attachments",
+      files: "Files",
+      status: "Status",
+      created: "Created",
+      login: "Last login",
+      actions: "Actions",
+    },
+    toggleAccount: "Toggle account status for {{username}}",
+    accountStorageUsage: "Attachments: {{size}} · {{count}} files",
+    storageUsage: "All users’ attachment storage",
+    storageUsageDescription: "Total size of active images and attachments across all accounts, including disabled accounts. Excludes Trash; this is not the storage provider’s actual usage or remaining capacity.",
+    storageUsageFailed: "Could not load attachment storage usage.",
+
     title: "Members",
     description: "Create isolated personal note spaces for family or team members. Public registration stays disabled.",
     loading: "Loading accounts...",

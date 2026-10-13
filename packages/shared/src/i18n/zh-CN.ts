@@ -2824,6 +2824,22 @@ export const zhCN = {
     revokeFailed: "无法退出该设备，请稍后重试。",
   },
   users: {
+    columns: {
+      account: "账号",
+      role: "角色",
+      storage: "附件容量",
+      files: "文件数",
+      status: "状态",
+      created: "创建日期",
+      login: "上次登录",
+      actions: "操作",
+    },
+    toggleAccount: "切换 {{username}} 的启用状态",
+    accountStorageUsage: "附件：{{size}} · {{count}} 个文件",
+    storageUsage: "所有用户的附件容量",
+    storageUsageDescription: "统计所有账号（含停用账号）的有效图片和附件。不含回收站，不代表存储服务的实际占用或剩余容量。",
+    storageUsageFailed: "无法加载附件容量统计。",
+
     title: "成员管理",
     description: "为家人或团队成员创建独立的个人笔记空间。实例不开放公开注册。",
     loading: "正在加载账号...",
