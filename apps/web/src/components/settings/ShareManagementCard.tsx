@@ -3,6 +3,7 @@ import { Copy, ExternalLink, Link2, LoaderCircle, LockKeyhole, Settings2 } from 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ManagedMemoShare } from "@edgeever/shared";
+import { NotebookShareManagement } from "./NotebookShareManagement";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getPublicShareUrl, ShareMemoDialog } from "@/components/dialogs/ShareMemoDialog";
@@ -111,6 +112,7 @@ export const ShareManagementCard = ({ userId, onOpenMemo }: Props) => {
             ) : null}
           </div>
         )}
+        <NotebookShareManagement userId={userId} />
       </CardContent>
       {managedMemoId ? (
         <ShareMemoDialog memoId={managedMemoId} open onOpenChange={(open) => { if (!open) setManagedMemoId(null); }} />

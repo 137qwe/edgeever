@@ -151,6 +151,50 @@ const loadAccountNoteProse = async (c: AppContext, actorId: string) => {
   return row ? presentAccountNoteProse(row) : null;
 };
 
+/** The caller must authorize the resource against its live share scope first. */
+export const serveSharedResource = async (c: AppContext, resource: SharedResourceRow) => {
+  const byteRange = parseByteRange(c.req.header("Range"), resource.byte_size);
+  if (byteRange.kind === "invalid") {
+    const response = rangeNotSatisfiable(resource.byte_size);
+    response.headers.set("Cache-Control", "private, no-store");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    return response;
+  }
+
+  const source = await resolveObjectStorage(c.env, resource.storage_config_id);
+  const object = await source.store.get(
+    resource.object_key,
+    byteRange.kind === "range" ? { range: byteRange.range } : undefined,
+  );
+  if (!object) return notFound(c, "Shared resource not found");
+
+  const headers = new Headers();
+  object.writeHttpMetadata(headers);
+  const playableMimeType = resolvePlayableMediaMimeType(resource.mime_type, resource.filename);
+  headers.set(
+    "Content-Type",
+    isPdfAttachment(resource.mime_type, resource.filename)
+      ? "application/pdf"
+      : playableMimeType ?? resource.mime_type ?? headers.get("Content-Type") ?? "application/octet-stream",
+  );
+  headers.set("Accept-Ranges", "bytes");
+  if (byteRange.kind === "range") {
+    const length = object.range?.length ?? byteRange.range.length;
+    headers.set("Content-Length", String(length));
+    headers.set(
+      "Content-Range",
+      `bytes ${byteRange.range.offset}-${byteRange.range.offset + length - 1}/${resource.byte_size}`,
+    );
+  } else {
+    headers.set("Content-Length", String(resource.byte_size));
+  }
+  headers.set("Content-Disposition", contentDisposition(resource.kind, resource.mime_type, resource.filename));
+  headers.set("Cache-Control", "private, no-store");
+  headers.set("X-Content-Type-Options", "nosniff");
+  headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+  return new Response(object.body, { headers, status: byteRange.kind === "range" ? 206 : 200 });
+};
+
 export const registerPublicShareRoutes = (app: Hono<AppEnv>) => {
   app.get("/api/public/shares/:token", async (c) => {
     const token = normalizeShareToken(c.req.param("token"));
@@ -257,46 +301,7 @@ export const registerPublicShareRoutes = (app: Hono<AppEnv>) => {
       return sharePasswordRequired(c);
     }
 
-    const byteRange = parseByteRange(c.req.header("Range"), resource.byte_size);
-    if (byteRange.kind === "invalid") {
-      const response = rangeNotSatisfiable(resource.byte_size);
-      response.headers.set("Cache-Control", "private, no-store");
-      response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
-      return response;
-    }
-
-    const source = await resolveObjectStorage(c.env, resource.storage_config_id);
-    const object = await source.store.get(
-      resource.object_key,
-      byteRange.kind === "range" ? { range: byteRange.range } : undefined,
-    );
-    if (!object) return notFound(c, "Shared resource not found");
-
-    const headers = new Headers();
-    object.writeHttpMetadata(headers);
-    const playableMimeType = resolvePlayableMediaMimeType(resource.mime_type, resource.filename);
-    headers.set(
-      "Content-Type",
-      isPdfAttachment(resource.mime_type, resource.filename)
-        ? "application/pdf"
-        : playableMimeType ?? resource.mime_type ?? headers.get("Content-Type") ?? "application/octet-stream",
-    );
-    headers.set("Accept-Ranges", "bytes");
-    if (byteRange.kind === "range") {
-      const length = object.range?.length ?? byteRange.range.length;
-      headers.set("Content-Length", String(length));
-      headers.set(
-        "Content-Range",
-        `bytes ${byteRange.range.offset}-${byteRange.range.offset + length - 1}/${resource.byte_size}`,
-      );
-    } else {
-      headers.set("Content-Length", String(resource.byte_size));
-    }
-    headers.set("Content-Disposition", contentDisposition(resource.kind, resource.mime_type, resource.filename));
-    headers.set("Cache-Control", "private, no-store");
-    headers.set("X-Content-Type-Options", "nosniff");
-    headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
-    return new Response(object.body, { headers, status: byteRange.kind === "range" ? 206 : 200 });
+    return serveSharedResource(c, resource);
   });
 };
 

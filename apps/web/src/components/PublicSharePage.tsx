@@ -22,6 +22,7 @@ import {
   parsePublishedNoteBodyFont,
   resolveNoteProse,
   type PublicMemoShare,
+  type ShareBodyAccess,
 } from "@edgeever/shared";
 import { applyEditorBodyFontPreference } from "@/lib/editor-body-font";
 import { createEdgeEverMathematics } from "@edgeever/shared/mathematics";
@@ -139,12 +140,14 @@ const SharedDocument = ({
   locale,
   share,
   token,
+  access,
 }: {
   locale: "zh-CN" | "en-US" | "ja" | "pl";
   share: PublicMemoShare;
   token: string;
+  access?: ShareBodyAccess;
 }) => {
-  const body = useMemo(() => resolvePublicShareBody(share, token), [share, token]);
+  const body = useMemo(() => resolvePublicShareBody(share, token, access), [share, token, access]);
   if (body.type === "diagram") {
     return (
       <Suspense
@@ -225,20 +228,6 @@ export const PublicSharePage = () => {
   });
   const share = shareQuery.data?.share;
   const passwordRequired = isSharePasswordError(shareQuery.error, "share_password_required");
-  const publishedBodyFont = share ? parsePublishedNoteBodyFont(share.bodyFont) : undefined;
-
-  useEffect(() => {
-    if (publishedBodyFont === undefined) return undefined;
-    if (!publishedBodyFont) {
-      delete document.documentElement.dataset.editorBodyFont;
-      document.documentElement.style.removeProperty("--editor-body-font-family");
-    } else {
-      applyEditorBodyFontPreference({ choice: publishedBodyFont, customFamily: "" });
-    }
-    return () => {
-      applyEditorBodyFontPreference();
-    };
-  }, [publishedBodyFont]);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -287,13 +276,33 @@ export const PublicSharePage = () => {
     );
   }
 
+  return <main className="min-h-[100dvh] bg-slate-50"><PublicShareArticle share={share} token={token} /></main>;
+};
+
+export const PublicShareArticle = ({ share, token, access }: { share: PublicMemoShare; token: string; access?: ShareBodyAccess }) => {
+  const { t, i18n } = useTranslation();
+  const publishedBodyFont = parsePublishedNoteBodyFont(share.bodyFont);
+
+  useEffect(() => {
+    if (publishedBodyFont === undefined) return undefined;
+    if (!publishedBodyFont) {
+      delete document.documentElement.dataset.editorBodyFont;
+      document.documentElement.style.removeProperty("--editor-body-font-family");
+    } else {
+      applyEditorBodyFontPreference({ choice: publishedBodyFont, customFamily: "" });
+    }
+    return () => {
+      applyEditorBodyFontPreference();
+    };
+  }, [publishedBodyFont]);
+
   const prose = resolveNoteProse(share.prose);
   return (
-    <main className="edgeever-public-share min-h-[100dvh] bg-slate-50 px-4 py-6 sm:px-8 sm:py-10">
+    <div className="edgeever-public-share px-4 py-6 sm:px-8 sm:py-10">
       <article className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-slate-200 bg-card shadow-sm">
         <header className="border-b border-slate-200 px-5 py-6 sm:px-10 sm:py-8">
-          <div className="mb-5 flex items-center justify-between gap-4 text-xs text-slate-500">
-            <span className="flex items-center gap-1.5 font-semibold text-slate-700">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-xs text-slate-500">
+            <span className="flex shrink-0 items-center gap-1.5 font-semibold text-slate-700">
               <ShieldCheck className="h-4 w-4" /> EdgeEver · {t("sharing.readOnly")}
             </span>
             <span className="flex items-center gap-1.5">
@@ -325,9 +334,10 @@ export const PublicSharePage = () => {
             locale={(i18n.resolvedLanguage || i18n.language || "zh-CN").startsWith("en") ? "en-US" : "zh-CN"}
             share={share}
             token={token}
+            access={access}
           />
         </div>
       </article>
-    </main>
+    </div>
   );
 };
