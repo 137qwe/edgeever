@@ -260,7 +260,7 @@ export const ShareMemoDialog = ({
           <div className="border-t border-slate-200 px-5 py-3 text-center">
             <Link
               to="/settings?tab=sharing"
-              className="inline-flex items-center rounded-sm py-2 text-sm font-medium text-emerald-600 underline underline-offset-4 hover:text-emerald-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 dark:text-emerald-400 dark:hover:text-emerald-300"
+              className="inline-flex items-center rounded-sm py-2 text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               {t("sharing.viewAll")}
             </Link>
