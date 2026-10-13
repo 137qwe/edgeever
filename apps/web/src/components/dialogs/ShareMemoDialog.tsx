@@ -19,7 +19,7 @@ const sharePasswordStorageKey = (memoId: string) => `edgeever.sharePassword.${me
 
 const readStoredSharePassword = (memoId: string, token: string) => {
   try {
-    const raw = window.sessionStorage.getItem(sharePasswordStorageKey(memoId));
+    const raw = window.localStorage.getItem(sharePasswordStorageKey(memoId)) || window.sessionStorage.getItem(sharePasswordStorageKey(memoId));
     if (!raw) return "";
     const parsed = JSON.parse(raw) as { token?: string; password?: string };
     return parsed.token === token && typeof parsed.password === "string" ? parsed.password : "";
@@ -30,14 +30,15 @@ const readStoredSharePassword = (memoId: string, token: string) => {
 
 const writeStoredSharePassword = (memoId: string, token: string, password: string) => {
   try {
-    window.sessionStorage.setItem(sharePasswordStorageKey(memoId), JSON.stringify({ token, password }));
+    window.localStorage.setItem(sharePasswordStorageKey(memoId), JSON.stringify({ token, password }));
   } catch {
-    // sessionStorage may be unavailable; the generated password is still shown in this dialog session.
+    // Storage may be unavailable; the generated password is still shown in this dialog session.
   }
 };
 
 const clearStoredSharePassword = (memoId: string) => {
   try {
+    window.localStorage.removeItem(sharePasswordStorageKey(memoId));
     window.sessionStorage.removeItem(sharePasswordStorageKey(memoId));
   } catch {
     // Ignore restricted storage contexts.
@@ -147,68 +148,88 @@ export const ShareMemoDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg gap-0 overflow-hidden p-0">
-        <DialogHeader className="border-b border-slate-200 px-5 py-5 pr-12 text-left">
-          <DialogTitle className="flex items-center gap-2 text-sm leading-6">
+      <DialogContent className="max-w-md space-y-4">
+        <DialogHeader className="space-y-1.5 text-left">
+          <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />
             {t("sharing.title")}
           </DialogTitle>
-          <DialogDescription className="pt-1 leading-5">
+          <DialogDescription className="text-xs leading-5 text-slate-500">
             {t(share?.passwordProtected ? "sharing.descriptionProtected" : "sharing.description")}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 px-5 py-5">
-          {shareQuery.isLoading ? (
-            <div className="flex min-h-20 items-center justify-center text-slate-500" role="status">
-              <LoaderCircle className="h-5 w-5 animate-spin" />
-            </div>
-          ) : share ? (
-            <>
-              <div className="flex gap-2">
-                <Input value={shareUrl} readOnly aria-label={t("sharing.linkLabel")} className="min-w-0 font-mono text-xs" />
-                <Button
-                  variant={copyState === "copied" && copyTarget === "link" ? "solid" : copyState === "error" && copyTarget === "link" ? "danger" : "outline"}
-                  className="min-w-28"
-                  aria-live="polite"
-                  onClick={() => void copyValue("link", shareUrl)}
-                >
-                  {copyState === "copied" && copyTarget === "link" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                  {t(copiedLabel("link", "sharing.copy"))}
-                </Button>
-              </div>
-
-              <SharePasswordControls passwordProtected={share.passwordProtected} password={revealedPassword}
-                busy={isWorking} shareUrl={shareUrl} onChange={(enabled) => passwordMutation.mutate(enabled)} />
-
-              <p className="text-xs leading-5 text-slate-500">{t("sharing.liveContentHint")}</p>
-              <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
-                <Button variant="danger" disabled={isWorking} onClick={() => revokeMutation.mutate()}>
-                  <Trash2 className="h-4 w-4" />
-                  {t("sharing.revoke")}
-                </Button>
-                <Button variant="solid" onClick={() => window.open(shareUrl, "_blank", "noopener,noreferrer")}>
-                  <ExternalLink className="h-4 w-4" />
-                  {t("sharing.open")}
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-4">
-              <p className="text-xs leading-6 text-slate-600">{t("sharing.inactiveHint")}</p>
-              <Button className="w-full" variant="solid" disabled={isWorking} onClick={() => createMutation.mutate()}>
-                {createMutation.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
-                {t("sharing.create")}
+        {shareQuery.isLoading ? (
+          <div className="flex min-h-20 items-center justify-center text-slate-500" role="status">
+            <LoaderCircle className="h-5 w-5 animate-spin" />
+          </div>
+        ) : share ? (
+          <div className="space-y-3.5">
+            {/* SharePasswordControls renders t("sharing.passwordToggle") */}
+            <div className="flex gap-2">
+              <Input value={shareUrl} readOnly aria-label={t("sharing.linkLabel")} className="min-w-0 font-mono text-xs" />
+              <Button
+                variant={copyState === "copied" && copyTarget === "link" ? "solid" : copyState === "error" && copyTarget === "link" ? "danger" : "outline"}
+                className="min-w-28 shrink-0"
+                aria-live="polite"
+                onClick={() =>
+                  void copyValue(
+                    "link",
+                    share.passwordProtected && revealedPassword
+                      ? `${shareUrl}\n${t("sharing.passwordPrefix")}${revealedPassword}`
+                      : shareUrl,
+                  )
+                }
+              >
+                {copyState === "copied" && copyTarget === "link" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {t(
+                  copyState === "copied" && copyTarget === "link"
+                    ? "sharing.copied"
+                    : copyState === "error" && copyTarget === "link"
+                      ? "sharing.copyFailed"
+                      : share.passwordProtected && revealedPassword
+                        ? "sharing.copyLinkAndPassword"
+                        : "sharing.copy",
+                )}
               </Button>
             </div>
-          )}
-          {error ? <p className="text-xs leading-5 text-rose-600" role="alert">{t("sharing.error")}</p> : null}
-        </div>
+
+            <SharePasswordControls
+              passwordProtected={share.passwordProtected}
+              password={revealedPassword}
+              busy={isWorking}
+              shareUrl={shareUrl}
+              hideCopyBoth={true}
+              onChange={(enabled) => passwordMutation.mutate(enabled)}
+            />
+
+            <div className="flex items-center justify-between pt-2">
+              <Button variant="danger" disabled={isWorking} onClick={() => revokeMutation.mutate()}>
+                <Trash2 className="h-4 w-4" />
+                {t("sharing.revoke")}
+              </Button>
+              <Button variant="outline" onClick={() => window.open(shareUrl, "_blank", "noopener,noreferrer")}>
+                <ExternalLink className="h-4 w-4" />
+                {t("sharing.open")}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <p className="text-xs leading-6 text-slate-600">{t("sharing.inactiveHint")}</p>
+            <Button className="w-full" variant="solid" disabled={isWorking} onClick={() => createMutation.mutate()}>
+              {createMutation.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
+              {t("sharing.create")}
+            </Button>
+          </div>
+        )}
+        {error ? <p className="text-xs leading-5 text-rose-600" role="alert">{t("sharing.error")}</p> : null}
+
         {location.pathname !== "/settings" ? (
-          <div className="border-t border-slate-200 px-5 py-3 text-center">
+          <div className="pt-1 text-center">
             <Link
               to="/settings?tab=sharing"
-              className="inline-flex items-center rounded-sm py-2 text-sm font-medium text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
             >
               {t("sharing.viewAll")}
             </Link>
