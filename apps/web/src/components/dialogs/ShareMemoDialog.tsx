@@ -15,36 +15,6 @@ export const getPublicShareUrl = (token: string) => {
   return `${baseUrl.replace(/\/$/, "")}/share/${encodeURIComponent(token)}`;
 };
 
-const sharePasswordStorageKey = (memoId: string) => `edgeever.sharePassword.${memoId}`;
-
-const readStoredSharePassword = (memoId: string, token: string) => {
-  try {
-    const raw = window.localStorage.getItem(sharePasswordStorageKey(memoId)) || window.sessionStorage.getItem(sharePasswordStorageKey(memoId));
-    if (!raw) return "";
-    const parsed = JSON.parse(raw) as { token?: string; password?: string };
-    return parsed.token === token && typeof parsed.password === "string" ? parsed.password : "";
-  } catch {
-    return "";
-  }
-};
-
-const writeStoredSharePassword = (memoId: string, token: string, password: string) => {
-  try {
-    window.localStorage.setItem(sharePasswordStorageKey(memoId), JSON.stringify({ token, password }));
-  } catch {
-    // Storage may be unavailable; the generated password is still shown in this dialog session.
-  }
-};
-
-const clearStoredSharePassword = (memoId: string) => {
-  try {
-    window.localStorage.removeItem(sharePasswordStorageKey(memoId));
-    window.sessionStorage.removeItem(sharePasswordStorageKey(memoId));
-  } catch {
-    // Ignore restricted storage contexts.
-  }
-};
-
 export const memoShareQueryKey = (memoId: string) => ["memo-share", memoId] as const;
 
 export const ShareMemoDialog = ({
@@ -61,7 +31,6 @@ export const ShareMemoDialog = ({
   const queryClient = useQueryClient();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const [copyTarget, setCopyTarget] = useState<"link" | "password" | "both">("link");
-  const [revealedPassword, setRevealedPassword] = useState("");
   const copyResetTimerRef = useRef<number | null>(null);
   const queryKey = memoShareQueryKey(memoId);
   const shareQuery = useQuery({
@@ -69,6 +38,8 @@ export const ShareMemoDialog = ({
     queryFn: () => api.getMemoShare(memoId),
     enabled: open,
     retry: false,
+    gcTime: 0,
+    refetchOnMount: "always",
   });
   const createMutation = useMutation({
     mutationFn: () => api.createMemoShare(memoId),
@@ -80,22 +51,13 @@ export const ShareMemoDialog = ({
   const passwordMutation = useMutation({
     mutationFn: (passwordProtected: boolean) => api.updateMemoShare(memoId, { passwordProtected }),
     onSuccess: (data) => {
-      queryClient.setQueryData(queryKey, { share: { ...data.share, password: undefined } });
+      queryClient.setQueryData(queryKey, data);
       void queryClient.invalidateQueries({ queryKey: ["memo-shares"] });
-      if (data.share.password) {
-        writeStoredSharePassword(memoId, data.share.token, data.share.password);
-        setRevealedPassword(data.share.password);
-      } else {
-        clearStoredSharePassword(memoId);
-        setRevealedPassword("");
-      }
     },
   });
   const revokeMutation = useMutation({
     mutationFn: () => api.revokeMemoShare(memoId),
     onSuccess: () => {
-      clearStoredSharePassword(memoId);
-      setRevealedPassword("");
       queryClient.setQueryData(queryKey, { share: null });
       void queryClient.invalidateQueries({ queryKey: ["memo-shares"] });
     },
@@ -106,20 +68,13 @@ export const ShareMemoDialog = ({
     revokeMutation.reset();
     setCopyState("idle");
     setCopyTarget("link");
-    setRevealedPassword("");
   }, [memoId]);
   useEffect(() => () => {
     if (copyResetTimerRef.current !== null) window.clearTimeout(copyResetTimerRef.current);
   }, []);
 
   const share = shareQuery.data?.share ?? null;
-  useEffect(() => {
-    if (!share?.passwordProtected) {
-      setRevealedPassword("");
-      return;
-    }
-    setRevealedPassword(readStoredSharePassword(memoId, share.token));
-  }, [memoId, share?.passwordProtected, share?.token]);
+  const revealedPassword = share?.passwordProtected ? share.password ?? "" : "";
 
   const shareUrl = share ? getPublicShareUrl(share.token) : "";
   const isWorking = shareQuery.isLoading || createMutation.isPending || passwordMutation.isPending || revokeMutation.isPending;
@@ -148,7 +103,7 @@ export const ShareMemoDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md space-y-4">
+      <DialogContent className="w-[calc(100%-2rem)] max-w-[640px] space-y-4">
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />
@@ -166,11 +121,11 @@ export const ShareMemoDialog = ({
         ) : share ? (
           <div className="space-y-3.5">
             {/* SharePasswordControls renders t("sharing.passwordToggle") */}
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <Input value={shareUrl} readOnly aria-label={t("sharing.linkLabel")} className="min-w-0 font-mono text-xs" />
               <Button
                 variant={copyState === "copied" && copyTarget === "link" ? "solid" : copyState === "error" && copyTarget === "link" ? "danger" : "outline"}
-                className="min-w-28 shrink-0"
+                className="min-w-28 shrink-0 self-end sm:self-auto"
                 aria-live="polite"
                 onClick={() =>
                   void copyValue(

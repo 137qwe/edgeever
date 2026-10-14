@@ -2618,6 +2618,7 @@ export const enUS = {
     passwordCopy: "Copy password",
     copyLinkAndPassword: "Copy link and password",
     regeneratePassword: "Regenerate",
+    passwordUnavailableHint: "This password cannot be displayed. Regenerate it to view it across devices; the previous password will stop working.",
     passwordSet: "Password is set",
     passwordPrefix: "Password: ",
     passwordRequiredTitle: "Password required",

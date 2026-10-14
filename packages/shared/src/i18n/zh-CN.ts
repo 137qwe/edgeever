@@ -2616,6 +2616,7 @@ export const zhCN = {
     passwordCopy: "复制密码",
     copyLinkAndPassword: "复制链接和密码",
     regeneratePassword: "重新生成",
+    passwordUnavailableHint: "此密码暂时无法显示。重新生成后可跨设备查看，旧密码将失效。",
     passwordSet: "已设置访问密码",
     passwordPrefix: "密码：",
     passwordRequiredTitle: "需要访问密码",

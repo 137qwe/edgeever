@@ -2607,6 +2607,7 @@ export const pl = {
     passwordCopy: "Kopiuj hasło",
     copyLinkAndPassword: "Kopiuj link i hasło",
     regeneratePassword: "Wygeneruj ponownie",
+    passwordUnavailableHint: "Nie można wyświetlić tego hasła. Wygeneruj nowe, aby wyświetlać je na innych urządzeniach; poprzednie hasło przestanie działać.",
     passwordSet: "Hasło jest ustawione",
     passwordPrefix: "Hasło: ",
     passwordRequiredTitle: "Wymagane hasło",

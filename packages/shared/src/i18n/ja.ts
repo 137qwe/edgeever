@@ -2607,6 +2607,7 @@ export const ja = {
     passwordCopy: "パスワードをコピー",
     copyLinkAndPassword: "リンクとパスワードをコピー",
     regeneratePassword: "再生成",
+    passwordUnavailableHint: "このパスワードは表示できません。再生成すると他の端末でも確認できます。以前のパスワードは無効になります。",
     passwordSet: "パスワード設定済み",
     passwordPrefix: "パスワード：",
     passwordRequiredTitle: "パスワードが必要です",

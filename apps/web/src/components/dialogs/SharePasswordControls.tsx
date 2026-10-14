@@ -93,7 +93,7 @@ export const SharePasswordControls = ({
             </Tooltip>
           </div>
           <p className="text-xs leading-5 text-slate-500">
-            {scopeHint || t("sharing.notebookPasswordScopeHint")}
+            {password ? (scopeHint || t("sharing.notebookPasswordScopeHint")) : t("sharing.passwordUnavailableHint")}
           </p>
           {!hideCopyBoth && password ? (
             <Button

@@ -85,7 +85,7 @@ const createDatabaseEnvironment = () => {
 
   return {
     sqlite,
-    environment: { storage: { db: new SqliteD1Database(sqlite), resources: {} } },
+    environment: { EDGE_EVER_CREDENTIALS_ENCRYPTION_KEY: "test-share-master-key", storage: { db: new SqliteD1Database(sqlite), resources: {} } },
   };
 };
 
@@ -529,4 +529,33 @@ test("workspace login cannot bypass a memo's password or attachment gate", async
   } finally {
     sqlite.close();
   }
+});
+
+describe("memo share password recovery", () => {
+  test("returns encrypted-at-rest passwords only through authenticated single-share reads", async () => {
+    const { sqlite, environment } = createDatabaseEnvironment();
+    const app = createShareApp(environment);
+    const path = "/api/v1/memos/memo_source/share";
+    const patch = (enabled) => app.request(path, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passwordProtected: enabled }),
+    }, environment);
+    const share = (await (await patch(true)).json()).share;
+    expect(sqlite.query("SELECT password_encrypted FROM memo_shares WHERE memo_id = 'memo_source'").get().password_encrypted).not.toContain(share.password);
+    const fresh = await app.request(path, {}, environment);
+    expect(fresh.headers.get("cache-control")).toBe("private, no-store");
+    expect((await fresh.json()).share.password).toBe(share.password);
+    const listed = await app.request("/api/v1/memo-shares", {}, environment);
+    for (const entry of (await listed.json()).shares) {
+      expect(entry.password).toBeUndefined();
+      expect(entry.password_encrypted).toBeUndefined();
+    }
+    const publicApp = new Hono();
+    registerMemoShareRoutes(publicApp);
+    expect((await publicApp.request(path, {}, environment)).status).toBe(403);
+    await patch(false);
+    expect(sqlite.query("SELECT password_encrypted FROM memo_shares WHERE memo_id = 'memo_source'").get().password_encrypted).toBeNull();
+    expect((await (await app.request(path, {}, environment)).json()).share.password).toBeUndefined();
+    sqlite.close();
+  });
 });
