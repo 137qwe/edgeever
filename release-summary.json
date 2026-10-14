@@ -1,5 +1,5 @@
 {
-  "version": "1.117.0",
+  "version": "1.118.0",
   "changes": {
     "en-US": [
       "Publish notebooks and their descendants as a browsable website with live content, directory navigation, and optional password protection.",
