@@ -289,7 +289,10 @@ describe("WeChat share handoff", () => {
     });
     await controller.importPending();
     expect(prepared).toHaveLength(2);
-    await controller.finish(prepared[0].importId, false);
+    // Directory iteration order differs across filesystems; fail the named share.
+    const failedShare = prepared.find((payload) => payload.markdown.includes("first"));
+    expect(failedShare).toBeDefined();
+    await controller.finish(failedShare.importId, false);
     const resumed = [];
     const restarted = createWeChatShareController({
       downloadsPath: () => downloads,
