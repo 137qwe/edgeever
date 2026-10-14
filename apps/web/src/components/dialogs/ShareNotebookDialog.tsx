@@ -12,7 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SharePasswordControls } from "./SharePasswordControls";
-import { SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
+import { SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME, SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
 import { Input } from "@/components/ui/input";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -122,22 +122,12 @@ export const ShareNotebookDialog = ({
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />
-            {t("sharing.notebookTitle")}
+            {t(share ? "sharing.manage" : inherited ? "sharing.notebookInheritedAction" : "sharing.notebookTitle")}
           </DialogTitle>
           <DialogDescription className="text-xs leading-5 text-slate-500">
             <span className="font-medium text-slate-800">{notebookName}</span>
-            <span className="mx-1 text-slate-400">·</span>
-            <span>
-              {t(share?.passwordProtected ? "sharing.notebookProtectedScopeHint" : "sharing.notebookScopeHint")}
-            </span>
           </DialogDescription>
         </DialogHeader>
-
-        {inherited ? (
-          <p className="text-xs text-amber-700">
-            {t("sharing.notebookInheritedHint")}
-          </p>
-        ) : null}
 
         {query.isPending ? (
           <div className="flex min-h-20 items-center justify-center text-slate-500" role="status">
@@ -145,6 +135,12 @@ export const ShareNotebookDialog = ({
           </div>
         ) : share ? (
           <div className="space-y-3.5">
+            <p className="text-xs leading-5 text-slate-600">
+              {t(share.passwordProtected ? "sharing.notebookProtectedScopeHint" : "sharing.notebookScopeHint")}
+            </p>
+            {inherited ? (
+              <p className="text-xs leading-5 text-slate-600">{t("sharing.notebookInheritedHint")}</p>
+            ) : null}
             <div className="flex flex-col gap-2 sm:flex-row">
               <Input
                 value={shareUrl}
@@ -154,7 +150,7 @@ export const ShareNotebookDialog = ({
               />
               <Button
                 variant={copyState === "copied" ? "solid" : copyState === "error" ? "danger" : "outline"}
-                className="min-w-28 shrink-0 self-end sm:self-auto"
+                className={`min-w-28 shrink-0 self-end sm:self-auto ${copyState === "copied" ? SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME : ""}`}
                 aria-live="polite"
                 onClick={() => void handlePrimaryCopy()}
               >
@@ -203,10 +199,10 @@ export const ShareNotebookDialog = ({
           </div>
         ) : !query.isError ? (
           <div className="space-y-3">
-            <p className="text-xs leading-6 text-slate-600">{t("sharing.notebookScopeHint")}</p>
-            <Button className="w-full" variant="solid" disabled={busy} onClick={() => create.mutate()}>
+            <p className="text-xs leading-6 text-slate-600">{t(inherited ? "sharing.notebookInheritedOnlyHint" : "sharing.notebookScopeHint")}</p>
+            <Button className={`w-full ${SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME}`} variant="solid" disabled={busy} onClick={() => create.mutate()}>
               {create.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Share2 className="h-4 w-4" />}
-              {t("sharing.create")}
+              {t(inherited ? "sharing.notebookCreateIndependent" : "sharing.create")}
             </Button>
           </div>
         ) : null}
@@ -230,6 +226,7 @@ export const ShareNotebookDialog = ({
           <div className="pt-1 text-center">
             <Link
               to="/settings?tab=sharing"
+              onClick={() => onOpenChange(false)}
               className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
             >
               {t("sharing.viewAll")}

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { SharePasswordControls } from "./SharePasswordControls";
-import { SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
+import { SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME, SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
 
@@ -139,7 +139,7 @@ export const ShareMemoDialog = ({
               <Input value={shareUrl} readOnly aria-label={t("sharing.linkLabel")} className="min-w-0 font-mono text-xs" />
               <Button
                 variant={copyState === "copied" && copyTarget === "link" ? "solid" : copyState === "error" && copyTarget === "link" ? "danger" : "outline"}
-                className="min-w-28 shrink-0 self-end sm:self-auto"
+                className={`min-w-28 shrink-0 self-end sm:self-auto ${copyState === "copied" && copyTarget === "link" ? SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME : ""}`}
                 aria-live="polite"
                 onClick={() =>
                   void copyValue(
@@ -185,7 +185,7 @@ export const ShareMemoDialog = ({
           </div>
         ) : (
           <Button
-            className="w-full"
+            className={`w-full ${SHARE_DIALOG_PRIMARY_BUTTON_CLASS_NAME}`}
             variant="solid"
             disabled={isWorking}
             onClick={() => {
@@ -203,6 +203,7 @@ export const ShareMemoDialog = ({
           <div className="pt-1 text-center">
             <Link
               to="/settings?tab=sharing"
+              onClick={() => onOpenChange(false)}
               className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground underline underline-offset-4"
             >
               {t("sharing.viewAll")}
