@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Copy, ExternalLink, LoaderCircle, Share2, Trash2 } from "lucide-react";
+import { Check, Copy, ExternalLink, Globe, LoaderCircle, Share2, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
@@ -132,8 +132,8 @@ export const ShareMemoDialog = ({
       >
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
-            <Share2 className="h-5 w-5 text-slate-700" />
-            {t("sharing.title")}
+            {share ? <Globe className="h-5 w-5 text-slate-700" /> : <Share2 className="h-5 w-5 text-slate-700" />}
+            {t(share ? "sharing.manage" : "sharing.title")}
           </DialogTitle>
         </DialogHeader>
 

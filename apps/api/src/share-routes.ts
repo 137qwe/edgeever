@@ -475,7 +475,8 @@ export const registerMemoShareRoutes = (app: Hono<AppEnv>) => {
     const existing = await c.env.storage.db.prepare(
       `SELECT memo_id FROM memo_shares WHERE memo_id = ? AND workspace_id = ?`
     ).bind(memoId, workspaceId).first<{ memo_id: string }>();
-    if (!existing) return notFound(c, "Active share not found");
+    // A retry after successful revocation already has the requested state.
+    if (!existing) return c.json({ ok: true });
 
     await c.env.storage.db.prepare(
       `DELETE FROM memo_shares WHERE memo_id = ? AND workspace_id = ?`

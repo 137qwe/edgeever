@@ -336,6 +336,25 @@ const readCookieValue = (response, name) => {
 };
 
 describe("memo share management", () => {
+  test("revocation retries succeed and keep the old link inaccessible", async () => {
+    const { sqlite, environment } = createDatabaseEnvironment();
+    const app = createShareApp(environment);
+    const path = "/api/v1/memos/memo_source/share";
+    expect((await app.request(`/api/public/shares/${sourceToken}`, {}, environment)).status).toBe(200);
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const response = await app.request(path, { method: "DELETE" }, environment);
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ ok: true });
+      expect((await (await app.request(path, {}, environment)).json()).share).toBeNull();
+      expect((await app.request(`/api/public/shares/${sourceToken}`, {}, environment)).status).toBe(404);
+    }
+    expect((await app.request(`/api/public/shares/${targetToken}`, {}, environment)).status).toBe(200);
+    const unauthenticated = new Hono();
+    registerMemoShareRoutes(unauthenticated);
+    expect((await unauthenticated.request(path, { method: "DELETE" }, environment)).status).toBe(403);
+    sqlite.close();
+  });
+
   test("lists only live shares from the signed-in workspace without exposing passwords", async () => {
     const { sqlite, environment } = createDatabaseEnvironment();
     sqlite.query("INSERT INTO workspaces (id, name, is_personal) VALUES (?, ?, 1)").run("ws_other", "Other workspace");
