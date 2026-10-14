@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Copy, ExternalLink, Link2, LoaderCircle, Share2, Trash2 } from "lucide-react";
+import { Check, Copy, ExternalLink, LoaderCircle, Share2, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { SharePasswordControls } from "./SharePasswordControls";
+import { SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
 
@@ -32,6 +33,7 @@ export const ShareMemoDialog = ({
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const [copyTarget, setCopyTarget] = useState<"link" | "password" | "both">("link");
   const copyResetTimerRef = useRef<number | null>(null);
+  const autoCreateAttemptRef = useRef<string | null>(null);
   const queryKey = memoShareQueryKey(memoId);
   const shareQuery = useQuery({
     queryKey,
@@ -60,6 +62,7 @@ export const ShareMemoDialog = ({
     onSuccess: () => {
       queryClient.setQueryData(queryKey, { share: null });
       void queryClient.invalidateQueries({ queryKey: ["memo-shares"] });
+      onOpenChange(false);
     },
   });
   useEffect(() => {
@@ -68,7 +71,7 @@ export const ShareMemoDialog = ({
     revokeMutation.reset();
     setCopyState("idle");
     setCopyTarget("link");
-  }, [memoId]);
+  }, [memoId, open]);
   useEffect(() => () => {
     if (copyResetTimerRef.current !== null) window.clearTimeout(copyResetTimerRef.current);
   }, []);
@@ -79,6 +82,20 @@ export const ShareMemoDialog = ({
   const shareUrl = share ? getPublicShareUrl(share.token) : "";
   const isWorking = shareQuery.isLoading || createMutation.isPending || passwordMutation.isPending || revokeMutation.isPending;
   const error = shareQuery.error || createMutation.error || passwordMutation.error || revokeMutation.error;
+
+  useEffect(() => {
+    if (!open) {
+      autoCreateAttemptRef.current = null;
+      return;
+    }
+    // Wait for a successful read: a failed lookup must not enable public access.
+    // Attempt once per opening, including under StrictMode and after refetches.
+    if (shareQuery.isSuccess && !shareQuery.isFetching && !share &&
+        !revokeMutation.isSuccess && autoCreateAttemptRef.current !== memoId) {
+      autoCreateAttemptRef.current = memoId;
+      createMutation.mutate();
+    }
+  }, [open, memoId, shareQuery.isSuccess, shareQuery.isFetching, share, revokeMutation.isSuccess, createMutation.mutate]);
 
   const markCopied = (target: "link" | "password" | "both", copied: boolean) => {
     setCopyTarget(target);
@@ -103,20 +120,17 @@ export const ShareMemoDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100%-2rem)] max-w-[640px] space-y-4">
+      <DialogContent aria-describedby={undefined} className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}>
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />
             {t("sharing.title")}
           </DialogTitle>
-          <DialogDescription className="text-xs leading-5 text-slate-500">
-            {t(share?.passwordProtected ? "sharing.descriptionProtected" : "sharing.description")}
-          </DialogDescription>
         </DialogHeader>
 
-        {shareQuery.isLoading ? (
+        {shareQuery.isLoading || (!share && !error) ? (
           <div className="flex min-h-20 items-center justify-center text-slate-500" role="status">
-            <LoaderCircle className="h-5 w-5 animate-spin" />
+            <LoaderCircle className="h-5 w-5 animate-spin" aria-label={t("sharing.publicLoading")} />
           </div>
         ) : share ? (
           <div className="space-y-3.5">
@@ -170,13 +184,18 @@ export const ShareMemoDialog = ({
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
-            <p className="text-xs leading-6 text-slate-600">{t("sharing.inactiveHint")}</p>
-            <Button className="w-full" variant="solid" disabled={isWorking} onClick={() => createMutation.mutate()}>
-              {createMutation.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Link2 className="h-4 w-4" />}
-              {t("sharing.create")}
-            </Button>
-          </div>
+          <Button
+            className="w-full"
+            variant="solid"
+            disabled={isWorking}
+            onClick={() => {
+              if (shareQuery.isError) void shareQuery.refetch();
+              else createMutation.mutate();
+            }}
+          >
+            {createMutation.isPending ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
+            {t("sharing.retry")}
+          </Button>
         )}
         {error ? <p className="text-xs leading-5 text-rose-600" role="alert">{t("sharing.error")}</p> : null}
 

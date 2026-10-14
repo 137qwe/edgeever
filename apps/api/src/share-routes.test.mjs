@@ -559,3 +559,29 @@ describe("memo share password recovery", () => {
     sqlite.close();
   });
 });
+
+describe("one-step memo sharing", () => {
+  test("concurrent creation and retries reuse one link; reopening preserves its password", async () => {
+    const { sqlite, environment } = createDatabaseEnvironment();
+    const app = createShareApp(environment);
+    const path = "/api/v1/memos/memo_private/share";
+    const responses = await Promise.all([
+      app.request(path, { method: "POST" }, environment),
+      app.request(path, { method: "POST" }, environment),
+    ]);
+    const shares = await Promise.all(responses.map(async (response) => (await response.json()).share));
+    expect(shares[0].token).toBe(shares[1].token);
+    expect(sqlite.query("SELECT COUNT(*) AS count FROM memo_shares WHERE memo_id = 'memo_private'").get().count).toBe(1);
+    const protectedShare = (await (await app.request(path, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passwordProtected: true }),
+    }, environment)).json()).share;
+    const reopened = (await (await app.request(path, { method: "POST" }, environment)).json()).share;
+    expect(reopened.token).toBe(protectedShare.token);
+    expect(reopened.password).toBe(protectedShare.password);
+    expect(reopened.passwordProtected).toBe(true);
+    await app.request(path, { method: "DELETE" }, environment);
+    expect((await (await app.request(path, {}, environment)).json()).share).toBeNull();
+    sqlite.close();
+  });
+});

@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SharePasswordControls } from "./SharePasswordControls";
+import { SHARE_DIALOG_WIDTH_CLASS_NAME } from "./share-dialog-layout";
 import { Input } from "@/components/ui/input";
 import { api, getConfiguredDesktopApiBaseUrl } from "@/lib/api";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -117,7 +118,7 @@ export const ShareNotebookDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100%-2rem)] max-w-[640px] space-y-4">
+      <DialogContent className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}>
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />

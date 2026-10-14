@@ -14,7 +14,6 @@ export const SharePasswordControls = ({
   shareUrl,
   onChange,
   hideCopyBoth = false,
-  scopeHint,
 }: {
   passwordProtected: boolean;
   password: string;
@@ -22,7 +21,6 @@ export const SharePasswordControls = ({
   shareUrl: string;
   onChange: (enabled: boolean) => void;
   hideCopyBoth?: boolean;
-  scopeHint?: string;
 }) => {
   const { t } = useTranslation();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
@@ -92,9 +90,11 @@ export const SharePasswordControls = ({
               <TooltipContent>{t("sharing.regeneratePassword")}</TooltipContent>
             </Tooltip>
           </div>
-          <p className="text-xs leading-5 text-slate-500">
-            {password ? (scopeHint || t("sharing.notebookPasswordScopeHint")) : t("sharing.passwordUnavailableHint")}
-          </p>
+          {!password ? (
+            <p className="text-xs leading-5 text-slate-500">
+              {t("sharing.passwordUnavailableHint")}
+            </p>
+          ) : null}
           {!hideCopyBoth && password ? (
             <Button
               variant="ghost"
