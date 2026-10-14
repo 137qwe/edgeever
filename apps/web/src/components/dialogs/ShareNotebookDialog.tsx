@@ -38,6 +38,7 @@ export const ShareNotebookDialog = ({
   const queryClient = useQueryClient();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const copyResetTimerRef = useRef<number | null>(null);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
 
   const queryKey = [
     "notebook-share",
@@ -118,7 +119,14 @@ export const ShareNotebookDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}>
+      <DialogContent
+        ref={dialogContentRef}
+        className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          dialogContentRef.current?.focus({ preventScroll: true });
+        }}
+      >
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />

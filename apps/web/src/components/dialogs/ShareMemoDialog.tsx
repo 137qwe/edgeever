@@ -33,6 +33,7 @@ export const ShareMemoDialog = ({
   const [copyState, setCopyState] = useState<"idle" | "copied" | "error">("idle");
   const [copyTarget, setCopyTarget] = useState<"link" | "password" | "both">("link");
   const copyResetTimerRef = useRef<number | null>(null);
+  const dialogContentRef = useRef<HTMLDivElement>(null);
   const autoCreateAttemptRef = useRef<string | null>(null);
   const queryKey = memoShareQueryKey(memoId);
   const shareQuery = useQuery({
@@ -120,7 +121,15 @@ export const ShareMemoDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent aria-describedby={undefined} className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}>
+      <DialogContent
+        ref={dialogContentRef}
+        aria-describedby={undefined}
+        className={`${SHARE_DIALOG_WIDTH_CLASS_NAME} space-y-4`}
+        onOpenAutoFocus={(event) => {
+          event.preventDefault();
+          dialogContentRef.current?.focus({ preventScroll: true });
+        }}
+      >
         <DialogHeader className="space-y-1.5 text-left">
           <DialogTitle className="flex items-center gap-2 text-base font-semibold">
             <Share2 className="h-5 w-5 text-slate-700" />
