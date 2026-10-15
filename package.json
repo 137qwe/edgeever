@@ -223,6 +223,7 @@
   "patchedDependencies": {
     "mermaid@11.16.1": "patches/mermaid@11.16.1.patch",
     "expo-sharing@57.0.22": "patches/expo-sharing@57.0.22.patch",
-    "npm@11.21.0": "patches/npm@11.21.0.patch"
+    "npm@11.21.0": "patches/npm@11.21.0.patch",
+    "@joplin/turndown-plugin-gfm@1.0.68": "patches/@joplin%2Fturndown-plugin-gfm@1.0.68.patch"
   }
 }
