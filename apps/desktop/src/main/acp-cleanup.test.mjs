@@ -28,7 +28,9 @@ describe("ACP process and workspace cleanup", () => {
     expect(child.listenerCount("close")).toBe(0);
   });
 
-  test("waits when stopped after exit while a real descendant retains stdout", async () => {
+  // Windows does not retain this inherited Node pipe like POSIX; use the real cwd-lock
+  // and official Codex process-chain checks there, plus the lifecycle tests below.
+  test.skipIf(process.platform === "win32")("waits when stopped after exit while a real descendant retains stdout", async () => {
     // Use Node, matching Electron, rather than Bun's different child-pipe lifecycle.
     const source = `
       import assert from "node:assert/strict";
@@ -56,6 +58,15 @@ describe("ACP process and workspace cleanup", () => {
       await stopped;
       assert.equal(closed, true);
       assert.equal(stopAcpChild(parent), stopped);
+    `;
+    await promisify(execFile)("node", ["--input-type=module", "-e", source], { windowsHide: true, timeout: 10_000 });
+  });
+
+  test("returns immediately when a tracked process closed before the first stop request", async () => {
+    const source = `
+      import { spawn } from "node:child_process";
+      import { once } from "node:events";
+      import { spawnAcpChild, stopAcpChild } from ${JSON.stringify(new URL("./acp-host.mjs", import.meta.url).href)};
       // Also cover a process that has closed before stop is first requested.
       const finished = await spawnAcpChild(spawn, { command: process.execPath, args: ["-e", ""] }, process.cwd());
       await once(finished, "close");
