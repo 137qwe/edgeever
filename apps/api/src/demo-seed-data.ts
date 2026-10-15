@@ -114,7 +114,7 @@ export const DEMO_ARCHITECTURE_DIAGRAM_EN: DiagramDocument = {
 export const DEMO_FLOWCHART_DIAGRAM_ZH: DiagramDocument = {
   schemaVersion: 1,
   kind: "flowchart",
-  theme: "mint",
+  theme: "plain",
   nodes: [
     { id: "capture", label: "捕捉灵感", x: 72, y: 176, width: 136, height: 48, shape: "terminator" },
     { id: "enrich", label: "补充正文、标签与附件", x: 264, y: 168, width: 184, height: 64, shape: "process" },
@@ -138,7 +138,7 @@ export const DEMO_FLOWCHART_DIAGRAM_ZH: DiagramDocument = {
 export const DEMO_FLOWCHART_DIAGRAM_EN: DiagramDocument = {
   schemaVersion: 1,
   kind: "flowchart",
-  theme: "mint",
+  theme: "plain",
   nodes: [
     { id: "capture", label: "Capture an idea", x: 72, y: 176, width: 136, height: 48, shape: "terminator" },
     { id: "enrich", label: "Add content, tags & files", x: 264, y: 168, width: 184, height: 64, shape: "process" },
@@ -162,7 +162,7 @@ export const DEMO_FLOWCHART_DIAGRAM_EN: DiagramDocument = {
 export const DEMO_MIND_MAP_DIAGRAM_ZH: DiagramDocument = {
   schemaVersion: 1,
   kind: "mind-map",
-  theme: "brand",
+  theme: "plain",
   structure: "map",
   nodes: [
     { id: "root", label: "我的第二大脑", x: 72, y: 216, width: 152, height: 52, shape: "topic" },
@@ -200,7 +200,7 @@ export const DEMO_MIND_MAP_DIAGRAM_ZH: DiagramDocument = {
 export const DEMO_MIND_MAP_DIAGRAM_EN: DiagramDocument = {
   schemaVersion: 1,
   kind: "mind-map",
-  theme: "brand",
+  theme: "plain",
   structure: "map",
   nodes: [
     { id: "root", label: "My Second Brain", x: 72, y: 216, width: 152, height: 52, shape: "topic" },
