@@ -2800,7 +2800,7 @@ export const WorkspaceApp = ({
       }
 
       const targetElement = event.target instanceof Element ? event.target : null;
-      const isEditorTextTarget = Boolean(targetElement?.closest(".ProseMirror"));
+      const isEditorTextTarget = Boolean(targetElement?.closest(".ProseMirror, .edgeever-markdown-source-editor"));
 
       const transientLayerOpen = Boolean(
         appNoticeDialog ||
