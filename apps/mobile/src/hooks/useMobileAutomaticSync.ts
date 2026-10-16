@@ -11,6 +11,7 @@ import {
   type MobileSyncQueueItem,
 } from "../lib/sync-queue";
 import { replaceLocalMemoId, upsertLocalMemo } from "../lib/local-mirror";
+import { settleMobileSyncPass } from "./mobile-sync-settle";
 
 type MobileClient = ReturnType<typeof createEdgeEverClient>;
 
@@ -103,27 +104,24 @@ export const useMobileAutomaticSync = ({
       }
     } catch {
       // Queue metadata remains durable; the scheduled pass resumes it.
-    } finally {
-      await refreshSyncQueueItems();
-      runningRef.current = false;
-
-      if (requestedRef.current) {
-        const nextForce = requestedForceRef.current;
-        requestedRef.current = false;
-        requestedForceRef.current = false;
-        void runRef.current(nextForce);
-        // oxlint-disable-next-line no-unsafe-finally -- the catch above handles every error, so nothing is overridden; the finally block is restructured separately
-        return;
-      }
-
-      const retryDelay = await getMobileSyncRetryDelay(syncQueueScope);
-      if (retryDelay !== null) {
-        retryTimerRef.current = setTimeout(() => {
-          retryTimerRef.current = null;
-          void runRef.current(false);
-        }, retryDelay);
-      }
     }
+
+    await settleMobileSyncPass(
+      { running: runningRef, requested: requestedRef, requestedForce: requestedForceRef },
+      {
+        refreshQueueItems: refreshSyncQueueItems,
+        getRetryDelay: () => getMobileSyncRetryDelay(syncQueueScope),
+        rerun: (nextForce) => {
+          void runRef.current(nextForce);
+        },
+        scheduleRetry: (retryDelay) => {
+          retryTimerRef.current = setTimeout(() => {
+            retryTimerRef.current = null;
+            void runRef.current(false);
+          }, retryDelay);
+        },
+      },
+    );
   }, [client, dataScope, invalidateSyncedWorkspace, onMemoIdRemapped, queryClient, refreshSyncQueueItems, syncQueueScope]);
 
   const runForcedSync = useCallback(async () => {
