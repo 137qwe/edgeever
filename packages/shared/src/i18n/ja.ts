@@ -1766,6 +1766,8 @@ export const ja = {
       installFailed: "インストールまたは接続確認に失敗しました。以前のバージョンは保持されています。",
       updateFailed: "自動更新に失敗しました。以前のバージョンを継続して使用します。",
       updateFailureReason: "失敗の理由：{{reason}}",
+      connectionFailureReason: "接続失敗の理由：{{reason}}",
+      connectionFailureUnknown: "デスクトップアプリから具体的な理由が返されませんでした。接続を再確認し、デスクトップの診断ログを提供してください。",
       updateTimeoutHint: "ダウンロードまたは接続がタイムアウトしました。ネットワークを確認して再試行してください。",
       updateNetworkHint: "更新サービスに接続できません。ネットワークとシステムプロキシを確認して再試行してください。",
       retryUpdate: "更新を再試行",
