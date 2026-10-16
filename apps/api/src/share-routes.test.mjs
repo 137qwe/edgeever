@@ -341,7 +341,7 @@ const memberAuth = {
   role: "member",
 };
 
-const createShareApp = (environment) => {
+const createShareApp = () => {
   const app = new Hono();
   app.use("/api/v1/*", async (c, next) => {
     c.set("auth", memberAuth);
