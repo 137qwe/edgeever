@@ -1,3 +1,6 @@
+import type { FontLoadStatus } from "@/lib/font-load-state";
+import { useFontPreviewStatus } from "@/lib/use-font-preview-status";
+import { FontLoadFeedback } from "@/components/FontLoadFeedback";
 import { FONT_CATALOG, FONT_IDS } from "@edgeever/shared/font-catalog";
 import { prepareNoteImageAssets } from "@edgeever/shared/note-image-fonts";
 import { noteImageAssetUrls } from "@edgeever/shared/note-image-assets";
@@ -143,6 +146,8 @@ export const ShareNoteImageDialog = ({
   const [error, setError] = useState<false | true | "font">(false);
   const [retry, setRetry] = useState(0);
   const [copyState, setCopyState] = useState<"idle" | "copying" | "copied" | "failed">("idle");
+  const [contentFontStatus, setContentFontStatus] = useState<FontLoadStatus>("loading");
+  const { status: selectedFontStatus, onPreviewStatus } = useFontPreviewStatus(`${fontStyle}:${theme}:${retry}`, contentFontStatus);
   const generationRef = useRef(0);
   const copyAttemptRef = useRef(0);
 
@@ -153,6 +158,7 @@ export const ShareNoteImageDialog = ({
     setCopyState("idle");
     setPrepared(null);
     setError(false);
+    setContentFontStatus("loading");
     const controller = new AbortController();
     const timer = window.setTimeout(() => {
       void createNoteImage({
@@ -175,6 +181,7 @@ export const ShareNoteImageDialog = ({
         tags: showTags ? source.tags : [],
         updatedAt: showUpdatedAt ? source.updatedAt : "",
         signal: controller.signal,
+        onFontLoadStatus: status => { if (generation === generationRef.current) setContentFontStatus(status); },
       })
         .then((result) => {
           if (generation !== generationRef.current) return;
@@ -190,6 +197,7 @@ export const ShareNoteImageDialog = ({
     }, 180);
     return () => {
       window.clearTimeout(timer);
+      if (generationRef.current === generation) generationRef.current++;
       controller.abort();
     };
   }, [
@@ -349,17 +357,18 @@ export const ShareNoteImageDialog = ({
               <Select value={fontStyle} onOpenChange={setFontMenuOpen} onValueChange={(value) => setPreference("fontStyle", value as NoteImageFontStyle)}>
                 <SelectTrigger aria-label={t("editor.imageShare.fontStyle")} className="h-9 w-full text-xs font-normal">
                   <SelectValue>
-                    <NoteImageFontLabel label={t(FONT_OPTIONS.find(item => item.id === fontStyle)!.labelKey)} fontStyle={fontStyle} theme={theme} enabled={open} />
+                    <NoteImageFontLabel label={t(FONT_OPTIONS.find(item => item.id === fontStyle)!.labelKey)} fontStyle={fontStyle} theme={theme} enabled={open} status={error === true ? undefined : selectedFontStatus} onStatusChange={onPreviewStatus} retryKey={retry} />
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent className="max-h-80">
                   {FONT_OPTIONS.map((item) => (
-                    <SelectItem key={item.id} value={item.id}>
+                    <SelectItem key={item.id} value={item.id} textValue={t(item.labelKey)}>
                       <NoteImageFontLabel label={t(item.labelKey)} fontStyle={item.id} theme={theme} enabled={open && fontMenuOpen} visibleOnly />
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {error === true ? null : <FontLoadFeedback status={selectedFontStatus} onRetry={() => setRetry(value => value + 1)} />}
 
               {/* Font Size */}
               <div className="space-y-1.5 pt-1">

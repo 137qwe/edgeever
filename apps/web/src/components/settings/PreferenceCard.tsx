@@ -1,7 +1,10 @@
+import { useFontPreviewStatus } from "@/lib/use-font-preview-status";
 import { FONT_CATALOG, FONT_IDS, isRemoteNoteImageFont } from "@edgeever/shared/font-catalog";
+import { FontLoadFeedback } from "@/components/FontLoadFeedback";
+import { editorFontLoadState, retryEditorCatalogFont } from "@/lib/editor-catalog-fonts";
 import { FontLabel } from "@/components/FontLabel";
 import { AlignVerticalSpaceAround, AppWindow, BookOpenText, ChartNoAxesCombined, Code2, Image, Keyboard, Languages, ListTree, MousePointerClick, Palette, Sparkles, SpellCheck, SunMoon, Type } from "lucide-react";
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useSyncExternalStore, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { NoteProsePatch, NoteProsePaletteChoice, ResolvedNoteProse } from "@edgeever/shared";
 import { DEFAULT_NOTE_PROSE_CSS, MAX_NOTE_PROSE_CSS_BYTES, NOTE_PROSE_FONT_SIZES, NOTE_PROSE_PALETTE_CHOICES, NOTE_PROSE_PALETTES, noteProseCssDropsDeclarations } from "@edgeever/shared";
@@ -91,6 +94,10 @@ const FontChoiceFields = ({
 }) => {
   const { t } = useTranslation();
   const [fontOpen, setFontOpen] = useState(false);
+  const [fontRetry, setFontRetry] = useState(0);
+  const bodyStatus = useSyncExternalStore(editorFontLoadState.subscribe, editorFontLoadState.getSnapshot, editorFontLoadState.getSnapshot);
+  const catalogSelected = includeCatalog && isRemoteNoteImageFont(preference.choice);
+  const { status: selectedStatus, onPreviewStatus } = useFontPreviewStatus(`${preference.choice}:${fontRetry}`, bodyStatus === "idle" ? "loading" : bodyStatus);
   return (
     <div className="flex w-full shrink-0 flex-col gap-2 sm:w-80">
       <Select
@@ -99,7 +106,7 @@ const FontChoiceFields = ({
         onValueChange={(value) => onChange({ choice: value as EditorBodyFontChoice, customFamily: preference.customFamily })}
       >
         <SelectTrigger aria-label={label} className="h-9 bg-card">
-          <SelectValue>{includeCatalog && isRemoteNoteImageFont(preference.choice) ? <FontLabel label={t(FONT_CATALOG[preference.choice].labelKey)} fontId={preference.choice} enabled /> : undefined}</SelectValue>
+          <SelectValue>{includeCatalog && isRemoteNoteImageFont(preference.choice) ? <FontLabel label={t(FONT_CATALOG[preference.choice].labelKey)} fontId={preference.choice} enabled onStatusChange={onPreviewStatus} status={selectedStatus} retryKey={fontRetry} /> : undefined}</SelectValue>
         </SelectTrigger>
         <SelectContent className="max-h-80">
           <SelectItem value="system">{t("settings.editorBodyFonts.system")}</SelectItem>
@@ -144,13 +151,14 @@ const FontChoiceFields = ({
             </span>
           </SelectItem>
           {(includeCatalog ? FONT_IDS : ["wenkai", "zhuque"] as const).map(id => (
-            <SelectItem key={id} value={id}>
+            <SelectItem key={id} value={id} textValue={t(FONT_CATALOG[id].labelKey)}>
               <FontLabel label={t(FONT_CATALOG[id].labelKey)} fontId={includeCatalog ? id : undefined} fontFamily={includeCatalog ? undefined : BUNDLED_FONT_STACKS[id as "wenkai" | "zhuque"]} enabled={fontOpen} visibleOnly />
             </SelectItem>
           ))}
           <SelectItem value="custom">{t("settings.editorBodyFonts.custom")}</SelectItem>
         </SelectContent>
       </Select>
+      {catalogSelected ? <FontLoadFeedback status={selectedStatus} onRetry={() => { setFontRetry(value => value + 1); retryEditorCatalogFont(); }} /> : null}
       {preference.choice === "custom" ? (
         <div className="flex flex-col gap-1.5">
           <Input

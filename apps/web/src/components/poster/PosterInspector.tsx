@@ -1,3 +1,4 @@
+import type { FontLoadStatus } from "@/lib/font-load-state";
 import {
   AlignCenter,
   AlignHorizontalDistributeCenter,
@@ -35,6 +36,8 @@ export type PosterAlign =
   "left" | "center" | "right" | "top" | "middle" | "bottom";
 export function PosterInspector({
   elements,
+  fontStatus,
+  onRetryFont,
   disabled,
   onPatch,
   onAlign,
@@ -43,6 +46,8 @@ export function PosterInspector({
   onImageFit,
   zh,
 }: {
+  fontStatus: FontLoadStatus;
+  onRetryFont: () => void;
   elements: PosterElement[];
   disabled: boolean;
   onPatch: (patch: Partial<PosterElement>) => void;
@@ -112,6 +117,8 @@ export function PosterInspector({
       </div>
       {active?.type === "text" && (
         <PosterFontPicker
+          status={fontStatus}
+          onRetry={onRetryFont}
           value={active.fontFamily}
           disabled={!editable}
           zh={zh}
