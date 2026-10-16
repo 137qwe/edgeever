@@ -110,6 +110,24 @@ export function PosterInspector({
           </PosterTool>
         </div>
       </div>
+      {active?.type === "text" && (
+        <select
+          aria-label={t("poster.fontFamily")}
+          className="h-9 w-full rounded-md border border-slate-200 bg-card px-2 text-xs"
+          value={active.fontFamily}
+          disabled={!editable}
+          onChange={(event) => onPatch({ fontFamily: event.target.value })}
+        >
+          <option value="sans-serif">{t("poster.sans")}</option>
+          <option value="serif">{t("poster.serif")}</option>
+          <option value="monospace">{t("poster.mono")}</option>
+          {POSTER_FONTS.map((font) => (
+            <option key={font.family} value={font.family}>
+              {zh ? font.zh : font.en}
+            </option>
+          ))}
+        </select>
+      )}
       {active && (
         <Input
           aria-label={t("poster.layerName")}
@@ -200,22 +218,6 @@ export function PosterInspector({
                 })
               }
             />
-            <select
-              aria-label={t("poster.fontFamily")}
-              className="h-9 w-full rounded-md border border-slate-200 bg-card px-2 text-xs"
-              value={active.fontFamily}
-              disabled={!editable}
-              onChange={(event) => onPatch({ fontFamily: event.target.value })}
-            >
-              <option value="sans-serif">{t("poster.sans")}</option>
-              <option value="serif">{t("poster.serif")}</option>
-              <option value="monospace">{t("poster.mono")}</option>
-              {POSTER_FONTS.map((font) => (
-                <option key={font.family} value={font.family}>
-                  {zh ? font.zh : font.en}
-                </option>
-              ))}
-            </select>
             <div className="flex items-end gap-2">
               <div className="min-w-0 flex-1">
                 <PosterNumber
