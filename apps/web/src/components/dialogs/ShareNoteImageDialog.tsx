@@ -26,10 +26,11 @@ import {
   type NoteImageTheme,
   type PreparedNoteImage,
 } from "@/lib/note-image-export";
-import { NOTE_IMAGE_THEME_OPTIONS, NOTE_IMAGE_TEMPLATE_FONT_FAMILIES, resolveTheme, buildNoteImageCardMarkup, escapeCardHtml, generateCardCss } from "@edgeever/shared/note-image-card";
+import { NOTE_IMAGE_THEME_OPTIONS, buildNoteImageCardMarkup, escapeCardHtml, generateCardCss } from "@edgeever/shared/note-image-card";
 import { getHtmlImageEmbedNoticeKind } from "@/lib/note-html-export";
 import { readNoteImagePreferences, writeNoteImagePreferences, type NoteImagePreferences } from "@/lib/note-image-preference";
 import { cn } from "@/lib/utils";
+import { NoteImageFontLabel } from "./NoteImageFontLabel";
 
 export type ShareNoteImageSource = Omit<DownloadNoteImageOptions, "background" | "format">;
 
@@ -39,6 +40,14 @@ const FONT_OPTIONS: Array<{ id: NoteImageFontStyle; labelKey: string }> = [
   { id: "serif", labelKey: "editor.imageShare.fontStyles.serif" },
   { id: "sans", labelKey: "editor.imageShare.fontStyles.sans" },
   { id: "mono", labelKey: "editor.imageShare.fontStyles.mono" },
+  { id: "smiley", labelKey: "editor.imageShare.fontStyles.smiley" },
+  { id: "wenkai", labelKey: "editor.imageShare.fontStyles.wenkai" },
+  { id: "zhuque", labelKey: "editor.imageShare.fontStyles.zhuque" },
+  { id: "heavy", labelKey: "editor.imageShare.fontStyles.heavy" },
+  { id: "puhui", labelKey: "editor.imageShare.fontStyles.puhui" },
+  { id: "puhui-heavy", labelKey: "editor.imageShare.fontStyles.puhuiHeavy" },
+  { id: "youshe", labelKey: "editor.imageShare.fontStyles.youshe" },
+  { id: "shuhei", labelKey: "editor.imageShare.fontStyles.shuhei" },
 ];
 
 const SIZE_OPTIONS: Array<{ id: NoteImageFontSize; labelKey: string }> = [
@@ -121,6 +130,7 @@ export const ShareNoteImageDialog = ({
 }) => {
   const { t } = useTranslation();
   const [preferences, setPreferences] = useState(readNoteImagePreferences);
+  const [fontMenuOpen, setFontMenuOpen] = useState(false);
   const {
     format, theme, fontStyle, fontSize, cardWidth, showTitle, showNotebook, showTags,
     showUpdatedAt, showReadingTime, showAuthor, author, showBranding,
@@ -135,7 +145,8 @@ export const ShareNoteImageDialog = ({
 
   const [prepared, setPrepared] = useState<PreparedNoteImage | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<false | true | "font">(false);
+  const [retry, setRetry] = useState(0);
   const [copyState, setCopyState] = useState<"idle" | "copying" | "copied" | "failed">("idle");
   const generationRef = useRef(0);
   const copyAttemptRef = useRef(0);
@@ -178,8 +189,8 @@ export const ShareNoteImageDialog = ({
           });
           setPrepared(result);
         })
-        .catch(() => {
-          if (generation === generationRef.current) setError(true);
+        .catch((reason: unknown) => {
+          if (generation === generationRef.current) setError(reason instanceof Error && reason.message === "NOTE_IMAGE_FONT_UNAVAILABLE" ? "font" : true);
         });
     }, 180);
     return () => {
@@ -193,6 +204,7 @@ export const ShareNoteImageDialog = ({
     fontStyle,
     format,
     open,
+    retry,
     showAuthor,
     showBranding,
     showNotebook,
@@ -279,8 +291,9 @@ export const ShareNoteImageDialog = ({
                   />
                 </div>
               ) : error ? (
-                <div className="my-auto flex min-h-64 items-center justify-center text-xs leading-5 text-rose-600" role="alert">
-                  {t("editor.imageExport.error")}
+                <div className="my-auto flex min-h-64 flex-col items-center justify-center gap-3 text-xs leading-5 text-rose-600" role="alert">
+                  {t(error === "font" ? "editor.imageShare.remoteFontError" : "editor.imageExport.error")}
+                  <Button variant="outline" size="sm" onClick={() => setRetry(value => value + 1)}>{t("editor.imageShare.retry")}</Button>
                 </div>
               ) : (
                 <div className="my-auto flex min-h-64 items-center justify-center gap-2 text-xs leading-5 text-slate-500" role="status">
@@ -338,25 +351,20 @@ export const ShareNoteImageDialog = ({
                 <Type className="h-3.5 w-3.5" />
                 {t("editor.imageShare.fontStyle")}
               </legend>
-              <div className="grid grid-cols-2 gap-1.5">
-                {FONT_OPTIONS.map((item, idx) => (
-                  <button
-                    key={item.id}
-                    aria-pressed={fontStyle === item.id}
-                    className={cn(
-                      "h-8 truncate rounded-md border px-2 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-slate-900/20",
-                      idx === 0 && "col-span-2",
-                      fontStyle === item.id
-                        ? "border-slate-900 bg-slate-100 text-slate-950 font-semibold"
-                        : "border-slate-200 bg-card text-slate-600 hover:bg-slate-50",
-                    )}
-                    type="button"
-                    onClick={() => setPreference("fontStyle", item.id)}
-                  >
-                    {t(item.labelKey)}{item.id === "auto" ? ` · ${NOTE_IMAGE_TEMPLATE_FONT_FAMILIES[resolveTheme(undefined, theme)]}` : ""}
-                  </button>
-                ))}
-              </div>
+              <Select value={fontStyle} onOpenChange={setFontMenuOpen} onValueChange={(value) => setPreference("fontStyle", value as NoteImageFontStyle)}>
+                <SelectTrigger aria-label={t("editor.imageShare.fontStyle")} className="h-9 w-full text-xs font-normal">
+                  <SelectValue>
+                    <NoteImageFontLabel label={t(FONT_OPTIONS.find(item => item.id === fontStyle)!.labelKey)} fontStyle={fontStyle} theme={theme} enabled={open} />
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className="max-h-80">
+                  {FONT_OPTIONS.map((item) => (
+                    <SelectItem key={item.id} value={item.id}>
+                      <NoteImageFontLabel label={t(item.labelKey)} fontStyle={item.id} theme={theme} enabled={open && fontMenuOpen} visibleOnly />
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
               {/* Font Size */}
               <div className="space-y-1.5 pt-1">
