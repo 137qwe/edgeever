@@ -1,3 +1,5 @@
+import { FONT_CATALOG, FONT_IDS, isRemoteNoteImageFont } from "@edgeever/shared/font-catalog";
+import { FontLabel } from "@/components/FontLabel";
 import { AlignVerticalSpaceAround, AppWindow, BookOpenText, ChartNoAxesCombined, Code2, Image, Keyboard, Languages, ListTree, MousePointerClick, Palette, Sparkles, SpellCheck, SunMoon, Type } from "lucide-react";
 import { useState, useEffect, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,6 +42,7 @@ import {
 } from "@/i18n";
 import {
   applyEditorBodyFontPreference,
+  BUNDLED_FONT_STACKS,
   getFontChoicePreviewStack,
   readEditorBodyFontPreference,
   writeEditorBodyFontPreference,
@@ -79,45 +82,33 @@ const FontChoiceFields = ({
   label,
   preference,
   onChange,
+  includeCatalog = false,
 }: {
+  includeCatalog?: boolean;
   label: string;
   preference: EditorBodyFontPreference;
   onChange: (preference: EditorBodyFontPreference) => void;
 }) => {
   const { t } = useTranslation();
+  const [fontOpen, setFontOpen] = useState(false);
   return (
     <div className="flex w-full shrink-0 flex-col gap-2 sm:w-80">
       <Select
         value={preference.choice}
+        onOpenChange={setFontOpen}
         onValueChange={(value) => onChange({ choice: value as EditorBodyFontChoice, customFamily: preference.customFamily })}
       >
         <SelectTrigger aria-label={label} className="h-9 bg-card">
-          <SelectValue />
+          <SelectValue>{includeCatalog && isRemoteNoteImageFont(preference.choice) ? <FontLabel label={t(FONT_CATALOG[preference.choice].labelKey)} fontId={preference.choice} enabled /> : undefined}</SelectValue>
         </SelectTrigger>
-        <SelectContent>
+        <SelectContent className="max-h-80">
           <SelectItem value="system">{t("settings.editorBodyFonts.system")}</SelectItem>
-          <SelectItem
-            value="wenkai"
-            style={{ fontFamily: getFontChoicePreviewStack("wenkai") }}
-          >
-            <span style={{ fontFamily: getFontChoicePreviewStack("wenkai") }}>
-              {t("settings.editorBodyFonts.wenkai")}
-            </span>
-          </SelectItem>
           <SelectItem
             value="wenkai-screen"
             style={{ fontFamily: getFontChoicePreviewStack("wenkai-screen") }}
           >
             <span style={{ fontFamily: getFontChoicePreviewStack("wenkai-screen") }}>
               {t("settings.editorBodyFonts.wenkaiScreen")}
-            </span>
-          </SelectItem>
-          <SelectItem
-            value="zhuque"
-            style={{ fontFamily: getFontChoicePreviewStack("zhuque") }}
-          >
-            <span style={{ fontFamily: getFontChoicePreviewStack("zhuque") }}>
-              {t("settings.editorBodyFonts.zhuque")}
             </span>
           </SelectItem>
           <SelectItem
@@ -152,6 +143,11 @@ const FontChoiceFields = ({
               {t("settings.editorBodyFonts.sourceSerif")}
             </span>
           </SelectItem>
+          {(includeCatalog ? FONT_IDS : ["wenkai", "zhuque"] as const).map(id => (
+            <SelectItem key={id} value={id}>
+              <FontLabel label={t(FONT_CATALOG[id].labelKey)} fontId={includeCatalog ? id : undefined} fontFamily={includeCatalog ? undefined : BUNDLED_FONT_STACKS[id as "wenkai" | "zhuque"]} enabled={fontOpen} visibleOnly />
+            </SelectItem>
+          ))}
           <SelectItem value="custom">{t("settings.editorBodyFonts.custom")}</SelectItem>
         </SelectContent>
       </Select>
@@ -429,6 +425,7 @@ export const PreferenceCard = ({
           <FontChoiceFields
             label={t("settings.editorBodyFontTitle")}
             preference={editorBodyFont}
+            includeCatalog
             onChange={updateEditorBodyFont}
           />
         </div>

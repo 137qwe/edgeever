@@ -1,3 +1,5 @@
+import { CATALOG_FONT_STACKS } from "./font-catalog";
+
 export type NoteImageFormat = "jpeg" | "png";
 export const NOTE_IMAGE_THEME_OPTIONS = ["gradient", "glass", "quote", "book", "memo", "bento", "black-sun", "frame", "handwritten", "code"] as const;
 export type NoteImageActiveTheme = (typeof NOTE_IMAGE_THEME_OPTIONS)[number];
@@ -101,14 +103,7 @@ export const NOTE_IMAGE_FONT_FAMILIES: Record<Exclude<NoteImageFontStyle, "auto"
   serif: 'Georgia, "Nimbus Roman No9 L", "Songti SC", "Noto Serif SC", "Source Han Serif SC", "Source Han Serif CN", "STSong", "AR PL New Sung", "SimSun", "Hiragino Mincho ProN", serif',
   mono: '"JetBrains Mono", "SF Mono", "Fira Code", "Cascadia Code", Menlo, Monaco, Consolas, "Liberation Mono", monospace',
   kai: '"LXGW WenKai", "霞鹜文楷", "Kaiti SC", "STKaiti", "KaiTi", "KaiTi_GB2312", "BiauKai", "楷体", "STFangsong", "FangSong", serif',
-  smiley: '"EdgeEver Share Smiley", sans-serif',
-  wenkai: '"EdgeEver Share WenKai", serif',
-  zhuque: '"EdgeEver Share Zhuque", serif',
-  heavy: '"EdgeEver Share Noto Heavy", sans-serif',
-  puhui: '"EdgeEver Share Puhui", sans-serif',
-  "puhui-heavy": '"EdgeEver Share Puhui Heavy", sans-serif',
-  youshe: '"EdgeEver Share Youshe", sans-serif',
-  shuhei: '"EdgeEver Share Shuhei", sans-serif',
+  ...CATALOG_FONT_STACKS,
 };
 
 export const NOTE_IMAGE_TEMPLATE_FONT_FAMILIES: Record<NoteImageActiveTheme, string> = {

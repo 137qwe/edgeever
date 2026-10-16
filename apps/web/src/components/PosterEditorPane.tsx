@@ -1,3 +1,4 @@
+import { loadPosterFont } from "@/lib/poster-design/fonts";
 import { AI_ASSISTANT_LAUNCHER_POSITION } from "@/lib/ai-assistant-launcher";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -782,6 +783,16 @@ export default function PosterEditorPane({
     };
     instance.on("object:modified", changed);
     instance.on("text:editing:exited", changed);
+    instance.on("text:changed", ({ target }) => {
+      if (!(target instanceof Textbox)) return;
+      const text = target.text;
+      void loadPosterFont(target.fontFamily, text).then(() => {
+        if (canvas.current !== instance || target.text !== text) return;
+        target.initDimensions();
+        target.dirty = true;
+        instance.requestRenderAll();
+      }).catch(() => { /* The current readable fallback remains until another edit or retry. */ });
+    });
     instance.on("object:moving", ({ target }) => {
       if (!target || !options.current.snap || target instanceof ActiveSelection)
         return;

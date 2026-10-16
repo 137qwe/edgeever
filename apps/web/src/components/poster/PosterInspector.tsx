@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import type { PosterElement } from "@edgeever/shared";
-import { POSTER_FONTS } from "@/lib/poster-design/fonts";
+import { PosterFontPicker } from "./PosterFontPicker";
 import {
   PosterColor,
   PosterNumber,
@@ -111,22 +111,12 @@ export function PosterInspector({
         </div>
       </div>
       {active?.type === "text" && (
-        <select
-          aria-label={t("poster.fontFamily")}
-          className="h-9 w-full rounded-md border border-slate-200 bg-card px-2 text-xs"
+        <PosterFontPicker
           value={active.fontFamily}
           disabled={!editable}
-          onChange={(event) => onPatch({ fontFamily: event.target.value })}
-        >
-          <option value="sans-serif">{t("poster.sans")}</option>
-          <option value="serif">{t("poster.serif")}</option>
-          <option value="monospace">{t("poster.mono")}</option>
-          {POSTER_FONTS.map((font) => (
-            <option key={font.family} value={font.family}>
-              {zh ? font.zh : font.en}
-            </option>
-          ))}
-        </select>
+          zh={zh}
+          onChange={(family) => onPatch({ fontFamily: family })}
+        />
       )}
       {active && (
         <Input

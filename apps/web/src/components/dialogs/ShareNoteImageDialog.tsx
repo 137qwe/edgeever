@@ -1,3 +1,4 @@
+import { FONT_CATALOG, FONT_IDS } from "@edgeever/shared/font-catalog";
 import { prepareNoteImageAssets } from "@edgeever/shared/note-image-fonts";
 import { noteImageAssetUrls } from "@edgeever/shared/note-image-assets";
 import { Check, Copy, Download, LoaderCircle, Palette, Share2, Type } from "lucide-react";
@@ -40,14 +41,8 @@ const FONT_OPTIONS: Array<{ id: NoteImageFontStyle; labelKey: string }> = [
   { id: "serif", labelKey: "editor.imageShare.fontStyles.serif" },
   { id: "sans", labelKey: "editor.imageShare.fontStyles.sans" },
   { id: "mono", labelKey: "editor.imageShare.fontStyles.mono" },
-  { id: "smiley", labelKey: "editor.imageShare.fontStyles.smiley" },
-  { id: "wenkai", labelKey: "editor.imageShare.fontStyles.wenkai" },
-  { id: "zhuque", labelKey: "editor.imageShare.fontStyles.zhuque" },
-  { id: "heavy", labelKey: "editor.imageShare.fontStyles.heavy" },
-  { id: "puhui", labelKey: "editor.imageShare.fontStyles.puhui" },
-  { id: "puhui-heavy", labelKey: "editor.imageShare.fontStyles.puhuiHeavy" },
-  { id: "youshe", labelKey: "editor.imageShare.fontStyles.youshe" },
-  { id: "shuhei", labelKey: "editor.imageShare.fontStyles.shuhei" },
+  ...FONT_IDS.map(id => ({ id, labelKey: FONT_CATALOG[id].labelKey })),
+
 ];
 
 const SIZE_OPTIONS: Array<{ id: NoteImageFontSize; labelKey: string }> = [
