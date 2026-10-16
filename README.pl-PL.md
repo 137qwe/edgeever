@@ -24,7 +24,7 @@
   </p>
 </div>
 
-EdgeEver to nowoczesna, otwartoźródłowa przestrzeń do notatek i zarządzania wiedzą. Przywraca klasyczny układ trzech paneli znany z Evernote, a jednocześnie daje kontrolę nad danymi i bezpośrednią współpracę z agentami AI.
+EdgeEver to nowoczesna, otwartoźródłowa przestrzeń do notatek i zarządzania wiedzą. Zachowuje wygodę klasycznego, wysoce efektywnego układu trzech paneli (drzewo katalogów · lista notatek · edytor), a jednocześnie daje kontrolę nad danymi i bezpośrednią współpracę z agentami AI.
 
 > 💡 **Bez serwera i bez opłat w ramach darmowego planu**
 > EdgeEver może działać w darmowym planie Cloudflare, bez kupowania i utrzymywania serwera. Jeśli wolisz VPS, NAS lub serwer domowy, tę samą aplikację możesz wdrożyć przez Dockera.

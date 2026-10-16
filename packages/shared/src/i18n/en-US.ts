@@ -3091,7 +3091,7 @@ export const enUS = {
     sidebarClipperTitle: "Install the EdgeEver Web Clipper",
     iosPrompt: {
       title: "Add EdgeEver to Home Screen",
-      subtitle: "Enjoy full screen independent window, experience Evernote as smooth as a native app.",
+      subtitle: "Enjoy a distraction-free full screen window with the smoothness of a native app.",
       step1: "Tap the Share button at the bottom of Safari browser",
       step2: "Find and select 'Add to Home Screen' in the menu",
       dismiss: "Got it",
