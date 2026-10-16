@@ -4027,6 +4027,7 @@ const RichEditorPane = ({
             <IconTooltip label={saveStatusReason ? `${saveStatusLabel}. ${saveStatusReason}` : saveStatusLabel}>
             <m.span
               key={`${saveState}-${String(hasUnsavedChanges)}`}
+              tabIndex={0}
               className={cn(
                 "hidden items-center gap-1 rounded-md text-xs font-medium sm:inline-flex",
                 savedQuietly ? "px-1 text-slate-400" : cn("px-1.5 py-0.5", saveStateClassName),
@@ -4048,17 +4049,19 @@ const RichEditorPane = ({
               {savedQuietly ? null : saveLabel}
             </m.span>
             </IconTooltip>
+            <IconTooltip label={saveStatusReason ? `${mobileStatusLabel}. ${saveStatusReason}` : mobileStatusLabel}>
             <m.span
               key={`${imageUploadState}-${saveState}-${String(hasUnsavedChanges)}`}
+              tabIndex={0}
               className={cn("inline-flex max-w-[5.5rem] truncate rounded-full px-2 py-1 text-xs font-medium sm:hidden", mobileStatusClassName)}
               role="status"
               aria-live="polite"
-              title={saveStatusReason ?? undefined}
-              aria-label={saveStatusReason ? `${saveLabel}. ${saveStatusReason}` : undefined}
+              aria-label={saveStatusReason ? `${mobileStatusLabel}. ${saveStatusReason}` : mobileStatusLabel}
               {...statusSettleMotion}
             >
               {mobileStatusLabel}
             </m.span>
+            </IconTooltip>
             </div>
             <MemoEditorToolbarDivider className="mx-0.5 hidden h-4 sm:block" />
             <div className="flex items-center gap-0.5">
