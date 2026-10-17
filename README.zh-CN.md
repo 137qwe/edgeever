@@ -19,7 +19,7 @@
   <p>
     <a href="#wechat-group"><img src="assets/readme/community/wechat.svg" alt="WeChat" width="16" height="16" align="absmiddle" /> 微信交流群</a> &nbsp;|&nbsp;
     <a href="https://demo.edgeever.org">🌐 在线演示</a> &nbsp;|&nbsp;
-    <a href="#客户端下载">📱 客户端下载</a> &nbsp;|&nbsp;
+    <a href="#全平台客户端与浏览器插件">📱 客户端与插件下载</a> &nbsp;|&nbsp;
     <a href="#features">核心特性与场景</a>
   </p>
 </div>
@@ -50,7 +50,9 @@ EdgeEver 是一款现代化的开源笔记与个人知识库工作区。它保�
 
 公开演示环境会在每天凌晨 3:00（北京时间）自动重置并恢复示例笔记，请不要保存私密内容。
 
-## 客户端下载
+## 全平台客户端与浏览器插件
+
+### 客户端下载
 
 <p>
   <a href="https://github.com/tianma-if/edgeever/releases/latest"><img src="assets/readme/platforms/macos.svg" alt="下载 macOS 客户端" width="40" height="40" /></a>&nbsp;&nbsp;
@@ -61,6 +63,19 @@ EdgeEver 是一款现代化的开源笔记与个人知识库工作区。它保�
 </p>
 
 > iOS 客户端需要使用非中国大陆区 Apple ID 下载。
+
+### 浏览器网页裁剪插件
+
+<p>
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="为 Google Chrome 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="为 Microsoft Edge 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://addons.mozilla.org/zh-CN/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="为 Firefox 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>
+</p>
+
+- **智能正文提取**：自动提取网页文章正文并转为纯净 Markdown，自动保留来源网址与剪藏时间。
+- **划选与右键剪藏**：选中局部文字或右键任意图片直接存为独立笔记，无需抓取整页冗余内容。
+- **社媒与社区深度剪藏**：深度适配 X (Twitter)、小红书、知乎、Reddit、GitHub、Bilibili、YouTube 等十余个主流社媒、技术社区与音视频平台，一键结构化入库。
+- **自托管隐私直连**：剪藏内容直传个人自托管实例，不经过任何第三方服务器中转。
 
 <a id="features"></a>
 ## 核心特性与场景
@@ -123,13 +138,16 @@ Cloudflare 在线部署可以选择以下两种方式之一：
 
 ### 方案二：手动在线部署
 
+<details>
+<summary>📖 展开查看：网页端 6 步手动部署流程</summary>
+
 仅需在网页端完成 6 步配置：
 
 1. **Fork 仓库**：在 GitHub 点击右上角 **Fork**，将项目 Fork 到您的个人账户下。
 2. **创建 Cloudflare 资源**：创建 D1 `edgeever` 与 R2 `edgeever-resources`。
 3. **导入并配置项目**：在 Cloudflare **Workers & Pages** 中从 Fork 的 `main` 分支创建名为 `edgeever` 的 Worker。使用仓库根目录，保留由 Cloudflare 在线执行的 Workers Builds 默认部署命令，并确认其 API Token 具备 D1 读取和编辑权限。binding 由部署命令生成，不要修改 Fork 中的文件。
 4. **准备管理员密码**：准备管理员登录密码，建议至少 32 个字符。Worker 创建后，将它保存为运行时 Secret `EDGE_EVER_AUTH_PASSWORD`。
-5. **首次构建与验证**：保存并部署会创建 Worker 并启动构建。如因缺少管理员 Secret 而失败，添加第 4 步的运行时 Secret 后重试。管理员用户名默认为 `admin`；如需使用其他用户名，请在重试构建前设置 Workers Builds 构建变量 `EDGE_EVER_AUTH_USERNAME`。部署完成后访问 `/api/health`，确认返回 `200`，再用配置的管理员用户名和密码登录。
+5. **首次构建与验证**：保存并部署会创建 Worker 并启动构建。首次构建主要用于初始化 Worker 实例，若因尚未配置管理员 Secret 而报错属于预期行为，只需在第 4 步添加运行时 Secret `EDGE_EVER_AUTH_PASSWORD` 后点击重试构建即可通过。管理员用户名默认为 `admin`；如需使用其他用户名，请在重试构建前设置 Workers Builds 构建变量 `EDGE_EVER_AUTH_USERNAME`。部署完成后访问 `/api/health`，确认返回 `200`，再用配置的管理员用户名和密码登录。
 6. **启用自动更新**：进入 Fork 的 **Actions** 标签页，点击 **I understand my workflows, go ahead and enable them**，然后手动运行一次 **Update deployed EdgeEver**，确保后续能够自动获得正式版本的功能更新与修复。
 
 > 📖 包含具体参数与构建命令的详细步骤，请查看 [在线部署完整文档](docs/deploy-cloudflare-button.zh-CN.md)。
@@ -138,7 +156,11 @@ Cloudflare 在线部署可以选择以下两种方式之一：
 
 > 💡 **Cloudflare R2 开通**：虽然 Cloudflare R2 存储提供了足够慷慨、在笔记场景中完全不会超量的[免费存储额度](https://developers.cloudflare.com/r2/pricing/#free-tier)，但需先开通 R2 subscription 并绑定付款方式。Cloudflare [官方支持](https://developers.cloudflare.com/billing/get-started/update-billing-info/#supported-payment-methods) 银联（UnionPay）、Visa、Mastercard 等银行卡，以及 PayPal、Apple Pay、Google Pay 等付款方式。
 
+</details>
+
 ### 方案三：在 VPS 或 NAS 上使用 Docker
+
+Docker 与 Cloudflare 共用同一套前端、API 路由、业务服务、鉴权、MCP 实现和 migration。容器使用 SQLite，并支持本地文件或 S3 兼容附件存储，提供 `amd64` 与 `arm64` 镜像。详见[使用 Docker 部署 EdgeEver](docs/deploy-docker.zh-CN.md)和[自托管与 Docker 架构](docs/self-hosting-architecture.zh-CN.md)。
 
 使用 GitHub 托管的安装脚本和官方 GHCR 镜像：
 
@@ -154,47 +176,44 @@ curl -fsSL https://edgeever.org/install.sh | bash
 
 ---
 
-## 多账号登录与存储用量
+## 数据迁移与进阶使用
+
+### 导入与迁移 (Migration)
+
+如果你想从其他笔记软件迁移到 EdgeEver，请参考以下极简迁移指引：
+
+- **印象笔记（Evernote）的迁入**：请参考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+- **flomo 笔记的迁入**：请参考 [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+- **Memos 笔记的迁入**：请参考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+- **Notion 笔记的迁入**：请参考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+
+### MCP
+
+在 **个人中心** -> **API / MCP** 中创建 API Token 并一键复制 Remote MCP 配置，即可让 Claude Code、Cursor、Antigravity、OpenClaw 等 AI Agent 在账号授权范围内安全管理你的知识库。系统支持文本笔记、图表笔记（思维导图、流程图与架构图）、多维表格笔记与原生海报笔记的完整增删改查，Agent 还可管理笔记本目录、标签、附件、历史版本、笔记模板与 AI 指令。
+
+> 💡 **场景启发：**
+> 让 AI 真正成为你的知识管家与创作外脑——不仅能将方案秒级生成为可交互的思维导图、流程图、架构图与多维表格，还能为 AI Agent 提供私有知识上下文。依托 EdgeEver 强大的富文本编辑与精美排版能力，AI 协同沉淀的不再是冰冷文本，而是结构工整、排版优雅、随时可一键分发的高品质知识资产。
+
+### 多账号登录与存储用量
 
 部署完成后，单个实例支持多账号登录。
 
 实例管理员可以在 **个人中心** -> **账号管理** 中创建、停用成员账号或重置密码。每个成员拥有完全隔离的个人空间，包括笔记本、笔记、附件、回收站、导入导出和 MCP Token 等。系统同时提供直观的存储用量面板，可实时掌握实例整体与各账号的附件存储占用明细。
 
-## 浏览器网页裁剪插件
+### 高级对象存储与第三方图床
 
-<p>
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="为 Google Chrome 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="为 Microsoft Edge 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://addons.mozilla.org/zh-CN/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="为 Firefox 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>
-</p>
+- **OSS 对象存储**：实例 Owner 可在**设置 → 高级设置 → OSS 对象存储**中配置兼容 S3 API 的对象存储。切换存储不会迁移或影响已有附件。
+- **桌面端 PicGo 图床**：桌面端支持可选接入本机 PicGo 客户端服务，在笔记中插入图片时可直接上传至 GitHub、SM.MS、又拍云、七牛云或自建图床，进一步减少自托管实例的存储开销与流量占用。
 
-- **智能正文提取**：自动提取网页文章正文并转为纯净 Markdown，自动保留来源网址与剪藏时间。
-- **划选与右键剪藏**：选中局部文字或右键任意图片直接存为独立笔记，无需抓取整页冗余内容。
-- **社媒与社区深度剪藏**：深度适配 X (Twitter)、小红书、知乎、Reddit、GitHub、Bilibili、YouTube 等十余个主流社媒、技术社区与音视频平台，一键结构化入库。
-- **自托管隐私直连**：剪藏内容直传个人自托管实例，不经过任何第三方服务器中转。
-
-## 社区与反馈
-
-- Bug、功能建议和部署问题请优先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便后续用户检索和复用解决方案。
-- 贡献代码前请阅读[贡献代码须知](CONTRIBUTING.zh-CN.md)。如果您的 Fork 同时用于部署 EdgeEver，请将 `main` 分支仅用于部署；从官方 `upstream/main` 新建独立分支，在该分支中同步上游、开发并提交 Pull Request，不要在部署用的 `main` 上开发或执行 Sync fork。
-
-<hr>
-
-<h3 id="wechat-group">微信交流群</h3>
-
-欢迎加入 EdgeEver AI 交流群，这里聚集了大量 Vibe Coding 与 AI 玩家。一起交流前沿 AI 生产力与个人知识库的最佳实践。
-
-> 扫描下方二维码或添加微信 `m1245207870`（备注“EdgeEver 进群”），群主将手动邀请入群。
-
-<p align="center">
-  <img src="assets/wechat-group-qr.jpg" alt="微信联系人二维码" width="260" />
-</p>
-
-## 插件与主题
+### 插件与主题
 
 Web 与桌面端支持功能插件与个性化主题，可从官方市场、GitHub 或 Manifest 地址一键安装，并随工作区跨端同步。开发者可使用 `@edgeever/plugin-api` 扩展能力，详见[插件开发文档](docs/plugin-development.zh-CN.md)与[官方插件市场上架政策](docs/plugin-marketplace-policy.zh-CN.md)。
 
-## 技术栈
+---
+
+## 开发者指南与架构
+
+### 技术栈
 
 - Bun workspace monorepo，包含 Web、API、官网与共享类型包。
 - 前端：Vite、React、React Router、TanStack Query，UI 基于 Tailwind CSS、shadcn/ui、Radix UI。
@@ -206,7 +225,7 @@ Web 与桌面端支持功能插件与个性化主题，可从官方市场、GitH
 - 后端：一套基于 Hono/Zod 的业务应用，提供 REST API 与 Remote MCP；Cloudflare 使用 Workers/D1/R2，Docker 使用 Bun/SQLite/本地文件或 S3。
 - 官网：Astro 静态站点，位于 `apps/site`，可独立构建并部署到 Cloudflare Pages。
 
-## 快速开始
+### 快速开始
 
 ```sh
 bun install
@@ -215,7 +234,7 @@ bun run dev
 
 本地开发默认自动登录，首次账号为 `owner` / `edgeever-local-dev`；测试登录页可主动退出登录。
 
-## 目录结构
+### 目录结构
 
 ```text
 apps/web          Vite + React 前端、PWA、离线草稿与同步队列
@@ -236,7 +255,7 @@ docs              架构、迁移与部署文档
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 配置
 ```
 
-## 内容格式
+### 内容格式
 
 EdgeEver 同时保存三种内容形态：
 
@@ -248,39 +267,34 @@ content_text      搜索、摘要和索引使用
 
 请打开 **我的** -> **导入与导出**，导出或导入 EdgeEver ZIP。压缩包中的 `notes/` 目录可直接作为 Markdown 阅读和迁移，结构化数据则用于在 EdgeEver 实例之间完整恢复；导入时目标实例中的无关数据会保留，相同 EdgeEver ID 的内容会被覆盖。
 
-## MCP
-
-在 **个人中心** -> **API / MCP** 中创建 API Token 并一键复制 Remote MCP 配置，即可让 Claude Code、Cursor、Antigravity、OpenClaw 等 AI Agent 在账号授权范围内安全管理你的知识库。系统支持文本笔记、图表笔记（思维导图、流程图与架构图）、多维表格笔记与原生海报笔记的完整增删改查，Agent 还可管理笔记本目录、标签、附件、历史版本、笔记模板与 AI 指令。
-
-> 💡 **场景启发：**
-> 让 AI 真正成为你的知识管家与创作外脑——不仅能将方案秒级生成为可交互的思维导图、流程图、架构图与多维表格，还能为 AI Agent 提供私有知识上下文。依托 EdgeEver 强大的富文本编辑与精美排版能力，AI 协同沉淀的不再是冰冷文本，而是结构工整、排版优雅、随时可一键分发的高品质知识资产。
-
-## 图片压缩规则
+### 图片压缩规则
 
 图片压缩仅在 Web 端上传前执行，由设置页的“压缩笔记内图片”开关控制。启用后，浏览器会把 PNG、JPEG、WebP、AVIF 尝试压缩为 WebP，并将最长边限制在 `2560px` 以内；如果压缩结果不比原图小，则保留原图。
 
 Cloudflare Worker 侧执行图片处理会消耗计算/图片处理额度，因此 EdgeEver 将图片压缩放在 Web 客户端完成；REST API 或 MCP 上传入口会按客户端提供的文件内容直接入库，不再由服务端自动压缩。
 
-## 高级对象存储与第三方图床
-
-- **OSS 对象存储**：实例 Owner 可在**设置 → 高级设置 → OSS 对象存储**中配置兼容 S3 API 的对象存储。切换存储不会迁移或影响已有附件。
-- **桌面端 PicGo 图床**：桌面端支持可选接入本机 PicGo 客户端服务，在笔记中插入图片时可直接上传至 GitHub、SM.MS、又拍云、七牛云或自建图床，进一步减少自托管实例的存储开销与流量占用。
-
-## 导入与迁移 (Migration)
-
-如果你想从其他笔记软件迁移到 EdgeEver，请参考以下极简迁移指引：
-
-- **印象笔记（Evernote）的迁入**：请参考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **Memos 笔记的迁入**：请参考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion 笔记的迁入**：请参考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
-
-## Docker 部署
-
-Docker 与 Cloudflare 共用同一套前端、API 路由、业务服务、鉴权、MCP 实现和 migration。容器使用 SQLite，并支持本地文件或 S3 兼容附件存储，提供 `amd64` 与 `arm64` 镜像。详见[使用 Docker 部署 EdgeEver](docs/deploy-docker.zh-CN.md)和[自托管与 Docker 架构](docs/self-hosting-architecture.zh-CN.md)。
-
-## 同步时序
+### 同步时序
 
 Web、PWA 与桌面端会在停止编辑 30 秒后上传笔记，并在页面可见时每 5 分钟检查云端变更；窗口聚焦与手动刷新仍会立即拉取。可在 [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) 中调整 `DEFERRED_MEMO_SYNC_DELAY_MS` 和 `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS`。
+
+---
+
+## 社区与反馈
+
+- Bug、功能建议和部署问题请优先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便后续用户检索和复用解决方案。
+- 贡献代码前请阅读[贡献代码须知](CONTRIBUTING.zh-CN.md)。如果您的 Fork 同时用于部署 EdgeEver，请将 `main` 分支仅用于部署；从官方 `upstream/main` 新建独立分支，在该分支中同步上游、开发并提交 Pull Request，不要在部署用的 `main` 上开发或执行 Sync fork。
+
+<hr>
+
+<h3 id="wechat-group">微信交流群</h3>
+
+欢迎加入 EdgeEver AI 交流群，这里聚集了大量 Vibe Coding 与 AI 玩家。一起交流前沿 AI 生产力与个人知识库的最佳实践。
+
+> 扫描下方二维码或添加微信 `m1245207870`（备注“EdgeEver 进群”），群主将手动邀请入群。
+
+<p align="center">
+  <img src="assets/wechat-group-qr.jpg" alt="微信联系人二维码" width="260" />
+</p>
 
 ## 赞助与支持
 

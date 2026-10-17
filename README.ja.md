@@ -19,7 +19,7 @@
   <p>
     <a href="https://t.me/+wwUx1BYLrIdiZjY1"><img src="assets/readme/community/telegram.svg" alt="Telegram" width="16" height="16" align="absmiddle" /> Telegram グループ</a> &nbsp;|&nbsp;
     <a href="https://demo.edgeever.org">🌐 オンラインデモ</a> &nbsp;|&nbsp;
-    <a href="#クライアントのダウンロード">📱 ダウンロード</a> &nbsp;|&nbsp;
+    <a href="#全プラットフォームクライアントと拡張機能">📱 クライアントと拡張機能</a> &nbsp;|&nbsp;
     <a href="#features">主な機能と活用シーン</a>
   </p>
 </div>
@@ -50,7 +50,9 @@ EdgeEver は、オープンソースのノートと知識ベースの作業領�
 
 公開デモは毎日 3:00（中国標準時）にリセットされ、サンプルノートが戻ります。非公開の内容は置かないでください。
 
-## クライアントのダウンロード
+## 全プラットフォームクライアントと拡張機能
+
+### クライアントのダウンロード
 
 <p>
   <a href="https://github.com/tianma-if/edgeever/releases/latest"><img src="assets/readme/platforms/macos.svg" alt="macOS 向け EdgeEver をダウンロード" width="40" height="40" /></a>&nbsp;&nbsp;
@@ -61,6 +63,19 @@ EdgeEver は、オープンソースのノートと知識ベースの作業領�
 </p>
 
 > iOS アプリは、中国本土以外の Apple ID が必要です。
+
+### ブラウザ Web Clipper
+
+<p>
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="Google Chrome 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="Microsoft Edge 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://addons.mozilla.org/ja/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="Firefox 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>
+</p>
+
+- **スマートな本文抽出**：Web ページの本文を自動抽出し、クリーンな Markdown に変換。元記事の URL とクリップ日時を保持します。
+- **選択テキストと画像のクリップ**：テキストを選択するか画像を右クリックして、ページ全体を保存することなく直接ノートとして保存できます。
+- **SNS とコミュニティへの深層対応**：X (Twitter)、小紅書、知乎、Reddit、GitHub、YouTube、Bilibili など 15 以上の主要プラットフォームの構造化保存にワンクリックで対応。
+- **セルフホストへのプライベート直接通信**：クリップした内容は個人の EdgeEver インスタンスに直接送信され、第三者の中継サーバーを経由しません。
 
 <a id="features"></a>
 ## 主な機能と活用シーン
@@ -105,7 +120,7 @@ Cloudflare のオンライン導入は、次のいずれかです。
 
 ```text
 GitHub と Cloudflare のオンライン操作だけで EdgeEver を導入してください:
-1. Fork https://github.com/tianma-if/edgeever.
+1. Fork https://github.com/tianma-if/edgeever。
 2. Cloudflare で D1 `edgeever` と R2 `edgeever-resources` を作成します。
 3. Workers & Pages で Fork の `main` ブランチから `edgeever` という名前の Worker を作成します。
    リポジトリのルートを使い、Cloudflare Workers Builds の既定のデプロイコマンドを維持します。
@@ -124,13 +139,16 @@ GitHub と Cloudflare のオンライン操作だけで EdgeEver を導入して
 
 ### 方法 B: 手動のオンライン導入
 
+<details>
+<summary>📖 クリックして展開：Web で行う 6 ステップの手動導入手順</summary>
+
 ウェブ上の 6 手順で完了します。
 
 1. **リポジトリを Fork**：GitHub 右上の **Fork** で、EdgeEver を自分のアカウントへ Fork します。
 2. **Cloudflare リソースを作成**：D1 `edgeever` と R2 `edgeever-resources` を作ります。
 3. **プロジェクトを取り込み、設定**：Cloudflare **Workers & Pages** で Fork の `main` ブランチから `edgeever` という名前の Worker を作成します。リポジトリのルートと、Cloudflare 上で実行される Workers Builds の既定のデプロイコマンドを使い、API トークンの D1 読み取り・編集権限を確認します。binding はデプロイコマンドが作るため、Fork 内のファイルは編集しないでください。
 4. **管理者パスワードを準備**：管理者ログイン用パスワードを用意します。32 文字以上を推奨します。Worker 作成後、実行時 Secret `EDGE_EVER_AUTH_PASSWORD` に保存します。
-5. **ビルドと確認**：Save and Deploy で Worker が作成され、ビルドが始まります。管理者 Secret がないため失敗した場合は、手順 4 の実行時 Secret を追加して再試行します。管理者ユーザー名の既定値は `admin` です。別の名前を使う場合は、再試行前に Workers Builds 変数 `EDGE_EVER_AUTH_USERNAME` を設定します。導入後に `/api/health` が `200` を返すことを確認し、設定した管理者ユーザー名とパスワードでログインします。
+5. **ビルドと確認**：Save and Deploy で Worker が作成され、ビルドが始まります。初回のビルドは Worker インスタンスを初期化するためのものであり、管理者 Secret 未設定によるエラーは想定内の動作です。手順 4 の実行時 Secret `EDGE_EVER_AUTH_PASSWORD` を追加した後に再試行ボタンを押せばビルドが通過します。管理者ユーザー名の既定値は `admin` です。別の名前を使う場合は、再試行前に Workers Builds 変数 `EDGE_EVER_AUTH_USERNAME` を設定します。導入後に `/api/health` が `200` を返すことを確認し、設定した管理者ユーザー名とパスワードでログインします。
 6. **自動更新を有効化**：Fork の **Actions** タブで **I understand my workflows, go ahead and enable them** を押し、**Update deployed EdgeEver** を一度手動実行して、今後の安定版と修正を自動で受け取れるようにします。
 
 > 📖 手順と設定の詳細は [Online Deployment Guide](docs/deploy-cloudflare-button.md) を見てください。
@@ -139,7 +157,11 @@ GitHub と Cloudflare のオンライン操作だけで EdgeEver を導入して
 
 > 💡 **Cloudflare R2 の有効化**：Cloudflare R2 にはノート用途で足りる [無料保存枠](https://developers.cloudflare.com/r2/pricing/#free-tier) がありますが、先に R2 のサブスクリプションを有効にし、支払い方法を登録する必要があります。Cloudflare は [公式に](https://developers.cloudflare.com/billing/get-started/update-billing-info/#supported-payment-methods) UnionPay、Visa、Mastercard などのカードと、PayPal、Apple Pay、Google Pay などを受け付けます。
 
+</details>
+
 ### 方法 C: VPS または NAS で Docker
+
+Docker は Cloudflare と同じフロントエンド、API、サービス、認証、MCP、migration です。コンテナは SQLite と、ローカルファイルまたは S3 互換の添付保存を使い、`amd64` と `arm64` に対応します。 [Deploy EdgeEver with Docker](docs/deploy-docker.md) と [Self-hosting and Docker architecture](docs/self-hosting-architecture.md) を見てください。
 
 GitHub ホストのインストーラと公式 GHCR イメージを使います。
 
@@ -155,41 +177,44 @@ curl -fsSL https://edgeever.org/install.sh | bash
 
 ---
 
-## 複数アカウントとストレージ使用量
+## データ移行と高度な活用
+
+### 移行
+
+他のプラットフォームから EdgeEver へ移す場合は、次の短いガイドを見てください。
+
+- **Evernote からの移行**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+- **flomo からの移行**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+- **Memos からの移行**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+- **Notion からの移行**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+
+### MCP
+
+**プロフィール** -> **API / MCP** で API トークンを作成し、ワンクリックで Remote MCP 設定をコピーすることで、Claude Code、Cursor、Antigravity、OpenClaw などの AI Agent がアカウント権限の範囲内で知識ベースを安全に管理できます。テキストノート、図のノート（マインドマップ、フローチャート、アーキテクチャ図）、多次元テーブルノート、ネイティブポスターノートの完全な CRUD に対応し、Agent はノートブック階層、タグ、添付ファイル、履歴バージョン、ノートテンプレート、AI 指示の管理も行えます。
+
+> 💡 **着想：**
+> AI を知識の整理役と創作の相棒にしてください。構想をインタラクティブなマインドマップ、フローチャート、アーキテクチャ図、多次元テーブルへ瞬時に落とし込み、Agent に私有の文脈を渡せます。EdgeEver のリッチテキストと美しい体裁と組み合わせることで、AI が手伝った内容は、整った、いつでも配布できる高品質な知識資産になります。
+
+### 複数アカウントとストレージ使用量
 
 導入後、1 インスタンスで複数アカウントのログインができます。
 
 インスタンス管理者は **プロフィール** -> **ユーザーアカウント** でメンバーの作成、無効化、パスワードリセットができます。メンバーごとにノートブック、ノート、添付、ゴミ箱、インポート / エクスポート、MCP トークンが分離されます。また、直感的なストレージ使用量ダッシュボードにより、インスタンス全体および各アカウントの添付ファイル容量をリアルタイムで把握できます。
 
-## ブラウザ Web Clipper
+### 高度なオブジェクトストレージとサードパーティ画像ホスティング
 
-<p>
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="Google Chrome 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="Microsoft Edge 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://addons.mozilla.org/ja/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="Firefox 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>
-</p>
+- **OSS オブジェクトストレージ**：インスタンスのオーナーは **設定 → 詳細 → OSS オブジェクトストレージ** で S3 互換ストレージを設定できます。切り替えは既存添付を移さず、影響しません。
+- **デスクトップ版 PicGo 連携**：デスクトップ版ではローカルの PicGo クライアントと連携可能で、ノート内の画像を GitHub、SM.MS、又拍雲、七牛雲や自前ホストへ直接アップロードでき、セルフホスト環境のストレージと帯域消費を節約できます。
 
-- **スマートな本文抽出**：Web ページの本文を自動抽出し、クリーンな Markdown に変換。元記事の URL とクリップ日時を保持します。
-- **選択テキストと画像のクリップ**：テキストを選択するか画像を右クリックして、ページ全体を保存することなく直接ノートとして保存できます。
-- **SNS とコミュニティへの深層対応**：X (Twitter)、小紅書、知乎、Reddit、GitHub、YouTube、Bilibili など 15 以上の主要プラットフォームの構造化保存にワンクリックで対応。
-- **セルフホストへのプライベート直接通信**：クリップした内容は個人の EdgeEver インスタンスに直接送信され、第三者の中継サーバーを経由しません。
-
-## コミュニティとフィードバック
-
-- 不具合、機能要望、導入の問題: [GitHub Issues](https://github.com/tianma-if/edgeever/issues)
-- コード貢献: [Contribution Guide](CONTRIBUTING.md) を読んでください。Fork を EdgeEver の導入にも使う場合、その `main` は導入専用にしてください。同期、開発、Pull Request は公式 `upstream/main` から切った別ブランチで行い、導入用 `main` では開発も Sync fork もしないでください。
-
-### Telegram コミュニティ
-
-EdgeEver コミュニティへようこそ。Vibe Coding や AI を探求する仲間が集まり、最先端の AI 生産性と個人ナレッジベースのベストプラクティスを共有しています。
-
-👉 [EdgeEver の Telegram グループに参加](https://t.me/+wwUx1BYLrIdiZjY1)
-
-## プラグインとテーマ
+### プラグインとテーマ
 
 Web とデスクトップは機能プラグインとカスタムテーマに対応し、公式マーケット、GitHub、Manifest URL から手軽に導入でき、作業領域を通じて同期されます。開発者は `@edgeever/plugin-api` で拡張できます。詳細は [plugin development guide](docs/plugin-development.md) と [marketplace submission policy](docs/plugin-marketplace-policy.md) を参照してください。
 
-## 技術スタック
+---
+
+## 開発者ガイドとアーキテクチャ
+
+### 技術スタック
 
 - Bun workspace の monorepo。Web、API、公式サイト、共有型パッケージ。
 - フロントエンド: Vite、React、React Router、TanStack Query、Tailwind CSS、shadcn/ui、Radix UI。
@@ -201,7 +226,7 @@ Web とデスクトップは機能プラグインとカスタムテーマに対�
 - バックエンド: Hono / Zod の業務アプリ 1 式。REST API と Remote MCP。Cloudflare は Workers / D1 / R2、Docker は Bun / SQLite / ローカルファイルまたは S3。
 - 公式サイト: `apps/site` の Astro 静的サイト。Cloudflare Pages に出せます。
 
-## クイックスタート
+### クイックスタート
 
 ```sh
 bun install
@@ -210,7 +235,7 @@ bun run dev
 
 ローカル開発は自動ログインします。新しいデータベースの初期アカウントは `owner` / `edgeever-local-dev` です。ログイン画面を試すときはログアウトしてください。
 
-## リポジトリ構成
+### リポジトリ構成
 
 ```text
 apps/web          Vite + React フロントエンド、PWA、オフライン下書き、同期キュー
@@ -231,7 +256,7 @@ docs              アーキテクチャ、移行、導入の文書
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 の設定
 ```
 
-## 内容の形式
+### 内容の形式
 
 EdgeEver はノート本文を 3 つの形で持ちます。
 
@@ -243,40 +268,28 @@ content_text      検索、要約、索引
 
 **プロフィール** -> **インポートとエクスポート** から EdgeEver ZIP を書き出し、または取り込めます。`notes/` は Markdown として読め、持ち出せます。構造化データは EdgeEver インスタンス間の完全復元に使います。取り込みは関係ない対象データを残し、同じ EdgeEver ID の記録は上書きします。
 
-## MCP
-
-**プロフィール** -> **API / MCP** で API トークンを作成し、ワンクリックで Remote MCP 設定をコピーすることで、Claude Code、Cursor、Antigravity、OpenClaw などの AI Agent がアカウント権限の範囲内で知識ベースを安全に管理できます。テキストノート、図のノート（マインドマップ、フローチャート、アーキテクチャ図）、多次元テーブルノート、ネイティブポスターノートの完全な CRUD に対応し、Agent はノートブック階層、タグ、添付ファイル、履歴バージョン、ノートテンプレート、AI 指示の管理も行えます。
-
-> 💡 **着想：**
-> AI を知識の整理役と創作の相棒にしてください。構想をインタラクティブなマインドマップ、フローチャート、アーキテクチャ図、多次元テーブルへ瞬時に落とし込み、Agent に私有の文脈を渡せます。EdgeEver のリッチテキストと美しい体裁と組み合わせることで、AI が手伝った内容は、整った、いつでも配布できる高品質な知識資産になります。
-
-## 画像圧縮
+### 画像圧縮
 
 画像圧縮は Web クライアントがアップロード前に行い、**ノート内画像を圧縮** の設定で制御します。オンのとき、PNG、JPEG、WebP、AVIF は得があれば WebP にし、長辺を `2560px` までにします。小さくならなければ原ファイルを残します。
 
 Worker 側の画像処理は避け、計算と画像処理枠を抑えます。REST API と MCP のアップロードは、クライアントが渡した内容を追加圧縮せず保存します。
 
-## 高度なオブジェクトストレージとサードパーティ画像ホスティング
-
-- **OSS オブジェクトストレージ**：インスタンスのオーナーは **設定 → 詳細 → OSS オブジェクトストレージ** で S3 互換ストレージを設定できます。切り替えは既存添付を移さず、影響しません。
-- **デスクトップ版 PicGo 連携**：デスクトップ版ではローカルの PicGo クライアントと連携可能で、ノート内の画像を GitHub、SM.MS、又拍雲、七牛雲や自前ホストへ直接アップロードでき、セルフホスト環境のストレージと帯域消費を節約できます。
-
-## 移行
-
-他のプラットフォームから EdgeEver へ移す場合は、次の短いガイドを見てください。
-
-- **Evernote からの移行**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **flomo からの移行**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
-- **Memos からの移行**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion からの移行**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
-
-## Docker 導入
-
-Docker は Cloudflare と同じフロントエンド、API、サービス、認証、MCP、migration です。コンテナは SQLite と、ローカルファイルまたは S3 互換の添付保存を使い、`amd64` と `arm64` に対応します。 [Deploy EdgeEver with Docker](docs/deploy-docker.md) と [Self-hosting and Docker architecture](docs/self-hosting-architecture.md) を見てください。
-
-## 同期のタイミング
+### 同期のタイミング
 
 Web、PWA、デスクトップは、編集が 30 秒止まったあとでノートをアップロードし、表示中は 5 分ごとに遠隔の変更を見ます。フォーカスと手動更新はすぐです。`DEFERRED_MEMO_SYNC_DELAY_MS` と `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` は [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) で変えられます。
+
+---
+
+## コミュニティとフィードバック
+
+- 不具合、機能要望、導入の問題: [GitHub Issues](https://github.com/tianma-if/edgeever/issues)
+- コード貢献: [Contribution Guide](CONTRIBUTING.md) を読んでください。Fork を EdgeEver の導入にも使う場合、その `main` は導入専用にしてください。同期、開発、Pull Request は公式 `upstream/main` から切った別ブランチで行い、導入用 `main` では開発も Sync fork もしないでください。
+
+### Telegram コミュニティ
+
+EdgeEver コミュニティへようこそ。Vibe Coding や AI を探求する仲間が集まり、最先端の AI 生産性と個人ナレッジベースのベストプラクティスを共有しています。
+
+👉 [EdgeEver の Telegram グループに参加](https://t.me/+wwUx1BYLrIdiZjY1)
 
 ## スポンサーと支援
 

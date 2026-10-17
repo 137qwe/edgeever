@@ -19,7 +19,7 @@
   <p>
     <a href="#wechat-group"><img src="assets/readme/community/wechat.svg" alt="WeChat" width="16" height="16" align="absmiddle" /> 微信交流群</a> &nbsp;|&nbsp;
     <a href="https://demo.edgeever.org">🌐 線上展示</a> &nbsp;|&nbsp;
-    <a href="#用戶端下載">📱 用戶端下載</a> &nbsp;|&nbsp;
+    <a href="#全平台用戶端與瀏覽器外掛">📱 用戶端與外掛下載</a> &nbsp;|&nbsp;
     <a href="#features">核心特性與場景</a>
   </p>
 </div>
@@ -50,7 +50,9 @@ EdgeEver 是一款現代化的開源筆記與個人知識庫工作區。它延�
 
 公開展示環境會在每天凌晨 3:00（北京時間）自動重設並還原範例筆記，請不要儲存私密內容。
 
-## 用戶端下載
+## 全平台用戶端與瀏覽器外掛
+
+### 用戶端下載
 
 <p>
   <a href="https://github.com/tianma-if/edgeever/releases/latest"><img src="assets/readme/platforms/macos.svg" alt="下載 macOS 用戶端" width="40" height="40" /></a>&nbsp;&nbsp;
@@ -61,6 +63,19 @@ EdgeEver 是一款現代化的開源筆記與個人知識庫工作區。它延�
 </p>
 
 > iOS 用戶端需要使用非中國大陸區 Apple ID 下載。
+
+### 瀏覽器網頁擷取外掛
+
+<p>
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="為 Google Chrome 安裝 EdgeEver 網頁擷取外掛" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="為 Microsoft Edge 安裝 EdgeEver 網頁擷取外掛" width="36" height="36" /></a>&nbsp;&nbsp;
+  <a href="https://addons.mozilla.org/zh-TW/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="為 Firefox 安裝 EdgeEver 網頁擷取外掛" width="36" height="36" /></a>
+</p>
+
+- **智慧內文擷取**：自動擷取網頁文章正文並轉為純淨 Markdown，完整保留來源網址與擷取時間。
+- **選取與右鍵擷取**：反白選取文字或右鍵任意圖片直接儲存為獨立筆記，無需抓取整頁多餘內容。
+- **社群與社群深度擷取**：深度適配 X (Twitter)、小紅書、知乎、Reddit、GitHub、Bilibili、YouTube 等十餘個主流社群、技術社群與影音平台，一鍵結構化入庫。
+- **自託管隱私直連**：擷取內容直傳個人自託管執行個體，不經過任何第三方伺服器轉發。
 
 <a id="features"></a>
 ## 核心特性與場景
@@ -123,13 +138,16 @@ Cloudflare 線上部署可以選擇以下兩種方式之一：
 
 ### 方案二：手動線上部署
 
+<details>
+<summary>📖 展開查看：網頁端 6 步手動部署流程</summary>
+
 只需在網頁端完成 6 步設定：
 
 1. **Fork 儲存庫**：在 GitHub 點選右上角 **Fork**，將專案 Fork 到您的個人帳戶下。
 2. **建立 Cloudflare 資源**：建立 D1 `edgeever` 與 R2 `edgeever-resources`。
 3. **匯入並設定專案**：在 Cloudflare **Workers & Pages** 中從 Fork 的 `main` 分支建立名為 `edgeever` 的 Worker。使用儲存庫根目錄，保留由 Cloudflare 線上執行的 Workers Builds 預設部署指令，並確認其 API Token 具備 D1 讀取及編輯權限。binding 由部署指令產生，不要修改 Fork 中的檔案。
 4. **準備管理員密碼**：準備管理員登入密碼，建議至少 32 個字元。Worker 建立後，將它儲存為執行時 Secret `EDGE_EVER_AUTH_PASSWORD`。
-5. **首次建置與驗證**：儲存並部署會建立 Worker 並啟動建置。如因缺少管理員 Secret 而失敗，新增步驟 4 的執行時 Secret 後重試。管理員使用者名稱預設為 `admin`；如需使用其他名稱，請在重試建置前設定 Workers Builds 建置變數 `EDGE_EVER_AUTH_USERNAME`。部署完成後造訪 `/api/health`，確認回傳 `200`，再用設定的管理員使用者名稱和密碼登入。
+5. **首次建置與驗證**：儲存並部署會建立 Worker 並啟動建置。首次建置主要用於初始化實例，若因尚未配置管理員 Secret 而報錯屬於預期行為，只需在第 4 步新增執行時 Secret `EDGE_EVER_AUTH_PASSWORD` 後點擊重試建置即可通過。管理員使用者名稱預設為 `admin`；如需使用其他名稱，請在重試建置前設定 Workers Builds 建置變數 `EDGE_EVER_AUTH_USERNAME`。部署完成後造訪 `/api/health`，確認回傳 `200`，再用設定的管理員使用者名稱和密碼登入。
 6. **啟用自動更新**：進入 Fork 的 **Actions** 分頁，點選 **I understand my workflows, go ahead and enable them**，然後手動執行一次 **Update deployed EdgeEver**，確保後續能夠自動獲得正式版本的功能更新與修復。
 
 > 📖 包含具體參數與建置指令的詳細步驟，請查看 [線上部署完整文件](docs/deploy-cloudflare-button.zh-CN.md)。
@@ -138,7 +156,11 @@ Cloudflare 線上部署可以選擇以下兩種方式之一：
 
 > 💡 **Cloudflare R2 開通**：雖然 Cloudflare R2 儲存提供了足夠寬裕、在筆記場景中完全不會超量的[免費儲存額度](https://developers.cloudflare.com/r2/pricing/#free-tier)，但需先開通 R2 subscription 並綁定付款方式。Cloudflare [官方支援](https://developers.cloudflare.com/billing/get-started/update-billing-info/#supported-payment-methods) 銀聯（UnionPay）、Visa、Mastercard 等金融卡與信用卡，以及 PayPal、Apple Pay、Google Pay 等付款方式。
 
+</details>
+
 ### 方案三：在 VPS 或 NAS 上使用 Docker
+
+Docker 與 Cloudflare 共用同一套前端、API 路由、業務服務、鑑權、MCP 實作和 migration。容器使用 SQLite，並支援本機檔案或 S3 相容附件儲存，提供 `amd64` 與 `arm64` 映像。詳見[使用 Docker 部署 EdgeEver](docs/deploy-docker.zh-CN.md)和[自行託管與 Docker 架構](docs/self-hosting-architecture.zh-CN.md)。
 
 使用 GitHub 託管的安裝指令碼和官方 GHCR 映像：
 
@@ -150,53 +172,52 @@ curl -fsSL https://edgeever.org/install.sh | bash
 
 安裝後預設每日自動更新。如需手動更新，請在部署伺服器上執行 `~/edgeever/update.sh`。
 
+> 💡 **網路提示**：官方映像檔託管於 GitHub（GHCR）。若在部分網路環境下遇到拉取緩慢或逾時，請在部署前自行設定可用的網路代理或可信的映像檔加速服務。
+
 ---
 
-## 多帳號登入與儲存用量
+## 資料遷移與進階使用
+
+### 匯入與遷移 (Migration)
+
+若你想從其他筆記軟體遷移到 EdgeEver，請參考以下精簡遷移指引：
+
+- **Evernote（印象筆記）的遷入**：請參考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+- **flomo 筆記的遷入**：請參考 [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+- **Memos 筆記的遷入**：請參考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+- **Notion 筆記的遷入**：請參考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+
+### MCP
+
+在 **個人中心** -> **API / MCP** 中建立 API Token 並一鍵複製 Remote MCP 設定，即可讓 Claude Code、Cursor、Antigravity、OpenClaw 等 AI Agent 在帳號授權範圍內安全管理你的知識庫。系統支援文字筆記、圖表筆記（心智圖、流程圖與架構圖）、多維表格筆記與原生海報筆記的完整增刪改查，Agent 還可管理筆記本目錄、標籤、附件、歷史版本、筆記範本與 AI 指令。
+
+> 💡 **情境啟發：**
+> 讓 AI 真正成為你的知識管家與創作外腦——不僅能將方案秒級產生為可互動的心智圖、流程圖、架構圖與多維表格，還能為 AI Agent 提供私有脈絡。憑藉 EdgeEver 強大的富文字編輯與精美排版能力，AI 協同沉澱的不再是冰冷文字，而是結構工整、排版優雅、隨時可一鍵分發的高品質知識資產。
+
+### 多帳號登入與儲存用量
 
 部署完成後，單一實例支援多帳號登入。
 
 實例管理員可以在 **個人中心** -> **帳號管理** 中建立、停用成員帳號或重設密碼。每個成員擁有完全隔離的個人空間，包括筆記本、筆記、附件、回收筒、匯入匯出和 MCP Token 等。系統同時提供直觀的儲存用量面板，可即時掌握實例整體與各帳號的附件儲存占用明細。
 
-## 瀏覽器網頁擷取擴充功能
+### 進階物件儲存與第三方圖床
 
-<p>
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/chrome/chrome.svg" alt="為 Google Chrome 安裝 EdgeEver 網頁擷取擴充功能" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/edge/edge.svg" alt="為 Microsoft Edge 安裝 EdgeEver 網頁擷取擴充功能" width="36" height="36" /></a>&nbsp;&nbsp;
-  <a href="https://addons.mozilla.org/zh-TW/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="為 Firefox 安裝 EdgeEver 網頁擷取擴充功能" width="36" height="36" /></a>
-</p>
+- **OSS 物件儲存**：實例 Owner 可在**設定 → 進階設定 → OSS 物件儲存**中設定相容 S3 API 的物件儲存。切換儲存不會遷移或影響既有附件。
+- **桌面端 PicGo 圖床**：桌面端支援可選接入本機 PicGo 用戶端服務，在筆記中插入圖片時可直接上傳至 GitHub、SM.MS、又拍雲、七牛雲或自建圖床，進一步減少自託管實例的儲存開銷與頻寬占用。
 
-- **智慧內文擷取**：自動擷取網頁文章正文並轉為純淨 Markdown，完整保留來源網址與擷取時間。
-- **選取與右鍵擷取**：反白選取文字或右鍵任意圖片直接儲存為獨立筆記，無需抓取整頁多餘內容。
-- **社群與社群深度擷取**：深度適配 X (Twitter)、小紅書、知乎、Reddit、GitHub、Bilibili、YouTube 等十餘個主流社群、技術社群與影音平台，一鍵結構化入庫。
-- **自託管隱私直連**：擷取內容直傳個人自託管執行個體，不經過任何第三方伺服器轉發。
-
-## 社群與回饋
-
-- Bug、功能建議和部署問題請優先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便後續使用者檢索和重用解決方案。
-- 貢獻程式碼前請閱讀[貢獻程式碼須知](CONTRIBUTING.zh-CN.md)。如果您的 Fork 同時用於部署 EdgeEver，請將 `main` 分支僅用於部署；從官方 `upstream/main` 新建獨立分支，在該分支中同步上游、開發並提交 Pull Request，不要在部署用的 `main` 上開發或執行 Sync fork。
-
-<hr>
-
-<h3 id="wechat-group">微信交流群</h3>
-
-歡迎加入 EdgeEver AI 交流群，這裡聚集了大量 Vibe Coding 與 AI 玩家。一起交流前沿 AI 生產力與個人知識庫的最佳實踐。
-
-> 掃描下方 QR Code 或加入微信 `m1245207870`（備註「EdgeEver 進群」），群主將手動邀請入群。
-
-<p align="center">
-  <img src="assets/wechat-group-qr.jpg" alt="微信聯絡人 QR Code" width="260" />
-</p>
-
-## 外掛與主題
+### 外掛與主題
 
 Web 與桌面版支援功能外掛與個人化主題，可從官方市集、GitHub 或 Manifest 網址一鍵安裝，並隨工作區跨端同步。開發者可使用 `@edgeever/plugin-api` 擴充功能，詳情參閱[外掛開發文件](docs/plugin-development.zh-CN.md)與[官方外掛市集上架政策](docs/plugin-marketplace-policy.zh-CN.md)。
 
-## 技術棧
+---
+
+## 開發者指南與架構
+
+### 技術棧
 
 - Bun workspace monorepo，包含 Web、API、官網與共享型別套件。
 - 前端：Vite、React、React Router、TanStack Query，UI 基於 Tailwind CSS、shadcn/ui、Radix UI。
-- 編輯器：TipTap / ProseMirror，支援 Markdown；PWA 使用 vite-plugin-pwa、Workbox、Dexie。
+- 编辑器：TipTap / ProseMirror，支援 Markdown；PWA 使用 vite-plugin-pwa、Workbox、Dexie。
 - Android App：`apps/mobile` 中的 Expo + React Native，採用 SQLite 本機儲存與增量同步。
 - iOS App：`apps/ios` 中的原生 SwiftUI（iOS 17+），內建 TipTap EditorBundle、GRDB 本機鏡像／outbox，介面與 Android 殼層對齊。
 - 原生桌面版：Electron + Rust sidecar，兼顧跨平台一致體驗與高效能本機資料服務；基於 SQLite 支援離線編輯、連網後增量同步與本機備份。
@@ -204,7 +225,7 @@ Web 與桌面版支援功能外掛與個人化主題，可從官方市集、GitH
 - 後端：一套基於 Hono/Zod 的業務應用，提供 REST API 與 Remote MCP；Cloudflare 使用 Workers/D1/R2，Docker 使用 Bun/SQLite/本機檔案或 S3。
 - 官網：Astro 靜態網站，位於 `apps/site`，可獨立建置並部署到 Cloudflare Pages。
 
-## 快速開始
+### 快速開始
 
 ```sh
 bun install
@@ -213,7 +234,7 @@ bun run dev
 
 本機開發預設自動登入，首次帳號為 `owner` / `edgeever-local-dev`；測試登入頁可主動登出。
 
-## 目錄結構
+### 目錄結構
 
 ```text
 apps/web          Vite + React 前端、PWA、離線草稿與同步佇列
@@ -234,7 +255,7 @@ docs              架構、遷移與部署文件
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 設定
 ```
 
-## 內容格式
+### 內容格式
 
 EdgeEver 同時保存三種內容形態：
 
@@ -246,39 +267,34 @@ content_text      搜尋、摘要和索引使用
 
 請開啟 **我的** -> **匯入與匯出**，匯出或匯入 EdgeEver ZIP。壓縮檔中的 `notes/` 目錄可直接作為 Markdown 閱讀和遷移，結構化資料則用於在 EdgeEver 實例之間完整還原；匯入時目標實例中的無關資料會保留，相同 EdgeEver ID 的內容會被覆蓋。
 
-## MCP
-
-在 **個人中心** -> **API / MCP** 中建立 API Token 並一鍵複製 Remote MCP 設定，即可讓 Claude Code、Cursor、Antigravity、OpenClaw 等 AI Agent 在帳號授權範圍內安全管理你的知識庫。系統支援文字筆記、圖表筆記（心智圖、流程圖與架構圖）、多維表格筆記與原生海報筆記的完整增刪改查，Agent 還可管理筆記本目錄、標籤、附件、歷史版本、筆記範本與 AI 指令。
-
-> 💡 **情境啟發：**
-> 讓 AI 真正成為你的知識管家與創作外腦——不僅能將方案秒級產生為可互動的心智圖、流程圖、架構圖與多維表格，還能為 AI Agent 提供私有脈絡。憑藉 EdgeEver 強大的富文字編輯與精美排版能力，AI 協同沉澱的不再是冰冷文字，而是結構工整、排版優雅、隨時可一鍵分發的高品質知識資產。
-
-## 圖片壓縮規則
+### 圖片壓縮規則
 
 圖片壓縮僅在 Web 端上傳前執行，由設定頁的「壓縮筆記內圖片」開關控制。啟用後，瀏覽器會把 PNG、JPEG、WebP、AVIF 嘗試壓縮為 WebP，並將最長邊限制在 `2560px` 以內；如果壓縮結果不比原圖小，則保留原圖。
 
 Cloudflare Worker 側執行圖片處理會消耗運算／圖片處理額度，因此 EdgeEver 將圖片壓縮放在 Web 用戶端完成；REST API 或 MCP 上傳入口會依用戶端提供的檔案內容直接入庫，不再由伺服端自動壓縮。
 
-## 進階物件儲存與第三方圖床
-
-- **OSS 物件儲存**：實例 Owner 可在**設定 → 進階設定 → OSS 物件儲存**中設定相容 S3 API 的物件儲存。切換儲存不會遷移或影響既有附件。
-- **桌面端 PicGo 圖床**：桌面端支援可選接入本機 PicGo 用戶端服務，在筆記中插入圖片時可直接上傳至 GitHub、SM.MS、又拍雲、七牛雲或自建圖床，進一步減少自託管實例的儲存開銷與頻寬占用。
-
-## 匯入與遷移 (Migration)
-
-若你想從其他筆記軟體遷移到 EdgeEver，請參考以下精簡遷移指引：
-
-- **Evernote（印象筆記）的遷入**：請參考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **Memos 筆記的遷入**：請參考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion 筆記的遷入**：請參考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
-
-## Docker 部署
-
-Docker 與 Cloudflare 共用同一套前端、API 路由、業務服務、鑑權、MCP 實作和 migration。容器使用 SQLite，並支援本機檔案或 S3 相容附件儲存，提供 `amd64` 與 `arm64` 映像。詳見[使用 Docker 部署 EdgeEver](docs/deploy-docker.zh-CN.md)和[自行託管與 Docker 架構](docs/self-hosting-architecture.zh-CN.md)。
-
-## 同步時序
+### 同步時序
 
 Web、PWA 與桌面版會在停止編輯 30 秒後上傳筆記，並在頁面可見時每 5 分鐘檢查雲端變更；視窗聚焦與手動重新整理仍會立即拉取。可在 [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) 中調整 `DEFERRED_MEMO_SYNC_DELAY_MS` 和 `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS`。
+
+---
+
+## 社群與回饋
+
+- Bug、功能建議和部署問題請優先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便後續使用者檢索和重用解決方案。
+- 貢獻程式碼前請閱讀[貢獻程式碼須知](CONTRIBUTING.zh-CN.md)。如果您的 Fork 同時用於部署 EdgeEver，請將 `main` 分支僅用於部署；從官方 `upstream/main` 新建獨立分支，在該分支中同步上游、開發並提交 Pull Request，不要在部署用的 `main` 上開發或執行 Sync fork。
+
+<hr>
+
+<h3 id="wechat-group">微信交流群</h3>
+
+歡迎加入 EdgeEver AI 交流群，這裡聚集了大量 Vibe Coding 與 AI 玩家。一起交流前沿 AI 生產力與個人知識庫的最佳實踐。
+
+> 掃描下方 QR Code 或加入微信 `m1245207870`（備註「EdgeEver 進群」），群主將手動邀請入群。
+
+<p align="center">
+  <img src="assets/wechat-group-qr.jpg" alt="微信聯絡人 QR Code" width="260" />
+</p>
 
 ## 贊助與支持
 
