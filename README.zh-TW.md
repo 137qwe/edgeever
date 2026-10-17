@@ -139,7 +139,7 @@ Cloudflare 線上部署可以選擇以下兩種方式之一：
 </details>
 
 <details>
-<summary>💡 查看 Cloudflare 部署須知（自訂網域綁定與 R2 免費額度）</summary>
+<summary>📌 查看 Cloudflare 部署須知（自訂網域綁定與 R2 免費額度）</summary>
 
 > **網域與存取**：實例部署完成後，可以直接使用 Cloudflare 預設分配的 `*.workers.dev` 網域存取，也可以在 Worker 設定中的 **Settings → Domains & Routes** 綁定自己的自訂網域。
 >

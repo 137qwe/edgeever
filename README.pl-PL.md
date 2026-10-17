@@ -141,7 +141,7 @@ Konfiguracja obejmuje sześć kroków w interfejsie przeglądarkowym:
 </details>
 
 <details>
-<summary>💡 Uwagi dotyczące wdrożenia na Cloudflare (własna domena i darmowy limit R2)</summary>
+<summary>📌 Uwagi dotyczące wdrożenia na Cloudflare (własna domena i darmowy limit R2)</summary>
 
 > **Domena i dostęp**: Możesz użyć domyślnej domeny `*.workers.dev` lub podłączyć własną w ustawieniach Workera: **Settings → Domains & Routes**.
 >

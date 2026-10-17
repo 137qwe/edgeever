@@ -139,7 +139,7 @@ Cloudflare 在线部署可以选择以下两种方式之一：
 </details>
 
 <details>
-<summary>💡 查看 Cloudflare 部署须知（自定义域名绑定与 R2 免费额度）</summary>
+<summary>📌 查看 Cloudflare 部署须知（自定义域名绑定与 R2 免费额度）</summary>
 
 > **域名与访问**：实例部署完成后，可以直接使用 Cloudflare 默认分配的 `*.workers.dev` 域名访问，也可以在 Worker 的 **Settings → Domains & Routes** 中绑定自己的自定义域名（强烈建议绑定自定义域名以保障国内直连稳定性并提升访问速度）。
 >

@@ -141,7 +141,7 @@ Complete setup in 6 web steps:
 </details>
 
 <details>
-<summary>💡 View Cloudflare Deployment Notes (Custom Domain & Free R2 Allowance)</summary>
+<summary>📌 View Cloudflare Deployment Notes (Custom Domain & Free R2 Allowance)</summary>
 
 > **Custom Domain & Access**: After deployment, you can directly use the default `*.workers.dev` domain assigned by Cloudflare, or attach your own custom domain in the Worker settings under **Settings → Domains & Routes**.
 >

@@ -140,7 +140,7 @@ GitHub と Cloudflare のオンライン操作だけで EdgeEver を導入して
 </details>
 
 <details>
-<summary>💡 Cloudflare 導入の注意事項を確認（独自ドメイン紐付けと R2 無料枠）</summary>
+<summary>📌 Cloudflare 導入の注意事項を確認（独自ドメイン紐付けと R2 無料枠）</summary>
 
 > **ドメインとアクセス**：デプロイ完了後は、Cloudflare から自動で割り当てられる `*.workers.dev` ドメインでそのまま利用できるほか、Worker の **Settings → Domains & Routes** で独自のカスタムドメインを紐付けることもできます。
 >
