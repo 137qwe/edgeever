@@ -72,10 +72,8 @@ The public demo resets every day at 3:00 AM (China Standard Time) and restores s
   <a href="https://addons.mozilla.org/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="Install EdgeEver Web Clipper for Firefox" width="36" height="36" /></a>
 </p>
 
-- **Smart Article Extraction**: Automatically extracts article content and converts it into clean Markdown, preserving the source URL and clipping timestamp.
-- **Selection & Context Menu Clipping**: Save selected text or right-clicked images directly as notes without capturing the entire page.
-- **Deep Social & Community Clipping**: Native structured clipping for 15+ major platforms including X (Twitter), Xiaohongshu, Zhihu, Reddit, GitHub, YouTube, and Bilibili.
-- **Private Self-Hosted Direct Connection**: Sends clipped content directly to your personal EdgeEver instance without third-party relays.
+- Extract clean Markdown from web articles or clip selected text and images directly to your self-hosted instance.
+- Deep structured clipping for 20+ platforms: social (X, Xiaohongshu, WeChat, Jike, Douban, Threads, Bluesky), dev & reading communities (Zhihu, Reddit, GitHub, V2EX, Hacker News, Medium, Substack), and media/podcasts (Bilibili, YouTube, Xiaoyuzhou).
 
 <a id="features"></a>
 ## Key Features & Workflows

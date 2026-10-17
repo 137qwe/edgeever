@@ -72,10 +72,8 @@ EdgeEver は、オープンソースのノートと知識ベースの作業領�
   <a href="https://addons.mozilla.org/ja/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="Firefox 向け EdgeEver Web Clipper を入れる" width="36" height="36" /></a>
 </p>
 
-- **スマートな本文抽出**：Web ページの本文を自動抽出し、クリーンな Markdown に変換。元記事の URL とクリップ日時を保持します。
-- **選択テキストと画像のクリップ**：テキストを選択するか画像を右クリックして、ページ全体を保存することなく直接ノートとして保存できます。
-- **SNS とコミュニティへの深層対応**：X (Twitter)、小紅書、知乎、Reddit、GitHub、YouTube、Bilibili など 15 以上の主要プラットフォームの構造化保存にワンクリックで対応。
-- **セルフホストへのプライベート直接通信**：クリップした内容は個人の EdgeEver インスタンスに直接送信され、第三者の中継サーバーを経由しません。
+- Web ページの本文をクリーンな Markdown として抽出、または選択したテキストや画像を直接セルフホストインスタンスに保存。
+- 20 以上の主要プラットフォームの構造化クリップに深層対応：SNS（X、小紅書、WeChat、即刻、豆瓣、Threads、Bluesky）、技術・コミュニティ（知乎、Reddit、GitHub、V2EX、Hacker News、Medium、Substack）、動画・ポッドキャスト（Bilibili、YouTube、小宇宙）など。
 
 <a id="features"></a>
 ## 主な機能と活用シーン

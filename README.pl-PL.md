@@ -70,10 +70,8 @@ Publiczne demo resetuje się codziennie o 3:00 czasu chińskiego (UTC+8) i przyw
   <a href="https://addons.mozilla.org/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="Zainstaluj EdgeEver Web Clipper w Firefoxie" width="36" height="36" /></a>
 </p>
 
-- **Wydobywanie treści artykułów**: Rozszerzenie pobiera tekst i przekształca go w przejrzysty Markdown, zachowując adres źródłowy oraz czas zapisania.
-- **Zapisywanie zaznaczenia i obrazów z menu kontekstowego**: Dodawaj zaznaczony tekst lub obraz wskazany prawym przyciskiem myszy bez przechwytywania całej strony.
-- **Głęboka integracja z platformami społecznościowymi i forami**: Dedykowane, ustrukturyzowane zapisywanie treści z ponad 15 wiodących platform, w tym X (Twittera), Xiaohongshu, Zhihu, Reddita, GitHuba, YouTube i Bilibili.
-- **Bezpośrednie prywatne połączenie**: Rozszerzenie wysyła materiały do Twojej instancji EdgeEver bez pośrednictwa zewnętrznych usług.
+- Przekształca artykuły w przejrzysty Markdown lub zapisuje zaznaczony tekst i obrazy bezpośrednio w Twojej instancji.
+- Głębokie, ustrukturyzowane zapisywanie treści z ponad 20 platform: społecznościowych (X, Xiaohongshu, WeChat, Jike, Douban, Threads, Bluesky), serwisów czytelniczych i technicznych (Zhihu, Reddit, GitHub, V2EX, Hacker News, Medium, Substack) oraz wideo i podcastów (Bilibili, YouTube, Xiaoyuzhou).
 
 <a id="features"></a>
 ## Najważniejsze funkcje i zastosowania

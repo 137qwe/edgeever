@@ -72,10 +72,8 @@ EdgeEver 是一款现代化的开源笔记与个人知识库工作区。它保�
   <a href="https://addons.mozilla.org/zh-CN/firefox/addon/edgeever-web-clipper/"><img src="https://raw.githubusercontent.com/alrra/browser-logos/58881b84c4d73adc03c06fa2c275a7abee02d935/src/firefox/firefox.svg" alt="为 Firefox 安装 EdgeEver 网页裁剪插件" width="36" height="36" /></a>
 </p>
 
-- **智能正文提取**：自动提取网页文章正文并转为纯净 Markdown，自动保留来源网址与剪藏时间。
-- **划选与右键剪藏**：选中局部文字或右键任意图片直接存为独立笔记，无需抓取整页冗余内容。
-- **社媒与社区深度剪藏**：深度适配 X (Twitter)、小红书、知乎、Reddit、GitHub、Bilibili、YouTube 等十余个主流社媒、技术社区与音视频平台，一键结构化入库。
-- **自托管隐私直连**：剪藏内容直传个人自托管实例，不经过任何第三方服务器中转。
+- 支持提取网页正文为纯净 Markdown，或划选文字与图片精准保存，直传自托管实例。
+- 深度适配 20+ 主流平台的结构化剪藏：覆盖社交（X、小红书、微信公众号、即刻、豆瓣、Threads、Bluesky）、社区与资讯（知乎、Reddit、GitHub、V2EX、Hacker News、Medium、Substack）、音视频与播客（Bilibili、YouTube、小宇宙）等。
 
 <a id="features"></a>
 ## 核心特性与场景
