@@ -79,7 +79,7 @@ Publiczne demo resetuje się codziennie o 3:00 czasu chińskiego (UTC+8) i przyw
 <a id="features"></a>
 ## Macierz funkcji i zastosowań
 
-EdgeEver wspiera cały proces – od gromadzenia informacji i tworzenia treści po publikację i współpracę:
+Wszechstronny obszar roboczy łączący zbieranie inspiracji, głębokie tworzenie i gromadzenie wiedzy:
 
 | Moduł | Funkcje podstawowe | Funkcje zaawansowane |
 | :--- | :--- | :--- |

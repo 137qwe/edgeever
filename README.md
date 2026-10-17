@@ -79,7 +79,7 @@ The public demo resets every day at 3:00 AM (China Standard Time) and restores s
 <a id="features"></a>
 ## Feature Matrix & Capabilities
 
-Covers the complete workflow from content capture and deep creation to publishing and collaboration:
+An all-in-one workspace connecting inspiration capture, deep creation, and knowledge compounding:
 
 | Module | Core Features | Advanced Features |
 | :--- | :--- | :--- |
