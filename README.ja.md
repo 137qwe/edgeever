@@ -23,7 +23,7 @@
     <a href="#features">機能とワークフローマトリクス</a>
   </p>
   <p align="center">
-    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver ワークスペースプレビュー" width="800" />
+    <img src="assets/readme/edgeever-hero-v6.png" alt="EdgeEver ワークスペースプレビュー" width="800" />
   </p>
 </div>
 

@@ -23,7 +23,7 @@
     <a href="#features">Macierz funkcji i zastosowań</a>
   </p>
   <p align="center">
-    <img src="assets/readme/edgeever-hero-v5.png" alt="Podgląd przestrzeni roboczej EdgeEver" width="800" />
+    <img src="assets/readme/edgeever-hero-v6.png" alt="Podgląd przestrzeni roboczej EdgeEver" width="800" />
   </p>
 </div>
 

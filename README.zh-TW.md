@@ -23,7 +23,7 @@
     <a href="#features">核心功能與場景矩陣</a>
   </p>
   <p align="center">
-    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver 產品工作區預覽" width="800" />
+    <img src="assets/readme/edgeever-hero-v6.png" alt="EdgeEver 產品工作區預覽" width="800" />
   </p>
 </div>
 
