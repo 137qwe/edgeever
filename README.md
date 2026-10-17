@@ -162,31 +162,33 @@ After installation, updates run automatically each day by default. To update man
 
 ---
 
-## Migration & Advanced Setup
+## Advanced Configuration & Management
 
-### Migration
+### Data Backup, Export & Migration
 
-If you want to migrate notes from other platforms to EdgeEver, please refer to the following simple migration guides:
+Whether for routine data backups, seamless cross-instance migration, or switching from existing note platforms, EdgeEver provides reliable, complete data mobility:
 
-- **Evernote Migration**: Please refer to [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **flomo Migration**: Please refer to [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
-- **Memos Migration**: Please refer to [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion Migration**: Please refer to [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+- **EdgeEver Native Backup & Restore**: In the app, go to **Profile** -> **Import and export** to export or import an EdgeEver ZIP archive at any time. The extracted `notes/` directory keeps clean plaintext Markdown files and attachments for local archival or direct reading, while internal structured metadata enables lossless full restoration across different EdgeEver instances. Importing preserves existing unrelated data on the target instance and automatically overwrites records with matching IDs.
+- **Smooth Migration from Third-Party Apps**:
+  - **Evernote Migration**: Please refer to [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+  - **flomo Migration**: Please refer to [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+  - **Memos Migration**: Please refer to [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+  - **Notion Migration**: Please refer to [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
 
-### MCP
+### AI & MCP Protocol Integration
 
 Create an API token in **Profile** -> **API / MCP** and copy the Remote MCP configuration in one click to let AI Agents such as Claude Code, Cursor, Antigravity, and OpenClaw securely manage your knowledge base within account permissions. EdgeEver supports full CRUD for text notes, visual diagram notes (mind maps, flowcharts, and architecture diagrams), structured table notes, and native poster notes. Agents can also manage notebook hierarchies, tags, attachments, revision history, note templates, and AI instructions.
 
 > 💡 **Inspiration:**
 > Make AI your true knowledge orchestrator and creative co-pilot—instantly turn concepts into interactive mind maps, flowcharts, architecture diagrams, and structured tables, while supplying private context to your AI Agents. Paired with EdgeEver’s powerful rich-text editing and elegant typography, AI-assisted content becomes beautifully structured, polished, and publication-ready knowledge assets.
 
-### Multi-Account Login & Storage Usage
+### Multi-Account Login & Storage Management
 
 Once deployed, a single instance supports multi-account login.
 
 The instance administrator can create, disable, or reset member accounts in **Profile** -> **User accounts**. Each member gets a fully isolated personal workspace, including notebooks, notes, attachments, Trash, import/export, and MCP tokens. An intuitive storage usage dashboard provides real-time visibility into attachment storage consumed across the whole instance as well as per account.
 
-### Advanced Object Storage & Third-Party Image Hosting
+### Storage Extension & Third-Party Image Hosting
 
 - **OSS Object Storage**: The instance owner can configure S3-compatible object storage under **Settings → Advanced → OSS object storage**. Changing storage does not migrate or affect existing attachments.
 - **Desktop PicGo Integration**: The desktop app optionally integrates with a local PicGo client service, uploading inserted images directly to GitHub, SM.MS, Upyun, Qiniu, or custom image hosts to minimize self-hosted storage and bandwidth consumption.
@@ -197,9 +199,20 @@ Web and desktop apps support functional plugins and custom themes, installable f
 
 ---
 
-## Developer Guide & Architecture
+## Developer Guide & Contributing
 
-### Tech Stack
+### Quick Start
+
+```sh
+bun install
+bun run dev
+```
+
+Local development signs in automatically; fresh databases use `owner` / `edgeever-local-dev`. Log out to test the login screen.
+
+### Architecture & Tech Stack
+
+#### Tech Stack
 
 - Bun workspace monorepo with Web, API, official site, and shared type package.
 - Frontend: Vite, React, React Router, TanStack Query, Tailwind CSS, shadcn/ui, and Radix UI.
@@ -211,16 +224,7 @@ Web and desktop apps support functional plugins and custom themes, installable f
 - Backend: one Hono/Zod business application with REST API and Remote MCP; Cloudflare uses Workers/D1/R2, while Docker uses Bun/SQLite/local files or S3.
 - Official site: Astro static site in `apps/site`, deployable to Cloudflare Pages.
 
-### Quick Start
-
-```sh
-bun install
-bun run dev
-```
-
-Local development signs in automatically; fresh databases use `owner` / `edgeever-local-dev`. Log out to test the login screen.
-
-### Project Structure
+#### Project Structure
 
 ```text
 apps/web          Vite + React frontend, PWA, offline drafts, and sync queue
@@ -241,34 +245,33 @@ docs              Architecture, migration, and deployment docs
 wrangler.toml     Cloudflare Workers, Assets, D1, R2 configuration
 ```
 
-### Content Formats
+#### Data Storage Model
 
-EdgeEver stores note content in three forms:
+EdgeEver persists note content simultaneously across three formats to balance editing performance, open portability, and full-text search speed:
 
 ```text
 content_json      TipTap/ProseMirror document, the editor source of truth
-content_markdown  API, Agent, import, and export format
-content_text      Search, summary, and indexing text
+content_markdown  API, Agent, export, and external ecosystem interoperability
+content_text      Full-text search, summary generation, and indexing
 ```
 
-Open **Profile** -> **Import and export** to export or import an EdgeEver ZIP. Its `notes/` directory is directly readable and portable as Markdown, while its structured data supports complete recovery between EdgeEver instances. Import preserves unrelated target data and overwrites records with matching EdgeEver IDs.
+### Core Mechanisms & Design Decisions
 
-### Image Compression
+- **Client-Side Silent Compression**: To avoid consuming compute quota on serverless runtimes like Cloudflare Workers, image compression occurs in the Web client before upload (converting PNG/JPEG/WebP/AVIF to WebP when beneficial, max edge 2560px; original retained if compression does not reduce size). REST API and MCP endpoints store client-supplied binaries directly without additional server-side transcoding.
+- **Offline-First & Sync Timing**: Web, PWA, and desktop clients automatically upload memo edits after 30 seconds of typing inactivity, and poll for remote changes every 5 minutes while visible; window refocus and manual refresh remain immediate. Configurable via `DEFERRED_MEMO_SYNC_DELAY_MS` and `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` in [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts).
 
-Image compression happens in the Web client before upload and is controlled by the **Compress note images** setting. When enabled, PNG, JPEG, WebP, and AVIF files are converted to WebP when beneficial, with the longest edge limited to `2560px`. If compression does not reduce size, the original file is kept.
+### Contributing Code
 
-EdgeEver avoids Worker-side image processing to reduce compute and image-processing quota usage. REST API and MCP upload paths store the file content provided by the client without additional server-side compression.
+Community contributions are warmly welcome! Please keep the following guidelines in mind:
 
-### Sync Timing
-
-Web, PWA, and desktop upload memo edits after 30 seconds of inactivity and check for remote changes every 5 minutes while visible; focus and manual refresh remain immediate. Adjust `DEFERRED_MEMO_SYNC_DELAY_MS` and `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` in [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts).
+- Please review the [Contribution Guide](CONTRIBUTING.md) before submitting code.
+- **Deployment Isolation**: If your GitHub Fork is also used to deploy EdgeEver, keep its `main` branch clean and deployment-only. Create a dedicated branch from official `upstream/main` for features/fixes and pull requests; do not develop on or run Sync fork directly on the deployment `main`.
 
 ---
 
 ## Community and Feedback
 
-- Bugs, feature requests, and deployment issues: [GitHub Issues](https://github.com/tianma-if/edgeever/issues)
-- Code contributions: read the [Contribution Guide](CONTRIBUTING.md). If your Fork is also used to deploy EdgeEver, keep its `main` branch deployment-only. Create a separate branch from the official `upstream/main` for synchronization, development, and pull requests; do not develop on or Sync fork the deployment `main`.
+- **Issues & Suggestions**: For bugs, feature requests, and deployment questions, please submit to [GitHub Issues](https://github.com/tianma-if/edgeever/issues) to help the community build searchable solutions.
 
 ### Telegram Community
 

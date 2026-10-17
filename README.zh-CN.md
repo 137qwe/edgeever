@@ -160,44 +160,57 @@ curl -fsSL https://edgeever.org/install.sh | bash
 
 ---
 
-## 数据迁移与进阶使用
+## 进阶配置与管理
 
-### 导入与迁移 (Migration)
+### 数据导入导出与备份
 
-如果你想从其他笔记软件迁移到 EdgeEver，请参考以下极简迁移指引：
+无论是日常数据备份、跨实例无缝迁移，还是从已有笔记平台迁入，EdgeEver 均提供完整可靠的数据流转方案：
 
-- **印象笔记（Evernote）的迁入**：请参考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **flomo 笔记的迁入**：请参考 [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
-- **Memos 笔记的迁入**：请参考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion 笔记的迁入**：请参考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+- **EdgeEver 原生备份与还原**：在应用内进入 **个人中心** -> **导入与导出**，可随时导出或导入 EdgeEver ZIP 档案包。解压后的 `notes/` 目录保留清晰的纯文本 Markdown 文件与附件，可直接用于本地归档或独立阅读；内部结构化元数据则支持在不同 EdgeEver 实例间无损全量还原。导入时保留目标实例的既有数据，同 ID 内容自动覆盖更新。
+- **第三方笔记平滑迁入**：
+  - **印象笔记（Evernote）迁入**：请参考 [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+  - **flomo 笔记迁入**：请参考 [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+  - **Memos 笔记迁入**：请参考 [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+  - **Notion 笔记迁入**：请参考 [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
 
-### MCP
+### AI 与 MCP 协议互联
 
 在 **个人中心** -> **API / MCP** 中创建 API Token 并一键复制 Remote MCP 配置，即可让 Claude Code、Cursor、Antigravity、OpenClaw 等 AI Agent 在账号授权范围内安全管理你的知识库。系统支持文本笔记、图表笔记（思维导图、流程图与架构图）、多维表格笔记与原生海报笔记的完整增删改查，Agent 还可管理笔记本目录、标签、附件、历史版本、笔记模板与 AI 指令。
 
 > 💡 **场景启发：**
 > 让 AI 真正成为你的知识管家与创作外脑——不仅能将方案秒级生成为可交互的思维导图、流程图、架构图与多维表格，还能为 AI Agent 提供私有知识上下文。依托 EdgeEver 强大的富文本编辑与精美排版能力，AI 协同沉淀的不再是冰冷文本，而是结构工整、排版优雅、随时可一键分发的高品质知识资产。
 
-### 多账号登录与存储用量
+### 多账号登录与存储管理
 
 部署完成后，单个实例支持多账号登录。
 
 实例管理员可以在 **个人中心** -> **账号管理** 中创建、停用成员账号或重置密码。每个成员拥有完全隔离的个人空间，包括笔记本、笔记、附件、回收站、导入导出和 MCP Token 等。系统同时提供直观的存储用量面板，可实时掌握实例整体与各账号的附件存储占用明细。
 
-### 高级对象存储与第三方图床
+### 存储扩展与第三方图床
 
 - **OSS 对象存储**：实例 Owner 可在**设置 → 高级设置 → OSS 对象存储**中配置兼容 S3 API 的对象存储。切换存储不会迁移或影响已有附件。
 - **桌面端 PicGo 图床**：桌面端支持可选接入本机 PicGo 客户端服务，在笔记中插入图片时可直接上传至 GitHub、SM.MS、又拍云、七牛云或自建图床，进一步减少自托管实例的存储开销与流量占用。
 
-### 插件与主题
+### 插件与个性化主题
 
 Web 与桌面端支持功能插件与个性化主题，可从官方市场、GitHub 或 Manifest 地址一键安装，并随工作区跨端同步。开发者可使用 `@edgeever/plugin-api` 扩展能力，详见[插件开发文档](docs/plugin-development.zh-CN.md)与[官方插件市场上架政策](docs/plugin-marketplace-policy.zh-CN.md)。
 
 ---
 
-## 开发者指南与架构
+## 开发者指南与贡献
 
-### 技术栈
+### 快速开始
+
+```sh
+bun install
+bun run dev
+```
+
+本地开发默认自动登录，首次账号为 `owner` / `edgeever-local-dev`；测试登录页可主动退出登录。
+
+### 架构设计与技术栈
+
+#### 技术栈选型
 
 - Bun workspace monorepo，包含 Web、API、官网与共享类型包。
 - 前端：Vite、React、React Router、TanStack Query，UI 基于 Tailwind CSS、shadcn/ui、Radix UI。
@@ -209,16 +222,7 @@ Web 与桌面端支持功能插件与个性化主题，可从官方市场、GitH
 - 后端：一套基于 Hono/Zod 的业务应用，提供 REST API 与 Remote MCP；Cloudflare 使用 Workers/D1/R2，Docker 使用 Bun/SQLite/本地文件或 S3。
 - 官网：Astro 静态站点，位于 `apps/site`，可独立构建并部署到 Cloudflare Pages。
 
-### 快速开始
-
-```sh
-bun install
-bun run dev
-```
-
-本地开发默认自动登录，首次账号为 `owner` / `edgeever-local-dev`；测试登录页可主动退出登录。
-
-### 目录结构
+#### 目录结构
 
 ```text
 apps/web          Vite + React 前端、PWA、离线草稿与同步队列
@@ -239,34 +243,33 @@ docs              架构、迁移与部署文档
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 配置
 ```
 
-### 内容格式
+#### 数据存储模型
 
-EdgeEver 同时保存三种内容形态：
+EdgeEver 在数据库中同时保存三种内容形态，以兼顾编辑性能、开放性与全库检索效率：
 
 ```text
 content_json      TipTap/ProseMirror 文档，编辑器权威格式
-content_markdown  API、Agent、导入导出使用
-content_text      搜索、摘要和索引使用
+content_markdown  API、Agent、导入导出与外部生态消费格式
+content_text      全文搜索、摘要与快速索引使用
 ```
 
-请打开 **我的** -> **导入与导出**，导出或导入 EdgeEver ZIP。压缩包中的 `notes/` 目录可直接作为 Markdown 阅读和迁移，结构化数据则用于在 EdgeEver 实例之间完整恢复；导入时目标实例中的无关数据会保留，相同 EdgeEver ID 的内容会被覆盖。
+### 核心机制与设计决策
 
-### 图片压缩规则
+- **端侧静默压缩**：为避免在 Serverless（如 Cloudflare Worker）上执行图片转码消耗宝贵的计算额度，图片压缩全部放在 Web 客户端上传前完成（PNG/JPEG/WebP/AVIF 转 WebP，最大边限制 2560px；不减小体积则保留原图）。服务端 REST API 与 MCP 接口直接入库客户端传输的原始内容。
+- **离线优先与同步时序**：Web、PWA 与桌面端会在用户停止编辑 30 秒后自动上传增量，并在前台页面可见时每 5 分钟拉取一次云端变更；窗口重聚焦或手动刷新时立即同步。开发者可在 [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) 中调整相关时序常量（`DEFERRED_MEMO_SYNC_DELAY_MS` 与 `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS`）。
 
-图片压缩仅在 Web 端上传前执行，由设置页的“压缩笔记内图片”开关控制。启用后，浏览器会把 PNG、JPEG、WebP、AVIF 尝试压缩为 WebP，并将最长边限制在 `2560px` 以内；如果压缩结果不比原图小，则保留原图。
+### 参与代码贡献
 
-Cloudflare Worker 侧执行图片处理会消耗计算/图片处理额度，因此 EdgeEver 将图片压缩放在 Web 客户端完成；REST API 或 MCP 上传入口会按客户端提供的文件内容直接入库，不再由服务端自动压缩。
+我们非常欢迎社区贡献！贡献前请留意以下约定：
 
-### 同步时序
-
-Web、PWA 与桌面端会在停止编辑 30 秒后上传笔记，并在页面可见时每 5 分钟检查云端变更；窗口聚焦与手动刷新仍会立即拉取。可在 [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) 中调整 `DEFERRED_MEMO_SYNC_DELAY_MS` 和 `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS`。
+- 提交代码前请仔细阅读 [贡献代码须知](CONTRIBUTING.zh-CN.md)。
+- **分支与部署隔离**：如果您的 GitHub Fork 同时用于在线部署 EdgeEver，请将 `main` 分支严格保留为只读部署分支；请从官方 `upstream/main` 创建新分支进行功能开发并提交 Pull Request，严禁在部署用的 `main` 分支上直接修改代码或执行 Sync fork。
 
 ---
 
 ## 社区与反馈
 
-- Bug、功能建议和部署问题请优先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便后续用户检索和复用解决方案。
-- 贡献代码前请阅读[贡献代码须知](CONTRIBUTING.zh-CN.md)。如果您的 Fork 同时用于部署 EdgeEver，请将 `main` 分支仅用于部署；从官方 `upstream/main` 新建独立分支，在该分支中同步上游、开发并提交 Pull Request，不要在部署用的 `main` 上开发或执行 Sync fork。
+- **问题反馈与功能建议**：遇到 Bug、功能建议或部署疑问，请优先提交 [GitHub Issues](https://github.com/tianma-if/edgeever/issues)，方便社区沉淀并检索解决方案。
 
 <hr>
 

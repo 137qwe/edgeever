@@ -162,31 +162,33 @@ Po instalacji aktualizacje domyślnie uruchamiają się codziennie. Aby zaktuali
 
 ---
 
-## Migracja danych i konfiguracja zaawansowana
+## Zaawansowana konfiguracja i zarządzanie
 
-### Migracja
+### Kopia zapasowa, eksport i migracja danych
 
-Jeśli chcesz przenieść notatki z innej aplikacji do EdgeEver, skorzystaj z poniższych przewodników (obecnie po angielsku):
+Zarówno przy codziennych kopiach zapasowych, bezproblemowej migracji między instancjami, jak i przenoszeniu notatek z innych platform, EdgeEver zapewnia niezawodny i pełny transfer danych:
 
-- **Evernote**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **flomo**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
-- **Memos**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+- **Natywne kopie zapasowe i przywracanie EdgeEver**: W aplikacji w **Profil → Import i eksport** można w każdej chwili wyeksportować lub zaimportować archiwum ZIP EdgeEver. Rozpakowany katalog `notes/` zawiera bezpośrednio czytelne pliki Markdown oraz załączniki do lokalnego archiwizowania, a wewnętrzne dane strukturalne pozwalają na bezstratne i pełne odtworzenie bazy na innej instancji EdgeEver. Podczas importu zachowywane są istniejące, niezwiązane dane na instancji docelowej, a rekordy o tych samych identyfikatorach są automatycznie aktualizowane.
+- **Płynna migracja z innych platform**:
+  - **Evernote**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+  - **flomo**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+  - **Memos**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+  - **Notion**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
 
-### MCP
+### Integracja z AI i protokołem MCP
 
 Utwórz token API w **Profil → API / MCP** i skopiuj konfigurację Remote MCP jednym kliknięciem. Agenci AI, tacy jak Claude Code, Cursor, Antigravity i OpenClaw, będą mogli bezpiecznie zarządzać Twoją bazą wiedzy w zakresie uprawnień konta. EdgeEver obsługuje pełne tworzenie, odczyt, edycję i usuwanie notatek tekstowych, diagramów (map myśli, schematów blokowych i diagramów architektury), tabel strukturalnych oraz natywnych notatek plakatowych. Agenci mogą też zarządzać strukturą notatników, tagami, załącznikami, historią wersji, szablonami i instrukcjami AI.
 
 > 💡 **Inspiracja:**
 > Użyj AI jako pomocnika w porządkowaniu wiedzy: zamieniaj pomysły w interaktywne mapy myśli, diagramy i tabele, dostarczając agentom własny kontekst. Edytor tekstu sformatowanego i typografia EdgeEver pomagają dopracować wynik do postaci gotowej do publikacji.
 
-### Logowanie wielu użytkowników i zużycie miejsca
+### Logowanie wielu użytkowników i zarządzanie miejscem
 
 Jedna instancja obsługuje wiele kont.
 
 Administrator może tworzyć i wyłączać konta oraz resetować ich hasła w **Profil → Członkowie**. Każdy użytkownik otrzymuje odizolowaną przestrzeń z notatnikami, notatkami, załącznikami, Koszem, importem i eksportem oraz tokenami MCP. Przejrzysty panel zużycia miejsca pozwala na bieżąco monitorować przestrzeń zajmowaną przez załączniki w całej instancji i na poszczególnych kontach.
 
-### Zaawansowane przechowywanie plików i zewnętrzny hosting obrazów
+### Rozszerzenia pamięci masowej i zewnętrzny hosting obrazów
 
 - **Magazyn obiektów OSS**: Właściciel instancji może skonfigurować magazyn zgodny z S3 w **Profil → Zaawansowane → Magazyn obiektów OSS**. Zmiana magazynu nie przenosi istniejących załączników ani ich nie modyfikuje.
 - **Integracja z PicGo na komputerze**: Aplikacja desktopowa opcjonalnie współpracuje z lokalną usługą PicGo, przesyłając wstawiane obrazy bezpośrednio do GitHuba, SM.MS, Upyun, Qiniu lub własnego hostingu, co ogranicza zużycie miejsca i transferu we własnym środowisku.
@@ -197,9 +199,20 @@ Aplikacje Web i desktopowa obsługują wtyczki oraz własne motywy, instalowane 
 
 ---
 
-## Przewodnik dla deweloperów i architektura
+## Przewodnik dla deweloperów i współtworzenie
 
-### Stos technologiczny
+### Szybki start
+
+```sh
+bun install
+bun run dev
+```
+
+W lokalnym środowisku deweloperskim logowanie następuje automatycznie. Nowa baza używa danych `owner` / `edgeever-local-dev`. Wyloguj się, aby sprawdzić ekran logowania.
+
+### Architektura i stos technologiczny
+
+#### Stos technologiczny
 
 - Monorepo oparte na Bun z aplikacją Web, API, oficjalną stroną i pakietem współdzielonych typów.
 - Interfejs: Vite, React, React Router, TanStack Query, Tailwind CSS, shadcn/ui i Radix UI.
@@ -211,16 +224,7 @@ Aplikacje Web i desktopowa obsługują wtyczki oraz własne motywy, instalowane 
 - Backend: jedna aplikacja biznesowa Hono/Zod z REST API i Remote MCP. Cloudflare używa Workers/D1/R2, a Docker używa Bun/SQLite oraz plików lokalnych lub S3.
 - Oficjalna strona: statyczna witryna Astro w `apps/site`, wdrażana niezależnie na Cloudflare Pages.
 
-### Szybki start
-
-```sh
-bun install
-bun run dev
-```
-
-W lokalnym środowisku deweloperskim logowanie następuje automatycznie. Nowa baza używa danych `owner` / `edgeever-local-dev`. Wyloguj się, aby sprawdzić ekran logowania.
-
-### Struktura projektu
+#### Struktura projektu
 
 ```text
 apps/web          Interfejs Vite + React, PWA, wersje robocze offline i kolejka synchronizacji
@@ -241,34 +245,33 @@ docs              Dokumentacja architektury, migracji i wdrażania
 wrangler.toml     Konfiguracja Cloudflare Workers, Assets, D1 i R2
 ```
 
-### Formaty treści
+#### Model przechowywania danych
 
-Treść notatki jest przechowywana w trzech postaciach:
+EdgeEver przechowuje treść notatki jednocześnie w trzech formatach, aby pogodzić wydajność edycji, otwartość danych i szybkość wyszukiwania pełnotekstowego:
 
 ```text
-content_json      Dokument TipTap/ProseMirror, główne źródło dla edytora
-content_markdown  Format API, agentów, importu i eksportu
-content_text      Tekst do wyszukiwania, podsumowań i indeksowania
+content_json      Dokument TipTap/ProseMirror, autorytatywny format dla edytora
+content_markdown  Format API, agentów, eksportu i integracji z zewnętrznym ekosystemem
+content_text      Format do wyszukiwania pełnotekstowego, podsumowań i indeksowania
 ```
 
-W **Profil → Import i eksport** można wyeksportować lub zaimportować archiwum ZIP EdgeEver. Katalog `notes/` zawiera czytelne pliki Markdown, a dane strukturalne pozwalają całkowicie odtworzyć instancję. Import zachowuje niezwiązane dane w instancji docelowej i nadpisuje rekordy o tych samych identyfikatorach EdgeEver.
+### Kluczowe mechanizmy i decyzje projektowe
 
-### Kompresja obrazów
+- **Cicha kompresja po stronie klienta**: Aby uniknąć zużywania limitów obliczeniowych na środowiskach Serverless (np. Cloudflare Workers), kompresja obrazów odbywa się w całości w kliencie Web przed wysłaniem (konwersja PNG/JPEG/WebP/AVIF na WebP, ograniczenie dłuższego boku do 2560px; brak powiększenia rozmiaru zachowuje oryginał). Punkty końcowe REST API i MCP zapisują bezpośrednio oryginalną treść otrzymaną od klienta.
+- **Offline-first i harmonogram synchronizacji**: Aplikacje Web, PWA i desktopowe przesyłają zmiany automatycznie po 30 sekundach braku aktywności w pisaniu, a przy widocznym oknie sprawdzają zmiany w chmurze co 5 minut. Ponowne przejście do aplikacji lub ręczne odświeżenie natychmiast synchronizuje dane. Wartości te można konfigurować przez `DEFERRED_MEMO_SYNC_DELAY_MS` i `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` w [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts).
 
-Obrazy są kompresowane przed przesłaniem w aplikacji Web; steruje tym ustawienie **Kompresuj obrazy w notatkach**. Po włączeniu pliki PNG, JPEG, WebP i AVIF są konwertowane na WebP, jeśli zmniejsza to ich rozmiar. Najdłuższy bok jest ograniczony do `2560px`. Gdy kompresja nie daje oszczędności, aplikacja zachowuje oryginał.
+### Współtworzenie kodu
 
-EdgeEver nie przetwarza obrazów po stronie Workera, co ogranicza zużycie zasobów obliczeniowych i limitów przetwarzania. Przesyłanie przez REST API i MCP przechowuje plik otrzymany od klienta bez dodatkowej kompresji na serwerze.
+Serdecznie zapraszamy społeczność do współtworzenia projektu! Przed przesłaniem kodu pamiętaj o poniższych zasadach:
 
-### Czas synchronizacji
-
-Aplikacje Web, PWA i desktopowa przesyłają zmiany notatek po 30 sekundach bezczynności i sprawdzają zmiany zdalne co 5 minut, gdy są widoczne. Ponowne przejście do aplikacji i ręczne odświeżenie działają od razu. Parametry `DEFERRED_MEMO_SYNC_DELAY_MS` i `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` znajdują się w [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts).
+- Przed wniesieniem zmian przeczytaj [poradnik współtworzenia](CONTRIBUTING.md).
+- **Izolacja wdrożenia i gałęzi**: Jeśli Twój GitHub Fork służy również do wdrożenia EdgeEver online, pozostaw jego gałąź `main` wyłącznie do wdrożeń. Do prac rozwojowych i pull requestów utwórz osobną gałąź od oficjalnego `upstream/main`; nie twórz zmian bezpośrednio na gałęzi `main` ani nie wykonuj na niej opcji Sync fork.
 
 ---
 
 ## Społeczność i opinie
 
-- Błędy, propozycje funkcji i problemy z wdrożeniem zgłaszaj przez [GitHub Issues](https://github.com/tianma-if/edgeever/issues).
-- Przed wniesieniem zmian przeczytaj [poradnik współtworzenia](CONTRIBUTING.md). Jeśli Twój Fork służy również do wdrożenia EdgeEver, pozostaw jego gałąź `main` wyłącznie do wdrożeń. Do synchronizacji, prac rozwojowych i pull requestów utwórz osobną gałąź od oficjalnego `upstream/main`; nie rozwijaj aplikacji ani nie używaj opcji Sync fork na wdrożeniowej gałęzi `main`.
+- **Zgłaszanie uwag i propozycji**: Błędy, propozycje funkcji i pytania dotyczące wdrożenia zgłaszaj przez [GitHub Issues](https://github.com/tianma-if/edgeever/issues).
 
 ### Społeczność na Telegramie
 

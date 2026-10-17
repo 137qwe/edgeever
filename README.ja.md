@@ -161,44 +161,57 @@ curl -fsSL https://edgeever.org/install.sh | bash
 
 ---
 
-## データ移行と高度な活用
+## 高度な設定と管理
 
-### 移行
+### データのバックアップ、書き出しと移行
 
-他のプラットフォームから EdgeEver へ移す場合は、次の短いガイドを見てください。
+日常のバックアップ、インスタンス間のスムーズな移行、既存のノートアプリからの乗り換えなど、EdgeEver は信頼性の高い完全なデータ流通を提供します：
 
-- **Evernote からの移行**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
-- **flomo からの移行**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
-- **Memos からの移行**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
-- **Notion からの移行**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
+- **EdgeEver ネイティブのバックアップと復元**：アプリ内の **プロフィール** -> **インポートとエクスポート** から、いつでも EdgeEver ZIP アーカイブを書き出し、または取り込めます。解凍後の `notes/` ディレクトリには Markdown ファイルと添付がそのまま保持され、ローカル保管や直接閲覧に利用できます。内部の構造化メタデータにより、異なる EdgeEver インスタンス間でも無劣化で完全復元が可能です。取り込み時は無関係な既存データを残し、同一 ID のノートを自動で上書き更新します。
+- **サードパーティ製ノートからのスムーズな移行**：
+  - **Evernote からの移行**: [docs/evernote-migration-guide.md](docs/evernote-migration-guide.md)
+  - **flomo からの移行**: [docs/flomo-migration-guide.md](docs/flomo-migration-guide.md)
+  - **Memos からの移行**: [docs/memos-migration-guide.md](docs/memos-migration-guide.md)
+  - **Notion からの移行**: [docs/notion-migration-guide.md](docs/notion-migration-guide.md)
 
-### MCP
+### AI と MCP プロトコル連携
 
 **プロフィール** -> **API / MCP** で API トークンを作成し、ワンクリックで Remote MCP 設定をコピーすることで、Claude Code、Cursor、Antigravity、OpenClaw などの AI Agent がアカウント権限の範囲内で知識ベースを安全に管理できます。テキストノート、図のノート（マインドマップ、フローチャート、アーキテクチャ図）、多次元テーブルノート、ネイティブポスターノートの完全な CRUD に対応し、Agent はノートブック階層、タグ、添付ファイル、履歴バージョン、ノートテンプレート、AI 指示の管理も行えます。
 
 > 💡 **着想：**
 > AI を知識の整理役と創作の相棒にしてください。構想をインタラクティブなマインドマップ、フローチャート、アーキテクチャ図、多次元テーブルへ瞬時に落とし込み、Agent に私有の文脈を渡せます。EdgeEver のリッチテキストと美しい体裁と組み合わせることで、AI が手伝った内容は、整った、いつでも配布できる高品質な知識資産になります。
 
-### 複数アカウントとストレージ使用量
+### 複数アカウントとストレージ管理
 
 導入後、1 インスタンスで複数アカウントのログインができます。
 
 インスタンス管理者は **プロフィール** -> **ユーザーアカウント** でメンバーの作成、無効化、パスワードリセットができます。メンバーごとにノートブック、ノート、添付、ゴミ箱、インポート / エクスポート、MCP トークンが分離されます。また、直感的なストレージ使用量ダッシュボードにより、インスタンス全体および各アカウントの添付ファイル容量をリアルタイムで把握できます。
 
-### 高度なオブジェクトストレージとサードパーティ画像ホスティング
+### ストレージ拡張とサードパーティ画像ホスティング
 
 - **OSS オブジェクトストレージ**：インスタンスのオーナーは **設定 → 詳細 → OSS オブジェクトストレージ** で S3 互換ストレージを設定できます。切り替えは既存添付を移さず、影響しません。
 - **デスクトップ版 PicGo 連携**：デスクトップ版ではローカルの PicGo クライアントと連携可能で、ノート内の画像を GitHub、SM.MS、又拍雲、七牛雲や自前ホストへ直接アップロードでき、セルフホスト環境のストレージと帯域消費を節約できます。
 
-### プラグインとテーマ
+### プラグインとカスタムテーマ
 
 Web とデスクトップは機能プラグインとカスタムテーマに対応し、公式マーケット、GitHub、Manifest URL から手軽に導入でき、作業領域を通じて同期されます。開発者は `@edgeever/plugin-api` で拡張できます。詳細は [plugin development guide](docs/plugin-development.md) と [marketplace submission policy](docs/plugin-marketplace-policy.md) を参照してください。
 
 ---
 
-## 開発者ガイドとアーキテクチャ
+## 開発者ガイドと貢献
 
-### 技術スタック
+### クイックスタート
+
+```sh
+bun install
+bun run dev
+```
+
+ローカル開発は自動ログインします。新しいデータベースの初期アカウントは `owner` / `edgeever-local-dev` です。ログイン画面を試すときはログアウトしてください。
+
+### アーキテクチャ設計と技術スタック
+
+#### 技術スタック選定
 
 - Bun workspace の monorepo。Web、API、公式サイト、共有型パッケージ。
 - フロントエンド: Vite、React、React Router、TanStack Query、Tailwind CSS、shadcn/ui、Radix UI。
@@ -210,16 +223,7 @@ Web とデスクトップは機能プラグインとカスタムテーマに対�
 - バックエンド: Hono / Zod の業務アプリ 1 式。REST API と Remote MCP。Cloudflare は Workers / D1 / R2、Docker は Bun / SQLite / ローカルファイルまたは S3。
 - 公式サイト: `apps/site` の Astro 静的サイト。Cloudflare Pages に出せます。
 
-### クイックスタート
-
-```sh
-bun install
-bun run dev
-```
-
-ローカル開発は自動ログインします。新しいデータベースの初期アカウントは `owner` / `edgeever-local-dev` です。ログイン画面を試すときはログアウトしてください。
-
-### リポジトリ構成
+#### リポジトリ構成
 
 ```text
 apps/web          Vite + React フロントエンド、PWA、オフライン下書き、同期キュー
@@ -240,34 +244,33 @@ docs              アーキテクチャ、移行、導入の文書
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 の設定
 ```
 
-### 内容の形式
+#### データストレージモデル
 
-EdgeEver はノート本文を 3 つの形で持ちます。
+EdgeEver はエディタの描画性能、データポータビリティ、および全文検索の高速性を両立するため、ノート本文をデータベース内で同時に 3 つの形で保持します：
 
 ```text
-content_json      TipTap/ProseMirror 文書。エディタの正本
-content_markdown  API、Agent、取り込み、書き出し
-content_text      検索、要約、索引
+content_json      TipTap/ProseMirror 文書、エディタの正本
+content_markdown  API、Agent、書き出し、外部エコシステム連携用
+content_text      全文検索、要約生成、索引
 ```
 
-**プロフィール** -> **インポートとエクスポート** から EdgeEver ZIP を書き出し、または取り込めます。`notes/` は Markdown として読め、持ち出せます。構造化データは EdgeEver インスタンス間の完全復元に使います。取り込みは関係ない対象データを残し、同じ EdgeEver ID の記録は上書きします。
+### コアメカニズムと設計上の決定
 
-### 画像圧縮
+- **クライアント側での静默圧縮**：Cloudflare Workers などの Serverless ランタイムで画像トランスコードを行い計算枠を消費するのを防ぐため、画像圧縮は Web クライアント側のアップロード前に完結させます（PNG/JPEG/WebP/AVIF を WebP に変換、長辺 2560px 制限；サイズが小さくならなければ原画像を維持）。サーバー側の REST API や MCP アップロードはクライアントから受け取った内容をそのまま格納します。
+- **オフライン優先と同期のタイミング**：Web、PWA、デスクトップは、ユーザーの編集が 30 秒間止まった段階で増分を自動アップロードし、フォアグラウンド表示中は 5 分ごとにクラウドの変更を確認します。ウィンドウへのフォーカス復帰や手動更新時は即座に同期されます。開発者は [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) 内の定数（`DEFERRED_MEMO_SYNC_DELAY_MS` および `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS`）で調整できます。
 
-画像圧縮は Web クライアントがアップロード前に行い、**ノート内画像を圧縮** の設定で制御します。オンのとき、PNG、JPEG、WebP、AVIF は得があれば WebP にし、長辺を `2560px` までにします。小さくならなければ原ファイルを残します。
+### コードへの貢献
 
-Worker 側の画像処理は避け、計算と画像処理枠を抑えます。REST API と MCP のアップロードは、クライアントが渡した内容を追加圧縮せず保存します。
+コミュニティからの貢献を歓迎します！貢献の際は以下の約束にご協力ください：
 
-### 同期のタイミング
-
-Web、PWA、デスクトップは、編集が 30 秒止まったあとでノートをアップロードし、表示中は 5 分ごとに遠隔の変更を見ます。フォーカスと手動更新はすぐです。`DEFERRED_MEMO_SYNC_DELAY_MS` と `BACKGROUND_WORKSPACE_REFRESH_INTERVAL_MS` は [`apps/web/src/lib/workspace-refresh.ts`](apps/web/src/lib/workspace-refresh.ts) で変えられます。
+- コードを提出する前に [Contribution Guide](CONTRIBUTING.md) をご一読ください。
+- **本番導入とブランチの分離**：自身の GitHub Fork を EdgeEver のオンライン導入用にも使用している場合、その `main` ブランチはデプロイ専用のクリーンな状態に維持してください。機能開発やプルリクエスト作成は必ず公式の `upstream/main` から作成した別ブランチで行い、デプロイ用 `main` での直接作業や Sync fork は避けてください。
 
 ---
 
 ## コミュニティとフィードバック
 
-- 不具合、機能要望、導入の問題: [GitHub Issues](https://github.com/tianma-if/edgeever/issues)
-- コード貢献: [Contribution Guide](CONTRIBUTING.md) を読んでください。Fork を EdgeEver の導入にも使う場合、その `main` は導入専用にしてください。同期、開発、Pull Request は公式 `upstream/main` から切った別ブランチで行い、導入用 `main` では開発も Sync fork もしないでください。
+- **不具合報告と機能要望**：不具合や機能要望、導入に関する疑問は [GitHub Issues](https://github.com/tianma-if/edgeever/issues) へ投稿してください。
 
 ### Telegram コミュニティ
 
