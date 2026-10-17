@@ -226,6 +226,9 @@ W lokalnym środowisku deweloperskim logowanie następuje automatycznie. Nowa ba
 
 #### Struktura projektu
 
+<details>
+<summary>📁 Rozwiń, aby zobaczyć: Struktura projektu monorepo</summary>
+
 ```text
 apps/web          Interfejs Vite + React, PWA, wersje robocze offline i kolejka synchronizacji
 apps/extension    Rozszerzenie Web Clipper Manifest V3 dla Chrome/Edge/Firefox
@@ -244,6 +247,8 @@ docs              Dokumentacja architektury, migracji i wdrażania
 .github/workflows CI dla Web, mobile, iOS, pakietów desktopowych, wdrożeń i wydań
 wrangler.toml     Konfiguracja Cloudflare Workers, Assets, D1 i R2
 ```
+
+</details>
 
 #### Model przechowywania danych
 

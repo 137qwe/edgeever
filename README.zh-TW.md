@@ -224,6 +224,9 @@ bun run dev
 
 #### 目錄結構
 
+<details>
+<summary>📁 展開查看：Monorepo 專案目錄結構</summary>
+
 ```text
 apps/web          Vite + React 前端、PWA、離線草稿與同步佇列
 apps/extension    Chrome/Edge/Firefox Manifest V3 網頁擷取擴充功能
@@ -242,6 +245,8 @@ docs              架構、遷移與部署文件
 .github/workflows Web、行動端、iOS、桌面版打包、部署與 Release 的 CI
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 設定
 ```
+
+</details>
 
 #### 資料儲存模型
 

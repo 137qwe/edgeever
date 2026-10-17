@@ -225,6 +225,9 @@ bun run dev
 
 #### リポジトリ構成
 
+<details>
+<summary>📁 展開して確認：Monorepo リポジトリ構成</summary>
+
 ```text
 apps/web          Vite + React フロントエンド、PWA、オフライン下書き、同期キュー
 apps/extension    Chrome/Edge/Firefox Manifest V3 Web Clipper
@@ -243,6 +246,8 @@ docs              アーキテクチャ、移行、導入の文書
 .github/workflows Web、モバイル、iOS、デスクトップ梱包、導入、Release の CI
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 の設定
 ```
+
+</details>
 
 #### データストレージモデル
 

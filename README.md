@@ -226,6 +226,9 @@ Local development signs in automatically; fresh databases use `owner` / `edgeeve
 
 #### Project Structure
 
+<details>
+<summary>📁 Expand to view: Monorepo Project Structure</summary>
+
 ```text
 apps/web          Vite + React frontend, PWA, offline drafts, and sync queue
 apps/extension    Chrome/Edge/Firefox Manifest V3 web clipper
@@ -244,6 +247,8 @@ docs              Architecture, migration, and deployment docs
 .github/workflows CI for web, mobile, iOS, desktop packaging, deployment, and releases
 wrangler.toml     Cloudflare Workers, Assets, D1, R2 configuration
 ```
+
+</details>
 
 #### Data Storage Model
 

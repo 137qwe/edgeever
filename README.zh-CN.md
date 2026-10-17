@@ -224,6 +224,9 @@ bun run dev
 
 #### 目录结构
 
+<details>
+<summary>📁 展开查看：Monorepo 项目目录结构</summary>
+
 ```text
 apps/web          Vite + React 前端、PWA、离线草稿与同步队列
 apps/extension    Chrome/Edge/Firefox Manifest V3 网页裁剪插件
@@ -242,6 +245,8 @@ docs              架构、迁移与部署文档
 .github/workflows Web、移动端、iOS、桌面端打包、部署与 Release 的 CI
 wrangler.toml     Cloudflare Workers、Assets、D1、R2 配置
 ```
+
+</details>
 
 #### 数据存储模型
 
