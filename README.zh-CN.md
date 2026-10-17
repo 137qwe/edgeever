@@ -22,9 +22,10 @@
     <a href="#全平台客户端与浏览器插件">📱 客户端与插件下载</a> &nbsp;|&nbsp;
     <a href="#features">核心功能与场景矩阵</a>
   </p>
+  <p align="center">
+    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver 产品工作区预览" width="800" />
+  </p>
 </div>
-
-
 
 EdgeEver 是一款现代化的开源笔记与个人知识库工作区。它保留经典高效的三栏工作区体验（目录树 · 笔记列表 · 编辑写作），同时具备完全开放的数据架构与原生 AI Agent 联动能力，让个人知识沉淀更轻量、更自由。
 

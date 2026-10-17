@@ -22,9 +22,10 @@
     <a href="#all-platform-clients--browser-extension">📱 Clients & Extension</a> &nbsp;|&nbsp;
     <a href="#features">Feature Matrix & Capabilities</a>
   </p>
+  <p align="center">
+    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver Workspace Preview" width="800" />
+  </p>
 </div>
-
-
 
 EdgeEver is a modern, open-source notes and knowledge base workspace. It preserves the classic, high-efficiency three-pane productivity workflow (Tree View · Note List · Editor) while offering an open data architecture and seamless AI Agent integration for complete ownership and smart productivity.
 

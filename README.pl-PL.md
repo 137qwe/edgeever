@@ -22,6 +22,9 @@
     <a href="#aplikacje-i-rozszerzenia">📱 Aplikacje i rozszerzenia</a> &nbsp;|&nbsp;
     <a href="#features">Macierz funkcji i zastosowań</a>
   </p>
+  <p align="center">
+    <img src="assets/readme/edgeever-hero-v5.png" alt="Podgląd przestrzeni roboczej EdgeEver" width="800" />
+  </p>
 </div>
 
 EdgeEver to nowoczesna, otwartoźródłowa przestrzeń do notatek i zarządzania wiedzą. Zachowuje wygodę klasycznego, wysoce efektywnego układu trzech paneli (drzewo katalogów · lista notatek · edytor), a jednocześnie daje kontrolę nad danymi i bezpośrednią współpracę z agentami AI.

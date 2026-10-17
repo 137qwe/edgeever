@@ -22,9 +22,10 @@
     <a href="#全平台用戶端與瀏覽器外掛">📱 用戶端與外掛下載</a> &nbsp;|&nbsp;
     <a href="#features">核心功能與場景矩陣</a>
   </p>
+  <p align="center">
+    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver 產品工作區預覽" width="800" />
+  </p>
 </div>
-
-
 
 EdgeEver 是一款現代化的開源筆記與個人知識庫工作區。它延續經典高效的三欄工作區體驗（目錄樹 · 筆記列表 · 編輯寫作），同時具備完全開放的資料架構與原生 AI Agent 聯動能力，讓個人知識沉澱更輕量、更自由。
 

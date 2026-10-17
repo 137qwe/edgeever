@@ -22,9 +22,10 @@
     <a href="#全プラットフォームクライアントと拡張機能">📱 クライアントと拡張機能</a> &nbsp;|&nbsp;
     <a href="#features">機能とワークフローマトリクス</a>
   </p>
+  <p align="center">
+    <img src="assets/readme/edgeever-hero-v5.png" alt="EdgeEver ワークスペースプレビュー" width="800" />
+  </p>
 </div>
-
-
 
 EdgeEver は、オープンソースのノートと知識ベースの作業領域です。クラシックで高効率な三ペインの作業体験（ツリー階層・ノート一覧・エディタ）を継承しつつ、データを自分で持ち、AI Agent と連携できます。
 
