@@ -20,7 +20,7 @@
     <a href="#wechat-group"><img src="assets/readme/community/wechat.svg" alt="WeChat" width="16" height="16" align="absmiddle" /> 微信交流群</a> &nbsp;|&nbsp;
     <a href="https://demo.edgeever.org">🌐 在线演示</a> &nbsp;|&nbsp;
     <a href="#全平台客户端与浏览器插件">📱 客户端与插件下载</a> &nbsp;|&nbsp;
-    <a href="#features">核心特性与场景</a>
+    <a href="#features">核心功能与场景矩阵</a>
   </p>
 </div>
 
@@ -76,33 +76,18 @@ EdgeEver 是一款现代化的开源笔记与个人知识库工作区。它保�
 - 深度适配 20+ 主流平台的结构化剪藏：覆盖社交（X、小红书、微信公众号、即刻、豆瓣、Threads、Bluesky）、社区与资讯（知乎、Reddit、GitHub、V2EX、Hacker News、Medium、Substack）、音视频与播客（Bilibili、YouTube、小宇宙）等。
 
 <a id="features"></a>
-## 核心特性与场景
+## 核心功能与场景矩阵
 
-从跨渠道内容捕获到深度知识表达与业务协作，EdgeEver 为个人与团队提供了高效流畅的端到端工作流：
+覆盖从内容捕获、深度创作到团队协作的全流程：
 
-### 全渠道剪藏与多媒体沉淀
-- **跨平台一键剪藏**：浏览器插件深度适配 [小红书画廊](docs/best-practices.zh-CN.md#2-小红书图文笔记一键剪藏)、[X (Twitter) 推文与引用](docs/best-practices.zh-CN.md#3-x-twitter-推文与引用一键剪藏)、[知乎问答](docs/best-practices.zh-CN.md#4-知乎回答与文章一键精准剪藏)、[Reddit](docs/best-practices.zh-CN.md#5-reddit-讨论帖一键剪藏)、[GitHub](docs/best-practices.zh-CN.md#8-github-开源仓库信息一键剪藏) 以及 Bilibili、YouTube、小宇宙等十余个主流社媒与音视频平台；手机端通过系统分享一键转存[全网图片](docs/best-practices.zh-CN.md#9-移动端社媒图片一键转存笔记)与[微信公众号文章](docs/best-practices.zh-CN.md#10-手机端一键剪藏微信公众号文章)。
-- **微信聊天记录完整归档**：macOS 端支持在微信中将聊天记录「转发到其他应用 → EdgeEver」，一键整段导入为结构化笔记，完整保留发言人、时间轴、引用回复及微信表情，图片自动内嵌，视频与文件自动转为笔记附件。详见[微信聊天记录一键归档与整理](docs/best-practices.zh-CN.md#1-微信聊天记录一键归档与整理)。
-- **通用文件附件与端侧图片压缩**：支持轻松上传并插入 PDF、Office 文档、压缩包及音视频等各种附件，分片上传与流式处理安全支持最大 1 GiB 附件；图片上传前在浏览器端静默完成压缩，常见截图与大图精简 50%-90% 体积，加载更迅速、存储更省心。
-
-### 智能可视化与多维数据协作
-- **全类型可视化图表与专业信息图**：告别外部绘图软件，借助伴随式 AI 助手自然语言一句话生成可交互编辑的[思维导图、流程图与架构图](docs/best-practices.zh-CN.md#11-ai-对话一键生成思维导图流程图与架构图)（详见[可视化图表笔记设计说明](docs/visual-diagram-notes.zh-CN.md)，原生支持 Mermaid 代码块渲染）；内置丰富模板库，一键生成精美专业的[全类型可视化信息图（时间线、对比图、象限矩阵等）](docs/best-practices.zh-CN.md#12-ai-智能生成专业信息图时间线对比图架构图等)。
-- **AI 多维表格与在线收集表单**：自然语言一句话按需搭建[任意业务场景多维表格](docs/best-practices.zh-CN.md#13-借助右侧-ai-助手一句话生成多维表格)（如项目管理、选题库、人事资产等），自动推断单选标签、日期等字段类型并预置真实示例数据；支持一键开启无需登录的[对外公开在线收集表单](docs/best-practices.zh-CN.md#14-多维表格一键生成在线公开收集表单)，用户填报数据实时沉淀入库。
-- **原生海报笔记与 AI 视觉排版**：原生支持基于画布的结构化海报笔记，内置丰富的图文卡片模板与排版布局；支持双击编辑文案、替换图片与占位符，支持一键自适应缩放；伴随式 AI 助手与 ACP / MCP 协议可直接理解、生成并协同精修海报内容。
-- **双视图编辑、空间组织与知识库公开发布**：桌面端支持在富文本与 Markdown 源码视图之间自由切换；经典三栏布局与可调节面板宽度、一键专注模式与无限层级笔记本，支持笔记批量合并/移动与拖拽排序；提供自动版本回溯；除单篇笔记加密分享外，更支持**将整个笔记本一键公开发布为带目录树导航的独立知识库网站**，并提供访问密码保护。
-
-### 创作者排版与一键分发
-- **微信公众号一键排版与复制**：专为中文创作者设计，支持将笔记一键转换为带行内样式的公众号美化格式，[一键复制内联富文本到微信公众号](docs/best-practices.zh-CN.md#6-一键复制笔记到微信公众号排版)后台直接粘贴发布，告别第三方排版工具。
-- **高颜值长图分享与多格式导出**：任意笔记均可一键[分享为精美长图海报](docs/best-practices.zh-CN.md#7-ai-rss-智能订阅日报与精美长图分享)，内置多款质感主题、Monogram 字母头像、自适应排版、自定义字体与卡片版式，优雅分发至社交媒体；支持单篇笔记独立便捷导出为 Markdown、HTML 或 PDF。
-- **AI RSS 智能订阅日报**：内置官方 AI RSS 订阅插件，自动定时聚合行业资讯与博客源，AI 过滤噪音并生成结构严谨、重点清晰的精炼日报笔记。
-
-### 原生 AI Agent 与开放生态
-- **原生 Agent 协议深度互联（MCP & ACP）**：内置 MCP（Model Context Protocol）协议，支持外部 AI Agent 直接读取与整理笔记；桌面端支持通过 ACP（Agent Client Protocol）协议直接调用本机运行的 AI Agent（如 Codex、Antigravity、Claude Code、WorkBuddy 等）协同创作。
-- **接入自有模型与开放插件 API**：支持添加多个 OpenAI、Anthropic、Gemini 兼容服务与第三方中转平台，在伴侣侧边栏与编辑器中随时对全文或选区进行智能总结、提炼、翻译与润色；提供丰富的[插件开发 API](docs/plugin-development.zh-CN.md)自由扩展功能。
-
-### 开放架构、全端体验与安全基座
-- **自由部署与数据无围墙**：既可免费运行于 Cloudflare Serverless（个人免费额度约容纳 15 万条短笔记与 5 万张图片），也可通过 Docker 部署到 VPS、NAS 或家庭服务器（轻松承载百万级笔记与海量图片）；基于标准 SQLite 存储，提供 REST API、CLI 接口与无损 ZIP 档案导出导入，数据完全自主不设围墙。
-- **全平台覆盖与稳定安全**：官方覆盖 Web、[Android](https://play.google.com/store/apps/details?id=org.edgeever.mobile)、[macOS](https://github.com/tianma-if/edgeever/releases)、[Windows](https://github.com/tianma-if/edgeever/releases/latest)、[Linux](https://github.com/tianma-if/edgeever/releases/latest) 及 [iOS](https://apps.apple.com/us/app/edgeever/id6792625631)（网页裁剪插件支持 [Chrome](https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo)、[Edge](https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo) 和 [Firefox](https://addons.mozilla.org/zh-CN/firefox/addon/edgeever-web-clipper/)），自托管多端同步无设备数量限制；桌面端轻快省内存，支持离线草稿与同步队列、服务端防暴力破解限流保护，以及多账号空间数据隔离。
+| 模块 | 基础功能 | 进阶特性 |
+| :--- | :--- | :--- |
+| **写作与编辑** | • 经典三栏工作区，面板宽度自由调节<br>• 富文本所见即所得与 Markdown 双视图切换<br>• 代码高亮、数学公式、任务列表与沉浸专注模式<br>• 秒级自动保存、多端瞬时同步与版本历史回溯 | • **原生海报笔记**：画布级图文排版与视觉卡片，双击即改<br>• **微信公众号一键排版**：一键转内联样式富文本直粘后台<br>• **高颜值长图分享**：质感主题海报与 Monogram 头像，支持 MD/HTML/PDF 导出 |
+| **组织与检索** | • 无限层级笔记本与目录树导航<br>• 标签体系（Tags）与笔记拖拽排序、批量合并/移动<br>• 毫秒级即时全文搜索与历史记录过滤 | • **独立知识库网站发布**：一键将整个笔记本公开发布为带目录树导航的独立静态站点（支持密码保护）<br>• 多账号与工作区多空间数据物理隔离 |
+| **剪藏与附件** | • 桌面与移动端全格式附件上传（PDF、Office、音视频等）<br>• 浏览器划选网页文字与图片精准抓取<br>• 手机系统分享一键转存全网图片与微信文章 | • **全渠道结构化剪藏**：深度适配小红书、X (Twitter)、知乎、Reddit、GitHub 等 20+ 平台<br>• **微信聊天记录一键归档**：整段对话转笔记，保留时间轴、引用、表情与附件<br>• **端侧静默压缩**：图片上传前压缩 50%–90%；分片流式上传安全支持最大 1 GiB 附件 |
+| **数据与可视化** | • 原生表格编辑与 Markdown 表格渲染<br>• 原生 Mermaid 流程图、时序图与架构图渲染 | • **AI 多维表格**：自然语言一句话生成业务数据库（含标签、日期等字段）<br>• **在线公开收集表单**：多维表格一键生成免登录外链表单，填报数据实时入库<br>• **AI 智能信息图与导图**：一键生成时间线、对比图、象限矩阵及思维导图 |
+| **AI 与生态** | • 侧边伴随式 AI 助手，选区/全文一键总结、翻译与润色<br>• BYOK（自带模型）：兼容 OpenAI、Anthropic、Gemini 等主流协议 | • **原生 Agent 协议互联**：内置 MCP（外部 Agent 读写笔记）与 ACP（桌面端直接唤起本机 Agent 协作创作）<br>• **AI RSS 智能订阅日报**：定时聚合资讯源，AI 自动过滤噪音并生成精炼日报<br>• 开放插件开发 API 自由扩展 |
+| **多端同步与底座** | • 电脑、手机全端秒级无感同步，无设备数量限制<br>• 官方覆盖 Web / macOS / Windows / Linux / iOS / Android 全平台<br>• 离线优先与同步队列：断网流畅写作，联网自动恢复并增量同步<br>• 标准 SQLite 存储，无损 ZIP 档案与 Markdown 导出导入 | • **终身零服务器成本**：100% 运行于 Cloudflare 免费配额（容量约 15 万条短笔记与 5 万张图片）<br>• **灵活 Docker 自托管**：私有 VPS/NAS 一键部署，轻松承载百万级笔记与瞬时同步<br>• 服务端防暴力破解限流保护与安全数据隔离 |
 
 👉 查看全部 14 个实机演示与操作效果：**[完整场景与最佳实践指南](docs/best-practices.zh-CN.md)**
 

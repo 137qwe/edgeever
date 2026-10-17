@@ -20,7 +20,7 @@
     <a href="#wechat-group"><img src="assets/readme/community/wechat.svg" alt="WeChat" width="16" height="16" align="absmiddle" /> 微信交流群</a> &nbsp;|&nbsp;
     <a href="https://demo.edgeever.org">🌐 線上展示</a> &nbsp;|&nbsp;
     <a href="#全平台用戶端與瀏覽器外掛">📱 用戶端與外掛下載</a> &nbsp;|&nbsp;
-    <a href="#features">核心特性與場景</a>
+    <a href="#features">核心功能與場景矩陣</a>
   </p>
 </div>
 
@@ -76,33 +76,18 @@ EdgeEver 是一款現代化的開源筆記與個人知識庫工作區。它延�
 - 深度適配 20+ 主流平台結構化擷取：涵蓋社群（X、小紅書、微信公眾號、即刻、豆瓣、Threads、Bluesky）、社群與資訊（知乎、Reddit、GitHub、V2EX、Hacker News、Medium、Substack）及影音播客（Bilibili、YouTube、小宇宙）等。
 
 <a id="features"></a>
-## 核心特性與場景
+## 核心功能與場景矩陣
 
-從跨渠道內容捕獲到深度知識表達與業務協同，EdgeEver 為個人與團隊提供了高效流暢的端到端工作流：
+涵蓋從內容擷取、深度創作到團隊協同的全流程：
 
-### 全渠道剪藏與多媒體沉澱
-- **跨平台一鍵剪藏**：瀏覽器外掛深度適配 [小紅書畫廊](docs/best-practices.zh-CN.md#2-小红书图文笔记一键剪藏)、[X (Twitter) 推文與引用](docs/best-practices.zh-CN.md#3-x-twitter-推文与引用一键剪藏)、[知乎問答](docs/best-practices.zh-CN.md#4-知乎回答与文章一键精准剪藏)、[Reddit](docs/best-practices.zh-CN.md#5-reddit-讨论帖一键剪藏)、[GitHub](docs/best-practices.zh-CN.md#8-github-开源仓库信息一键剪藏) 以及 Bilibili、YouTube、小宇宙等十餘個主流社群與影音平台；手機端透過系統分享一鍵轉存[全網圖片](docs/best-practices.zh-CN.md#9-移动端社媒图片一键转存笔记)與[微信公眾號文章](docs/best-practices.zh-CN.md#10-手机端一键剪藏微信公众号文章)。
-- **微信聊天記錄完整歸檔**：macOS 端支援在微信中將聊天記錄「轉發到其他應用 → EdgeEver」，一鍵整段匯入為結構化筆記，完整保留發言人、時間軸、引用回覆及微信表情，圖片自動內嵌，影片與檔案自動轉為筆記附件。詳見[微信聊天記錄一鍵歸檔與整理](docs/best-practices.zh-CN.md#1-微信聊天记录一键归档与整理)。
-- **通用檔案附件與端側圖片壓縮**：支援輕鬆上傳並插入 PDF、Office 文件、壓縮檔及影音等各種附件，分塊上傳與串流處理安全支援最大 1 GiB 附件；圖片上傳前在瀏覽器端靜默完成壓縮，常見截圖與大圖精簡 50%-90% 體積，載入更迅速、儲存更省心。
-
-### 智慧視覺化與多維資料協作
-- **全類型視覺化圖表與專業資訊圖**：告別外部繪圖軟體，借助伴隨式 AI 助手自然語言一句話產生可互動編輯的[心智圖、流程圖與架構圖](docs/best-practices.zh-CN.md#11-ai-对话一键生成思维导图流程图与架构图)（詳見[視覺化圖表筆記設計說明](docs/visual-diagram-notes.zh-CN.md)，原生支援 Mermaid 程式碼區塊繪製）；內建豐富模板庫，一鍵產生精美專業的[全類型視覺化資訊圖（時間線、對比圖、象限矩陣等）](docs/best-practices.zh-CN.md#12-ai-智能生成专业信息图时间线对比图架构图等)。
-- **AI 多維表格與線上收集表單**：自然語言一句話按需建構[任意業務場景多維表格](docs/best-practices.zh-CN.md#13-借助右侧-ai-助手一句话生成多维表格)（如專案管理、選題庫、人事資產等），自動推斷單選標籤、日期等欄位類型並預置真實範例資料；支援一鍵開啟無需登入的[對外公開線上收集表單](docs/best-practices.zh-CN.md#14-多维表格一键生成在线公开收集表单)，使用者填報資料即時沉澱入庫。
-- **原生海報筆記與 AI 視覺排版**：原生支援基於畫布的結構化海報筆記，內建豐富的圖文卡片模板與版式佈局；支援按兩下編輯文案、替換圖片與預留位置，支援一鍵自適應縮放；伴隨式 AI 助手與 ACP / MCP 協定可直接理解、產生並協同精修海報內容。
-- **雙視圖編輯、空間組織與知識庫公開發布**：桌面端支援在富文字與 Markdown 原始碼檢視之間自由切換；經典三欄版面與可調節面板寬度、一鍵專注模式與無限層級筆記本，支援筆記批次合併/移動與拖放排序；提供自動版本回溯；除單篇筆記加密分享外，更支援**將整個筆記本一鍵公開發布為帶目錄樹導覽的獨立知識庫網站**，並提供存取密碼保護。
-
-### 創作者排版與一鍵發布
-- **微信公眾號一鍵排版與複製**：專為中文創作者設計，支援將筆記一鍵轉換為帶行內樣式的公眾號美化格式，[一鍵複製內聯富文本到微信公眾號](docs/best-practices.zh-CN.md#6-一键复制笔记到微信公众号排版)後台直接貼上發布，告別複雜的第三方排版工具。
-- **高質感長圖分享與多格式匯出**：任意筆記均可一鍵[分享為高質感長圖海報](docs/best-practices.zh-CN.md#7-ai-rss-智能订阅日报与精美长图分享)，內建多款質感主題、Monogram 字母頭像、自適應版式、自訂字型與卡片版式，優雅分發至社群平台；支援單篇筆記獨立便捷匯出為 Markdown、HTML 或 PDF。
-- **AI RSS 智慧訂閱日報**：內建官方 AI RSS 訂閱外掛，自動定時聚合產業資訊與部落格源，AI 過濾雜訊並產生結構嚴謹、重點清晰的精煉日報筆記。
-
-### 原生 AI Agent 與開放生態
-- **原生 Agent 協定深度互聯（MCP & ACP）**：內建 MCP（Model Context Protocol）協定，支援外部 AI Agent 直接讀取與整理筆記；桌面端支援透過 ACP（Agent Client Protocol）協定直接調用本機執行的 AI Agent（如 Codex、Antigravity、Claude Code、WorkBuddy 等）協同創作。
-- **接入自有模型與開放外掛 API**：支援新增多個 OpenAI、Anthropic、Gemini 相容服務與第三方中轉平台，在伴侶側邊欄與編輯器中隨時對全文或選取範圍進行智慧摘要、重點擷取、文法校對、翻譯與續寫潤飾；提供豐富的[外掛開發文件](docs/plugin-development.zh-CN.md)自由擴充功能。
-
-### 開放架構、全端體驗與安全基座
-- **自由部署與資料無圍牆**：既可免費執行於 Cloudflare Serverless（個人免費額度約容納 15 萬條短筆記與 5 萬張圖片），也可透過 Docker 部署到 VPS、NAS 或家用伺服器（輕鬆承載百萬級筆記與海量圖片）；基於標準 SQLite 儲存，提供 REST API、CLI 介面與無損 ZIP 完整檔案匯出匯入，資料完全自主不設圍牆。
-- **全平台涵蓋與穩定安全**：官方涵蓋 Web、[Android](https://play.google.com/store/apps/details?id=org.edgeever.mobile&hl=zh-TW)、[macOS](https://github.com/tianma-if/edgeever/releases)、[Windows](https://github.com/tianma-if/edgeever/releases/latest)、[Linux](https://github.com/tianma-if/edgeever/releases/latest) 及 [iOS](https://apps.apple.com/tw/app/edgeever/id6792625631)（網頁擷取擴充功能支援 [Chrome](https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo)、[Edge](https://chromewebstore.google.com/detail/edgeever-web-clipper/gjadpfmanienmlofajibkfkkpfdkclgo) 和 [Firefox](https://addons.mozilla.org/zh-TW/firefox/addon/edgeever-web-clipper/)），自託管多端同步無裝置數量限制；桌面端輕快省記憶體，支援離線草稿與同步佇列、伺服端防暴力破解限流保護，以及多帳號空間資料隔離。
+| 模組 | 基礎功能 | 進階特性 |
+| :--- | :--- | :--- |
+| **寫作與編輯** | • 經典三欄工作區，面板寬度自由調節<br>• 富文字所見即所得與 Markdown 雙視圖切換<br>• 程式碼語法突顯、數學公式、待辦清單與專注模式<br>• 秒級自動儲存、多端瞬時同步與版本歷程回溯 | • **原生海報筆記**：畫布級圖文排版與視覺卡片，按兩下即改<br>• **微信公眾號一鍵排版**：一鍵轉內嵌樣式富文字直接貼上後台<br>• **高質感長圖分享**：質感主題海報與 Monogram 頭像，支援 MD/HTML/PDF 匯出 |
+| **組織與檢索** | • 無限層級筆記本與目錄樹導覽<br>• 標籤體系（Tags）與筆記拖放排序、批次合併/移動<br>• 毫秒級即時全文搜尋與歷史記錄篩選 | • **獨立知識庫網站發布**：一鍵將整個筆記本公開發布為帶目錄樹導覽的獨立靜態網站（支援密碼保護）<br>• 多帳號與工作區多空間資料實體隔離 |
+| **擷取與附件** | • 桌面與行動端全格式附件上傳（PDF、Office、影音等）<br>• 瀏覽器選取網頁文字與圖片精準擷取<br>• 手機系統分享一鍵轉存全網圖片與微信文章 | • **全渠道結構化擷取**：深度適配小紅書、X (Twitter)、知乎、Reddit、GitHub 等 20+ 平台<br>• **微信聊天記錄一鍵歸檔**：整段對話轉筆記，保留時間軸、引用、表情與附件<br>• **端側靜默壓縮**：圖片上傳前壓縮 50%–90%；分塊串流上傳安全支援最大 1 GiB 附件 |
+| **資料與視覺化** | • 原生表格編輯與 Markdown 表格繪製<br>• 原生 Mermaid 流程圖、循序圖與架構圖繪製 | • **AI 多維表格**：自然語言一句話產生業務資料庫（含標籤、日期等欄位）<br>• **線上公開收集表單**：多維表格一鍵產生免登入外鏈表單，填報資料即時入庫<br>• **AI 智慧資訊圖與導圖**：一鍵產生時間線、對比圖、象限矩陣及心智圖 |
+| **AI 與生態** | • 側邊伴隨式 AI 助手，選取範圍/全文一鍵摘要、翻譯與修飾潤色<br>• BYOK（自備金鑰）：相容 OpenAI、Anthropic、Gemini 等主流協定 | • **原生 Agent 協定互聯**：內建 MCP（外部 Agent 讀寫筆記）與 ACP（桌面端直接喚起本機 Agent 協同創作）<br>• **AI RSS 智慧訂閱日報**：定時聚合資訊來源，AI 自動過濾雜訊並產生精煉日報<br>• 開放外掛開發文件自由擴充 |
+| **多端同步與底座** | • 電腦、手機全端秒級無感同步，無裝置數量限制<br>• 官方涵蓋 Web / macOS / Windows / Linux / iOS / Android 全平台<br>• 離線優先與同步佇列：斷網流暢寫作，連網自動復原並增量同步<br>• 標準 SQLite 儲存，無損 ZIP 封存與 Markdown 匯出匯入 | • **終身零伺服器成本**：100% 執行於 Cloudflare 免費配額（容量約 15 萬條短筆記與 5 萬張圖片）<br>• **彈性 Docker 自託管**：私有 VPS/NAS 一鍵部署，輕鬆承載百萬級筆記與瞬時同步<br>• 伺服端防暴力破解限流保護與安全資料隔離 |
 
 👉 查看全部 14 個實機展示與操作效果：**[完整場景與最佳實踐指南](docs/best-practices.zh-CN.md)**
 
