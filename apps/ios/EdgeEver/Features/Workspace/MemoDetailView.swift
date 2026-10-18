@@ -193,16 +193,17 @@ struct MemoDetailView: View {
                         .pickerStyle(.menu)
                     }
                     Section(env.preferences.t("字体风格", en: "Typography", pl: "Typografia")) {
-                        Picker(env.preferences.t("字体风格", en: "Typography", pl: "Typografia"), selection: $preferences.noteImageShare.fontStyle) {
-                            Text(env.preferences.t("跟随主题", en: "Follow Theme", pl: "Zgodnie z motywem")).tag("auto")
-                            Text(env.preferences.t("文艺衬线", en: "Serif", pl: "Szeryfowa")).tag("serif")
-                            Text(env.preferences.t("现代无衬线", en: "Sans", pl: "Bezszeryfowa")).tag("sans")
-                            Text(env.preferences.t("极客等宽", en: "Mono", pl: "Monospace")).tag("mono")
-                            ForEach(NoteImageFontCatalog.choices, id: \.id) { font in
-                                Text(env.preferences.t(font.zh, en: font.en, pl: font.en)).tag(font.id)
+                        NavigationLink {
+                            NoteImageFontPickerView()
+                        } label: {
+                            HStack {
+                                Text(env.preferences.t("字体风格", en: "Typography", pl: "Typografia"))
+                                Spacer()
+                                Text(NoteImageFontPickerOptions.label(preferences))
+                                    .foregroundStyle(.secondary)
+                                    .multilineTextAlignment(.trailing)
                             }
                         }
-                        .pickerStyle(.menu)
                         Text(env.preferences.t(
                             "下载型字体首次使用需联网并缓存；普惠体等推荐字体使用完整文件，首次下载较大。",
                             en: "Downloadable fonts need a connection on first use and are cached. PuHuiTi and other recommended fonts use larger, complete original files.",
