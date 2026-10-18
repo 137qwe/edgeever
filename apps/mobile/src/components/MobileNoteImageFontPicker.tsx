@@ -5,7 +5,7 @@ import type { DOMProps } from "expo/dom";
 import { isRemoteNoteImageFont } from "@edgeever/shared/font-catalog";
 import { resolveNoteImageTypography, type NoteImageFontStyle, type NoteImageTheme } from "@edgeever/shared/note-image-card";
 import { prepareNoteImageAssets } from "@edgeever/shared/note-image-fonts";
-import { MOBILE_FONT_OPTIONS } from "../lib/note-image-font-options";
+import { getMobileNoteImageFontLabel, MOBILE_FONT_OPTIONS } from "../lib/note-image-font-options";
 import { noteImageAssetUrls } from "./note-image-asset-urls";
 
 type Props = {
@@ -64,6 +64,7 @@ export default function MobileNoteImageFontPicker({ selected, theme, chinese, on
       `}</style>
       <div className="font-list" role="radiogroup" aria-label={chinese ? "字体风格" : "Typography"} ref={listRef}>
         {MOBILE_FONT_OPTIONS.map(item => {
+          const label = getMobileNoteImageFontLabel(item.id, theme, chinese, true);
           const loaded = previews[item.id] === "ready";
           const failed = previews[item.id] === "error";
           const needsFont = item.id === "auto" || isRemoteNoteImageFont(item.id);
@@ -73,7 +74,7 @@ export default function MobileNoteImageFontPicker({ selected, theme, chinese, on
               type="button"
               role="radio"
               aria-checked={selected === item.id}
-              aria-label={chinese ? item.labelZh : item.labelEn}
+              aria-label={label}
               className="font-option"
               data-font={item.id}
               onClick={async () => {
@@ -83,7 +84,7 @@ export default function MobileNoteImageFontPicker({ selected, theme, chinese, on
               }}
             >
               <span className="font-option-copy">
-                <span className="font-name">{chinese ? item.labelZh : item.labelEn}</span>
+                <span className="font-name">{label}</span>
                 {loaded || !needsFont ? (
                   <span className="font-sample" style={{ fontFamily: resolveNoteImageTypography(theme, item.id).bodyFamily }}>{sampleFor(item.id)}</span>
                 ) : (

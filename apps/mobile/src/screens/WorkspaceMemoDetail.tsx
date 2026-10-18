@@ -22,7 +22,7 @@ import { Alert, Pressable, Text, TextInput } from "../components/LocalizedText";
 import LocalTiptapEditor, { type LocalTiptapEditorRef } from "../components/LocalTiptapEditor";
 import { MobileAiAssistantModal } from "../components/MobileAiAssistantModal";
 import MobileNoteImageFontPicker from "../components/MobileNoteImageFontPicker";
-import { MOBILE_FONT_OPTIONS } from "../lib/note-image-font-options";
+import { getMobileNoteImageFontLabel } from "../lib/note-image-font-options";
 import { MobileResourceActions } from "../components/MobileResourceActions";
 import { ZoomableImagePreview } from "../components/ZoomableImagePreview";
 import type { ImageSize } from "../lib/mobile-image-zoom";
@@ -527,6 +527,7 @@ export const MemoDetailModal = ({
     showNotebook: imageShareNotebook, showTags: imageShareTags, showUpdatedAt: imageShareUpdatedAt,
     showBranding: imageShareBranding,
   } = imageSharePreferences;
+  const imageShareFontLabel = getMobileNoteImageFontLabel(imageShareFontStyle, imageShareTheme, resolvedLocale === "zh-CN");
   const [viewerNotebookPickerOpen, setViewerNotebookPickerOpen] = useState(false);
   const [viewerTagsOpen, setViewerTagsOpen] = useState(false);
   const [viewerTags, setViewerTags] = useState<string[]>([]);
@@ -1710,14 +1711,14 @@ export const MemoDetailModal = ({
 
               <Pressable
                 accessibilityRole="button"
-                accessibilityLabel={`${resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}: ${MOBILE_FONT_OPTIONS.find(item => item.id === imageShareFontStyle)?.[resolvedLocale === "zh-CN" ? "labelZh" : "labelEn"] ?? ""}`}
+                accessibilityLabel={`${resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}: ${imageShareFontLabel}`}
                 accessibilityHint={resolvedLocale === "zh-CN" ? "打开字体选择列表" : "Open font selection"}
                 onPress={() => setImageShareFontPickerOpen(true)}
                 style={imageShareStyles.fontSelector}
               >
                 <Text style={imageShareStyles.optionLabel}>{resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}</Text>
                 <Text style={imageShareStyles.fontSelectorValue}>
-                  {MOBILE_FONT_OPTIONS.find(item => item.id === imageShareFontStyle)?.[resolvedLocale === "zh-CN" ? "labelZh" : "labelEn"]}
+                  {imageShareFontLabel}
                 </Text>
                 <ChevronDown color="#64748b" size={18} />
               </Pressable>
