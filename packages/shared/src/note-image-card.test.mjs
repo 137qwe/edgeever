@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { parseHTML } from "linkedom";
 import {
   NOTE_IMAGE_BUNDLED_FONTS, NOTE_IMAGE_TEMPLATE_TYPOGRAPHY, NOTE_IMAGE_THEME_OPTIONS, NOTE_IMAGE_THEMES, NOTE_IMAGE_BACKGROUND_COLORS, NOTE_IMAGE_FONT_FAMILIES,
   resolveTheme, resolveNoteImageTypography, buildImageExportBasename, buildNoteImageCardMarkup,
@@ -106,6 +107,69 @@ describe("note image templates", () => {
   test("an empty author does not create an empty footer when branding is hidden", () => {
     const markup = buildNoteImageCardMarkup({ title: "Note", bodyHtml: "", author: "  ", showAuthor: true, showBranding: false });
     expect(markup).not.toContain("edgeever-card-footer");
+  });
+
+  test("branding never creates an anonymous header avatar", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
+      for (const author of ["", "  ", "Hidden author"]) {
+        const markup = buildNoteImageCardMarkup({ theme, title: "Note", bodyHtml: "<p>Body</p>", author, showBranding: true });
+        expect(markup).not.toContain('class="edgeever-card-avatar"');
+        expect(markup.match(/class="edgeever-brand-badge"/g)).toHaveLength(1);
+      }
+    }
+    const signed = buildNoteImageCardMarkup({ theme: "bento", title: "Note", bodyHtml: "", author: "天马", showAuthor: true, showBranding: false });
+    expect(signed).toContain('<span>天</span>');
+    expect(signed).toContain('<span>天马</span>');
+    expect(signed).not.toContain('class="edgeever-brand-badge"');
+  });
+
+  test("every metadata combination keeps date above content and auxiliary details below it", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) for (let mask = 0; mask < 128; mask++) {
+      const [showTitle, showUpdatedAt, showNotebook, showTags, showReadingTime, showAuthor, showBranding] =
+        Array.from({ length: 7 }, (_, index) => Boolean(mask & (1 << index)));
+      const { document } = parseHTML(buildNoteImageCardMarkup({
+        theme, title: "Title", updatedAt: "2026/10/18", notebook: "Notebook", tags: ["tag"], author: "Author",
+        bodyHtml: "<p>Content</p>", showTitle, showUpdatedAt, showNotebook, showTags, showReadingTime, showAuthor, showBranding,
+      }));
+      const header = document.querySelector(".edgeever-card-header");
+      const footer = document.querySelector(".edgeever-card-footer");
+      expect(Boolean(header)).toBe(showTitle || showUpdatedAt);
+      expect(Boolean(footer)).toBe(showNotebook || showTags || showReadingTime || showAuthor || showBranding);
+      expect(Boolean(header?.querySelector(".edgeever-meta-date"))).toBe(showUpdatedAt);
+      expect(Boolean(header?.querySelector(".edgeever-card-title"))).toBe(showTitle);
+      expect(Boolean(footer?.querySelector(".edgeever-meta-notebook"))).toBe(showNotebook);
+      expect(Boolean(footer?.querySelector(".edgeever-meta-tag"))).toBe(showTags);
+      expect(Boolean(footer?.querySelector(".edgeever-meta-reading"))).toBe(showReadingTime);
+      expect(Boolean(footer?.querySelector(".edgeever-footer-author"))).toBe(showAuthor);
+      expect(Boolean(footer?.querySelector(".edgeever-brand-badge"))).toBe(showBranding);
+      expect(header?.querySelector(".edgeever-card-avatar")).toBeFalsy();
+      expect(document.querySelector(".edgeever-terminal-header")?.textContent || "").not.toContain("Notebook");
+    }
+  });
+
+  test("empty metadata never creates blank header or footer panels", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
+      const markup = buildNoteImageCardMarkup({ theme, title: " ", updatedAt: " ", notebook: " ", tags: ["", " "], author: " ", bodyHtml: "<p>Content</p>",
+        showTitle: true, showUpdatedAt: true, showNotebook: true, showTags: true, showAuthor: true, showBranding: false });
+      expect(markup).not.toContain('class="edgeever-card-header"');
+      expect(markup).not.toContain('class="edgeever-card-footer"');
+    }
+  });
+
+  test("only standalone short quotes receive display typography without a title", () => {
+    const cases = [
+      ["<p>把想法写清楚。</p>", true], ["<p><strong>Less, but better.</strong></p>", true],
+      [`<p>${"长文内容".repeat(30)}</p>`, false], ["<p>第一段</p><p>第二段</p>", false],
+      ["<p>第一行<br>第二行</p>", false], ["<p></p>", false], ["<p><br></p>", false],
+      ["<p>&nbsp;</p>", false], ["<p>&#160;</p>", false],
+      ["<h2>小标题</h2><p>正文</p>", false], ['<p><img src="image.png">配图</p>', false],
+    ];
+    for (const [bodyHtml, short] of cases) {
+      const markup = buildNoteImageCardMarkup({ theme: "quote", title: "Title", bodyHtml, showTitle: false });
+      expect(markup).toContain(`data-short-quote="${short}"`);
+      expect(markup).toContain(bodyHtml);
+    }
+    expect(buildNoteImageCardMarkup({ theme: "quote", title: "Title", bodyHtml: "<p>Short</p>", showTitle: true })).toContain('data-short-quote="false"');
   });
 
   test("export styles stay scoped and do not depend on viewport height", () => {

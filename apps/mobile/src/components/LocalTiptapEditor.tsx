@@ -88,6 +88,7 @@ import {
   buildImageExportBasename,
   buildNoteImageCardMarkup,
   generateCardCss,
+  prepareNoteImageContent,
 } from "@edgeever/shared/note-image-card";
 import { useDOMImperativeHandle, type DOMImperativeFactory, type DOMProps } from "expo/dom";
 import { toCanvas } from "html-to-image";
@@ -1269,6 +1270,7 @@ function LocalTiptapEditorImpl(props: LocalTiptapEditorProps) {
         if (element instanceof HTMLButtonElement) element.remove();
       });
 
+      prepareNoteImageContent(editorClone);
       const bodyHtml = editorClone.innerHTML;
 
       const host = document.createElement("div");

@@ -5,8 +5,10 @@ import { createHash } from 'node:crypto';
 import { NOTE_IMAGE_THEME_OPTIONS } from '../../packages/shared/src/note-image-card';
 
 type CaseResult = {
-  theme: string; width: number; height: number; expectedWidth: number; density: number;
+  theme: string; width: number; height: number; expectedWidth: number; expectedHeight: number; density: number;
   green: number; dark: number; tile: string; mark: string; opacity: number; effects: boolean; overflow: string[];
+  titleSize: number; bodySize: number; headingSizes: number[]; paragraphGap: number | null;
+  integrity: { stackedValues: number; mergedCells: number; complete: boolean; imageRatios: number[] } | null;
 };
 type QualityApi = {
   renderCase: (theme: string, width: string, format: string, length: string) => Promise<CaseResult>;
@@ -35,12 +37,14 @@ for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
   test(`${theme}: all image formats and widths retain sharp text and brand colors`, async ({ page }) => {
     test.setTimeout(180_000);
     await boot(page, true);
-    for (const length of ['short', 'long']) for (const width of ['compact', 'standard', 'wide']) for (const format of ['png', 'jpeg']) {
+    for (const length of ['short', 'long', 'complex']) for (const width of ['compact', 'standard', 'wide']) for (const format of ['png', 'jpeg']) {
       const result = await page.evaluate(({ theme, width, format, length }) =>
         (window as QualityWindow).imageQuality.renderCase(theme, width, format, length), { theme, width, format, length });
       const label = `${theme}/${length}/${width}/${format}`;
       expect(result.width, label).toBe(result.expectedWidth);
+      expect(result.height, label).toBe(result.expectedHeight);
       expect(result.density, label).toBeGreaterThanOrEqual(1.99);
+      expect(result.width * result.height, label).toBeLessThanOrEqual(80_000_000);
       expect(result.opacity, label).toBe(1);
       expect(result.effects, label).toBe(false);
       expect(result.tile, label).toBe('#16a06e');
@@ -48,6 +52,15 @@ for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
       expect(result.green, label).toBeGreaterThan(50);
       expect(result.dark, label).toBeGreaterThan(4);
       expect(result.overflow, label).toEqual([]);
+      expect(result.titleSize, label).toBeGreaterThan(Math.max(result.bodySize, ...result.headingSizes));
+      if (length === 'long') expect(result.paragraphGap! / result.bodySize, label).toBeCloseTo(0.7, 1);
+      if (length === 'complex') {
+        expect(result.integrity!.stackedValues, label).toBe(12);
+        expect(result.integrity!.mergedCells, label).toBe(1);
+        expect(result.integrity!.complete, label).toBe(true);
+        expect(result.integrity!.imageRatios, label).toHaveLength(3);
+        for (const ratio of result.integrity!.imageRatios) expect(ratio, label).toBeCloseTo(1, 1);
+      }
     }
   });
 
