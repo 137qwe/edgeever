@@ -2607,6 +2607,10 @@ export const ja = {
     expandOutlineHeading: "{{name}} を開く",
   },
   sharing: {
+    qrCode: "QR コード",
+    qrCodeLabel: "共有リンクの QR コード",
+    qrCodeHint: "スマートフォンのカメラで読み取ると、このノートを開けます。",
+    qrCodeNotebookHint: "スマートフォンのカメラで読み取ると、このノートブックを開けます。",
     contentLabel: "共有されたノートの内容",
     siteHideContents: "目次を隠す",
     siteShowContents: "目次を表示",
