@@ -1,4 +1,3 @@
-import { FONT_CATALOG, FONT_IDS } from "@edgeever/shared/font-catalog";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { DEFAULT_MEMO_TITLE, parseDiagramDocument, type MemoDetail, type Notebook, type TiptapDoc } from "@edgeever/shared";
 import {
@@ -22,6 +21,8 @@ import { ActivityIndicator, ChevronDown, ChevronLeft, ChevronUp, Copy, Download,
 import { Alert, Pressable, Text, TextInput } from "../components/LocalizedText";
 import LocalTiptapEditor, { type LocalTiptapEditorRef } from "../components/LocalTiptapEditor";
 import { MobileAiAssistantModal } from "../components/MobileAiAssistantModal";
+import MobileNoteImageFontPicker from "../components/MobileNoteImageFontPicker";
+import { MOBILE_FONT_OPTIONS } from "../lib/note-image-font-options";
 import { MobileResourceActions } from "../components/MobileResourceActions";
 import { ZoomableImagePreview } from "../components/ZoomableImagePreview";
 import type { ImageSize } from "../lib/mobile-image-zoom";
@@ -234,14 +235,7 @@ const MOBILE_THEME_OPTIONS = NOTE_IMAGE_THEME_OPTIONS.map((id) => ({
   id, ...MOBILE_THEME_LABELS[id], previewBg: NOTE_IMAGE_BACKGROUND_COLORS[id],
 }));
 
-const MOBILE_FONT_OPTIONS: Array<{ id: NoteImageFontStyle; labelZh: string; labelEn: string }> = [
-  { id: "auto", labelZh: "跟随主题", labelEn: "Follow Theme" },
-  { id: "kai", labelZh: "文楷手书", labelEn: "Handwritten Kai" },
-  { id: "serif", labelZh: "文艺衬线", labelEn: "Serif" },
-  { id: "sans", labelZh: "现代无衬线", labelEn: "Sans" },
-  { id: "mono", labelZh: "极客等宽", labelEn: "Mono" },
-  ...FONT_IDS.map(id => ({ id, labelZh: FONT_CATALOG[id].zh, labelEn: FONT_CATALOG[id].en })),
-];
+
 
 const AuthenticatedResourceImage = ({
   alt,
@@ -526,6 +520,7 @@ export const MemoDetailModal = ({
   const [isExportingImage, setIsExportingImage] = useState(false);
   const [imageExportStage, setImageExportStage] = useState<"prepare" | "render" | "transfer">("prepare");
   const [imageShareOptionsOpen, setImageShareOptionsOpen] = useState(false);
+  const [imageShareFontPickerOpen, setImageShareFontPickerOpen] = useState(false);
   const { preferences: imageSharePreferences, ready: imageSharePreferencesReady, setPreference: setImageSharePreference } = useMobileNoteImagePreferences();
   const {
     format: imageShareFormat, theme: imageShareTheme, fontStyle: imageShareFontStyle,
@@ -740,7 +735,10 @@ export const MemoDetailModal = ({
   }, []);
 
   useEffect(() => {
-    if (!visible) setTitleCollapsed(false);
+    if (!visible) {
+      setTitleCollapsed(false);
+      setImageShareFontPickerOpen(false);
+    }
   }, [visible]);
 
   useEffect(() => {
@@ -754,6 +752,7 @@ export const MemoDetailModal = ({
   }, [imageShareFromList, memo, viewerReady, visible]);
 
   const closeImageShareOptions = () => {
+    setImageShareFontPickerOpen(false);
     setImageShareOptionsOpen(false);
     if (imageShareFromList) onClose();
   };
@@ -1565,7 +1564,7 @@ export const MemoDetailModal = ({
             </Pressable>
           </Modal>
         ) : null}
-        <Modal animationType="fade" onRequestClose={preparedNoteImage ? closeImagePreview : closeImageShareOptions} transparent visible={!imageSavePickerOpen && (imageShareOptionsOpen || Boolean(preparedNoteImage))}>
+        <Modal animationType="fade" onRequestClose={preparedNoteImage ? closeImagePreview : imageShareFontPickerOpen ? () => setImageShareFontPickerOpen(false) : closeImageShareOptions} transparent visible={!imageSavePickerOpen && (imageShareOptionsOpen || Boolean(preparedNoteImage))}>
           {preparedNoteImage ? (
           <SafeAreaView style={imageShareStyles.previewSafeArea}>
             <View style={imageShareStyles.previewHeader}>
@@ -1621,7 +1620,7 @@ export const MemoDetailModal = ({
           </SafeAreaView>
           ) : (
           <Pressable
-            onPress={closeImageShareOptions}
+            onPress={imageShareFontPickerOpen ? () => setImageShareFontPickerOpen(false) : closeImageShareOptions}
             style={[
               styles.actionSheetBackdrop,
               { paddingBottom: Math.max(safeAreaInsets.bottom, Platform.OS === "android" ? ANDROID_SYSTEM_NAVIGATION_FALLBACK : 0) },
@@ -1629,6 +1628,27 @@ export const MemoDetailModal = ({
           >
             <Pressable style={[styles.actionSheet, imageShareStyles.sheetContainer]}>
               <View style={styles.actionSheetHandle} />
+              {imageShareFontPickerOpen ? (
+                <View style={imageShareStyles.fontPicker}>
+                  <View style={imageShareStyles.fontPickerHeader}>
+                    <Pressable accessibilityRole="button" accessibilityLabel={resolvedLocale === "zh-CN" ? "返回分享设置" : "Back to share settings"} onPress={() => setImageShareFontPickerOpen(false)} style={imageShareStyles.previewCloseButton}>
+                      <ChevronLeft color="#0f172a" size={22} />
+                    </Pressable>
+                    <Text style={imageShareStyles.previewTitle}>{resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}</Text>
+                  </View>
+                  <MobileNoteImageFontPicker
+                    selected={imageShareFontStyle}
+                    theme={imageShareTheme}
+                    chinese={resolvedLocale === "zh-CN"}
+                    onSelect={async (font) => {
+                      setImageSharePreference("fontStyle", font);
+                      setImageShareFontPickerOpen(false);
+                    }}
+                    dom={{ ...SAFE_DOM_WEBVIEW_PROPS, scrollEnabled: false, style: { flex: 1 } }}
+                  />
+                </View>
+              ) : null}
+              <View style={[imageShareStyles.settingsContent, imageShareFontPickerOpen && imageShareStyles.hidden]}>
               <Text style={styles.actionSheetTitle}>{resolvedLocale !== "zh-CN" ? "Share as image" : "分享为图片"}</Text>
               <ScrollView contentContainerStyle={imageShareStyles.optionsContent} showsVerticalScrollIndicator={false} style={imageShareStyles.optionsScroll}>
 
@@ -1689,28 +1709,19 @@ export const MemoDetailModal = ({
                 ))}
               </View>
 
-              <Text style={styles.actionSheetSectionTitle}>{resolvedLocale !== "zh-CN" ? "Typography" : "字体风格"}</Text>
-              <View style={imageShareStyles.fontGrid}>
-                {MOBILE_FONT_OPTIONS.map((item) => {
-                  const isSelected = imageShareFontStyle === item.id;
-                  const label = resolvedLocale !== "zh-CN" ? item.labelEn : item.labelZh;
-                  return (
-                    <Pressable
-                      key={item.id}
-                      accessibilityRole="button"
-                      accessibilityState={{ selected: isSelected }}
-                      onPress={() => setImageSharePreference("fontStyle", item.id)}
-                      style={[
-                        imageShareStyles.choice,
-                        imageShareStyles.fontChoice,
-                        isSelected && imageShareStyles.choiceActive,
-                      ]}
-                    >
-                      <Text style={[imageShareStyles.choiceText, isSelected && imageShareStyles.choiceTextActive]}>{label}</Text>
-                    </Pressable>
-                  );
-                })}
-              </View>
+              <Pressable
+                accessibilityRole="button"
+                accessibilityLabel={`${resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}: ${MOBILE_FONT_OPTIONS.find(item => item.id === imageShareFontStyle)?.[resolvedLocale === "zh-CN" ? "labelZh" : "labelEn"] ?? ""}`}
+                accessibilityHint={resolvedLocale === "zh-CN" ? "打开字体选择列表" : "Open font selection"}
+                onPress={() => setImageShareFontPickerOpen(true)}
+                style={imageShareStyles.fontSelector}
+              >
+                <Text style={imageShareStyles.optionLabel}>{resolvedLocale === "zh-CN" ? "字体风格" : "Typography"}</Text>
+                <Text style={imageShareStyles.fontSelectorValue}>
+                  {MOBILE_FONT_OPTIONS.find(item => item.id === imageShareFontStyle)?.[resolvedLocale === "zh-CN" ? "labelZh" : "labelEn"]}
+                </Text>
+                <ChevronDown color="#64748b" size={18} />
+              </Pressable>
 
               <Text style={imageShareStyles.choiceText}>{resolvedLocale === "zh-CN"
                 ? "下载型字体首次使用需联网，下载后缓存；普惠体等推荐字体保留完整文件，首次下载较大。"
@@ -1777,6 +1788,7 @@ export const MemoDetailModal = ({
                       : (resolvedLocale !== "zh-CN" ? "Generate preview" : "生成预览")}
                   </Text>
                 </Pressable>
+              </View>
               </View>
             </Pressable>
           </Pressable>
@@ -2005,17 +2017,40 @@ const imageShareStyles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
   },
-  fontGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 8,
+  settingsContent: {
+    flex: 1,
   },
-  fontChoice: {
-    flex: 0,
-    flexBasis: "47%",
-    flexGrow: 1,
-    minWidth: 120,
+  hidden: {
+    display: "none",
+  },
+  fontPicker: {
+    flex: 1,
+  },
+  fontPickerHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingBottom: 12,
+  },
+  fontSelector: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    minHeight: 52,
+    marginTop: 16,
+    marginBottom: 8,
+    paddingHorizontal: 12,
     paddingVertical: 10,
+    borderWidth: 1,
+    borderColor: "#cbd5e1",
+    borderRadius: 8,
+    backgroundColor: "#f8fafc",
+  },
+  fontSelectorValue: {
+    color: "#64748b",
+    fontSize: 14,
+    flexShrink: 1,
+    textAlign: "right",
   },
   choiceText: {
     color: "#64748b",
