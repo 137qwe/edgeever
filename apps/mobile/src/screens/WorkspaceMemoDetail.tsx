@@ -62,7 +62,7 @@ const IMAGE_EXPORT_TIMEOUT_MS = 60_000;
 
 type MobileImageExportEvent =
   | { type: "chunk"; requestId: string; chunk: string }
-  | { type: "progress"; requestId: string; stage: "prepare" | "render" | "transfer" }
+  | { type: "progress"; requestId: string; stage: "prepare" | "render" | "transfer"; elapsedMs?: number }
   | {
       type: "complete";
       requestId: string;
@@ -539,6 +539,14 @@ export const MemoDetailModal = ({
   const savedImageTipTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [viewerGeneration, setViewerGeneration] = useState(0);
   const viewerRef = useRef<LocalTiptapEditorRef>(null);
+  // Expo assigns its native DOM proxy only when ref.current is null and does
+  // not clear it on unmount. Give each WebView lifetime its own ref, then
+  // publish the ready handle through the stable ref used by editor actions.
+  const domViewerRef = useMemo(() => ({ current: null as LocalTiptapEditorRef | null }), [memo?.id, viewerGeneration, visible]);
+  useEffect(() => {
+    viewerRef.current = null;
+    setViewerReady(false);
+  }, [domViewerRef]);
   const imageExportIntentRef = useRef<"preview" | "share">("share");
   const imageShareOpenedMemoRef = useRef<string | null>(null);
   const imageExportRequestRef = useRef<string | null>(null);
@@ -910,6 +918,7 @@ export const MemoDetailModal = ({
     }
     if (!event.requestId || event.requestId !== imageExportRequestRef.current) return;
     if (event.type === "progress") {
+      console.info(`[EdgeEverImageExport] ${event.stage}=${event.elapsedMs ?? 0}ms`);
       setImageExportStage(event.stage);
       return;
     }
@@ -924,7 +933,9 @@ export const MemoDetailModal = ({
 
     clearImageExportTimeout();
     try {
-      const directory = new Directory(Paths.cache, "edgeever-note-exports");
+      // A fresh URI prevents Android's decoded-image cache from displaying an
+      // earlier export when different notes share the same download filename.
+      const directory = new Directory(Paths.cache, "edgeever-note-exports", event.requestId);
       if (!directory.exists) directory.create({ idempotent: true, intermediates: true });
       const file = new File(directory, event.filename);
       if (file.exists) file.delete();
@@ -991,8 +1002,8 @@ export const MemoDetailModal = ({
     imageExportTimeoutRef.current = setTimeout(() => {
       if (imageExportRequestRef.current !== requestId) return;
       failImageExport(resolvedLocale !== "zh-CN"
-        ? "Image generation took too long. Try a smaller font size or export a shorter note."
-        : "生成图片超时。请调小导出字号，或对较短的笔记重试。");
+        ? "Image generation timed out. Please try again."
+        : "生成图片超时，请重试。");
       setViewerReady(false);
       setViewerGeneration((generation) => generation + 1);
     }, IMAGE_EXPORT_TIMEOUT_MS);
@@ -1449,7 +1460,8 @@ export const MemoDetailModal = ({
                 onLoadResource={isEditing ? editor.loadEditorResource : loadViewerResource}
                 onPickImage={isEditing ? editor.pickAndUploadImage : undefined}
                 onReady={async () => {
-                  setViewerReady(true);
+                  viewerRef.current = domViewerRef.current;
+                  setViewerReady(Boolean(viewerRef.current));
                 }}
                 onReaderScroll={isEditing ? undefined : handleReaderScroll}
                 onResourcePress={isEditing ? editor.selectResource : onResourcePress}
@@ -1458,7 +1470,7 @@ export const MemoDetailModal = ({
                     setBodySearchMatchCount(count);
                   }
                 }}
-                ref={viewerRef}
+                ref={domViewerRef}
                 theme={resolvedTheme}
                 visualDiagramJson={isEditing ? undefined : visualDiagramJson}
                 visualDiagramNote={!isEditing && isVisualDiagram}
@@ -1583,7 +1595,7 @@ export const MemoDetailModal = ({
                 style={[
                   imageShareStyles.previewImage,
                   preparedNoteImage.width > 0 && preparedNoteImage.height > 0
-                    ? { aspectRatio: preparedNoteImage.width / preparedNoteImage.height }
+                    ? { aspectRatio: preparedNoteImage.width / preparedNoteImage.height, minHeight: 0 }
                     : null,
                 ]}
               />

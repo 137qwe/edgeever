@@ -1249,8 +1249,9 @@ function LocalTiptapEditorImpl(props: LocalTiptapEditorProps) {
 
     const notify = (payload: Record<string, unknown>) =>
       onImageExportEventRef.current?.(JSON.stringify({ requestId: request.requestId, ...payload }));
+    const exportStartedAt = performance.now();
     const reportProgress = (stage: "prepare" | "render" | "transfer") => {
-      void Promise.resolve(notify({ type: "progress", stage })).catch(() => {});
+      void Promise.resolve(notify({ type: "progress", stage, elapsedMs: Math.round(performance.now() - exportStartedAt) })).catch(() => {});
     };
     const missingImagePlaceholder = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
