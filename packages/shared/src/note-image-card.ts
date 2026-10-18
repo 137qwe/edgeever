@@ -108,12 +108,12 @@ export const NOTE_IMAGE_FONT_FAMILIES: Record<Exclude<NoteImageFontStyle, "auto"
 
 /** Keep CSS families and asset selection together so defaults cannot silently fall back. */
 export const NOTE_IMAGE_BUNDLED_FONTS = {
-  puhui: { family: "Alibaba-PuHuiTi-Regular", fallback: "sans" },
-  misans: { family: "MiSans", fallback: "sans" },
-  mincho: { family: "Huiwen_mingchao", fallback: "serif" },
-  song: { family: "SourceHanSerifCN_SemiBold", fallback: "serif" },
-  longcang: { family: "Long Cang", fallback: "kai" },
-  geist: { family: "Geist Mono Variable", fallback: "mono" },
+  puhui: { labelKey: "editor.imageShare.templateFonts.puhui", family: "Alibaba-PuHuiTi-Regular", fallback: "sans" },
+  misans: { labelKey: "editor.imageShare.templateFonts.misans", family: "MiSans", fallback: "sans" },
+  mincho: { labelKey: "editor.imageShare.templateFonts.mincho", family: "Huiwen_mingchao", fallback: "serif" },
+  song: { labelKey: "editor.imageShare.templateFonts.song", family: "SourceHanSerifCN_SemiBold", fallback: "serif" },
+  longcang: { labelKey: "editor.imageShare.templateFonts.longcang", family: "Long Cang", fallback: "kai" },
+  geist: { labelKey: "editor.imageShare.templateFonts.geist", family: "Geist Mono Variable", fallback: "mono" },
 } as const;
 
 type BundledNoteImageFont = keyof typeof NOTE_IMAGE_BUNDLED_FONTS;
