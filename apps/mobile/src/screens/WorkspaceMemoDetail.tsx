@@ -1574,7 +1574,10 @@ export const MemoDetailModal = ({
               </Pressable>
             </View>
             <ScrollView contentContainerStyle={imageShareStyles.previewScrollContent} style={imageShareStyles.previewScroll}>
+              {/* The exporter caps images at 12 MP / 15,000 px. Keep those pixels:
+                  Android's default decoder downsamples tall images into unreadable text. */}
               <RNImage
+                resizeMethod="none"
                 resizeMode="contain"
                 source={{ uri: preparedNoteImage.uri }}
                 style={[
