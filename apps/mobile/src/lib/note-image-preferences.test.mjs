@@ -8,6 +8,19 @@ const changed = {
   showTags: true, showUpdatedAt: false, showBranding: false,
 };
 
+test('saved classic theme opens as glass and survives persistence and restart', async () => {
+  let raw = JSON.stringify({ ...changed, theme: 'gradient' });
+  const storage = { getItem: async () => raw, setItem: async (_key, value) => { raw = value; } };
+  const store = createMobileNoteImagePreferenceStore(storage);
+  await store.load();
+  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'glass' });
+  store.update('showTitle', true);
+  await store.flush();
+  const restarted = createMobileNoteImagePreferenceStore(storage);
+  await restarted.load();
+  expect(restarted.getSnapshot()).toEqual({ ...changed, theme: 'glass', showTitle: true });
+});
+
 test('switching templates persists automatic typography and allows a later manual font', async () => {
   let raw = JSON.stringify(changed);
   const storage = { getItem: async () => raw, setItem: async (_key, value) => { raw = value; } };
@@ -55,7 +68,7 @@ test('slow startup reads never write defaults over saved choices', async () => {
   const loading = store.load();
   expect(store.getSnapshot()).toBeUndefined();
   expect(store.load()).toBe(loading);
-  store.update('theme', 'gradient');
+  store.update('theme', 'glass');
   finishRead(JSON.stringify(changed));
   await loading;
   expect(store.getSnapshot()).toEqual(changed);
@@ -94,7 +107,7 @@ test('corrupt fields are isolated and rejected writes keep session choices usabl
     setItem: async () => { throw new Error('Storage unavailable'); },
   });
   await store.load();
-  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'gradient', fontSize: 'lg', showTitle: true });
+  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'glass', fontSize: 'lg', showTitle: true });
   store.update('showTitle', false);
   store.update('theme', 'code');
   await store.flush();

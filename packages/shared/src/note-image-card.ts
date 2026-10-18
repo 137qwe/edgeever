@@ -2,9 +2,9 @@ import { CATALOG_FONT_STACKS, type RemoteNoteImageFont } from "./font-catalog";
 export { prepareNoteImageContent } from "./note-image-content";
 
 export type NoteImageFormat = "jpeg" | "png";
-export const NOTE_IMAGE_THEME_OPTIONS = ["gradient", "glass", "quote", "book", "memo", "bento", "black-sun", "frame", "handwritten", "code"] as const;
+export const NOTE_IMAGE_THEME_OPTIONS = ["glass", "quote", "book", "memo", "bento", "black-sun", "frame", "handwritten", "code"] as const;
 export type NoteImageActiveTheme = (typeof NOTE_IMAGE_THEME_OPTIONS)[number];
-type LegacyNoteImageTheme = "paper" | "press" | "highlight" | "slate" | "aurora" | "sunset" | "midnight" | "editorial" | "terminal" | "film" | "mint" | "lavender";
+type LegacyNoteImageTheme = "gradient" | "paper" | "press" | "highlight" | "slate" | "aurora" | "sunset" | "midnight" | "editorial" | "terminal" | "film" | "mint" | "lavender";
 export type NoteImageTheme = NoteImageActiveTheme | LegacyNoteImageTheme;
 export type NoteImageBackground = NoteImageTheme | "warm" | "notepad" | "xuan" | "polaroid";
 export type NoteImageFontStyle = "auto" | "sans" | "serif" | "mono" | "kai" | RemoteNoteImageFont;
@@ -35,7 +35,7 @@ export const planNativeNoteImageRender = (width: number, height: number) => {
 };
 
 const LEGACY_THEMES: Record<Exclude<NoteImageBackground, NoteImageActiveTheme>, NoteImageActiveTheme> = {
-  paper: "handwritten", press: "book", highlight: "memo", slate: "frame", aurora: "gradient",
+  paper: "handwritten", press: "book", highlight: "memo", slate: "frame", aurora: "glass", gradient: "glass",
   sunset: "glass", midnight: "black-sun", editorial: "frame", terminal: "code", film: "book",
   mint: "quote", lavender: "glass", warm: "glass", notepad: "memo", xuan: "handwritten", polaroid: "frame",
 };
@@ -46,7 +46,7 @@ export const resolveTheme = (background?: NoteImageBackground, theme?: NoteImage
     if ((NOTE_IMAGE_THEME_OPTIONS as readonly string[]).includes(candidate)) return candidate as NoteImageActiveTheme;
     if (Object.hasOwn(LEGACY_THEMES, candidate)) return LEGACY_THEMES[candidate as keyof typeof LEGACY_THEMES];
   }
-  return "gradient";
+  return "glass";
 };
 
 export type ThemeStyleConfig = {
@@ -73,7 +73,6 @@ const palette = (base: Pick<ThemeStyleConfig, "canvasBg" | "cardBg" | "textColor
 // Measured against the public Firefly Card templates at their 400px / 440px design widths.
 // Structure and CSS are implemented here; exports never depend on that service.
 const ACTIVE_THEMES: Record<NoteImageActiveTheme, ThemeStyleConfig> = {
-  gradient: palette({ canvasBg: "linear-gradient(0deg, #5797f9, #6cd5c4)", cardBg: "#ffffff", textColor: "#000000", cardShadow: "0 5px 10px rgba(99,99,99,0.2), 0 15px 15px rgba(99,99,99,0.2)" }),
   glass: palette({ canvasBg: "linear-gradient(45deg, #5797f9, #6cd5c4)", cardBg: "rgba(255,255,255,0.7)", textColor: "#000000", cardShadow: "0 5px 10px rgba(99,99,99,0.2), 0 15px 15px rgba(99,99,99,0.2)" }),
   quote: palette({ canvasBg: "#ffffff", cardBg: "transparent", textColor: "#0a7c07", metaColor: "#497447", accentColor: "#0a7c07" }),
   book: palette({ canvasBg: "#1b1c1e", cardBg: "transparent", textColor: "#e3d2b3", metaColor: "#c5b89f", isDark: true }),
@@ -91,7 +90,7 @@ export const NOTE_IMAGE_THEMES: Record<NoteImageTheme, ThemeStyleConfig> = {
 } as Record<NoteImageTheme, ThemeStyleConfig>;
 
 const CANVAS_COLORS: Record<NoteImageActiveTheme, string> = {
-  gradient: "#5797f9", glass: "#5797f9", quote: "#ffffff", book: "#1b1c1e", memo: "#ffffff",
+  glass: "#5797f9", quote: "#ffffff", book: "#1b1c1e", memo: "#ffffff",
   bento: "#5797f9", "black-sun": "#101010", frame: "#ffffff", handwritten: "#e3dfd4", code: "#5797f9",
 };
 export const NOTE_IMAGE_BACKGROUND_COLORS = {
@@ -125,7 +124,6 @@ type TemplateTypography = {
 };
 
 export const NOTE_IMAGE_TEMPLATE_TYPOGRAPHY = {
-  gradient: { body: ["misans"], heading: ["misans"], headingWeight: 700 },
   glass: { body: ["misans"], heading: ["mincho"], headingWeight: 400 },
   quote: { body: ["mincho"], heading: ["mincho"], headingWeight: 700 },
   book: { body: ["song"], heading: ["song"], headingWeight: 700 },
@@ -199,7 +197,7 @@ export type NoteImageCardMarkupOptions = {
 };
 
 export const buildNoteImageCardMarkup = ({
-  title, notebook = "", tags = [], updatedAt = "", bodyHtml, theme = "gradient",
+  title, notebook = "", tags = [], updatedAt = "", bodyHtml, theme = "glass",
   showTitle = false, showNotebook = false, showTags = false, showUpdatedAt = true,
   showBranding = true, author = "", showAuthor = false, showReadingTime = false, readingTimeText = "",
 }: NoteImageCardMarkupOptions) => {
@@ -255,7 +253,7 @@ export const buildNoteImageCardMarkup = ({
   </div>`;
 };
 
-export const generateCardCss = ({ theme = "gradient", fontStyle = "auto", fontSize = "lg", cardWidth = "wide" }: {
+export const generateCardCss = ({ theme = "glass", fontStyle = "auto", fontSize = "lg", cardWidth = "wide" }: {
   theme: NoteImageTheme; fontStyle: NoteImageFontStyle; fontSize: NoteImageFontSize; cardWidth: NoteImageCardWidth;
 }) => {
   const active = resolveTheme(undefined, theme);

@@ -187,7 +187,6 @@ struct MemoDetailView: View {
                                 preferences.noteImageShare = share
                             }
                         )) {
-                            Text(env.preferences.t("默认", en: "Classic", pl: "Klasyczny")).tag("gradient")
                             Text(env.preferences.t("透明", en: "Glass", pl: "Szkło")).tag("glass")
                             Text(env.preferences.t("金句", en: "Quote", pl: "Cytat")).tag("quote")
                             Text(env.preferences.t("书摘", en: "Book excerpt", pl: "Fragment książki")).tag("book")

@@ -64,7 +64,7 @@ enum AppUILocale {
 
 /// Local image-share choices, independent of the current note or sheet lifetime.
 struct NoteImageSharePreferences: Codable, Equatable {
-    var theme: String = "gradient"
+    var theme: String = "glass"
     var fontStyle: String = "auto"
     var fontSize: String = "lg"
     var cardWidth: String = "wide"
@@ -85,7 +85,7 @@ struct NoteImageSharePreferences: Codable, Equatable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         if let value = try? values.decode(String.self, forKey: .theme),
            ["gradient", "glass", "quote", "book", "memo", "bento", "black-sun", "frame", "handwritten", "code"].contains(value) {
-            theme = value
+            theme = value == "gradient" ? "glass" : value
         }
         if let value = try? values.decode(String.self, forKey: .fontStyle),
            (["auto", "serif", "sans", "mono", "kai"] + NoteImageFontCatalog.choices.map(\.id)).contains(value) {

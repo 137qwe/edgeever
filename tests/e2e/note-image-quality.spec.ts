@@ -18,7 +18,7 @@ type QualityApi = {
   setMounted: (mounted: boolean) => void;
 };
 type QualityWindow = Window & { imageQuality: QualityApi; copiedImage?: { width: number; height: number; hash: string } };
-const labels = { gradient: '默认', glass: '透明', quote: '金句', book: '书摘', memo: '备忘录', bento: '便当', 'black-sun': '黑日', frame: '框界', handwritten: '手写', code: '代码' };
+const labels = { glass: '透明', quote: '金句', book: '书摘', memo: '备忘录', bento: '便当', 'black-sun': '黑日', frame: '框界', handwritten: '手写', code: '代码' };
 const preamble = `<script type="module">import R from '/@react-refresh';R.injectIntoGlobalHook(window);window.$RefreshReg$=()=>{};window.$RefreshSig$=()=>t=>t;window.__vite_plugin_react_preamble_installed__=true;</script>`;
 const fixture = fileURLToPath(new URL('./fixtures/note-image-quality.tsx', import.meta.url));
 
@@ -82,7 +82,7 @@ for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
     await boot(page);
     const preview = page.getByAltText('笔记分享图片预览');
     await expect(preview).toBeVisible();
-    if (theme !== 'gradient') {
+    if (theme !== 'glass') {
       const old = await preview.getAttribute('src');
       await page.getByRole('button', { name: labels[theme], exact: true }).click();
       await expect(preview).not.toHaveAttribute('src', old!);

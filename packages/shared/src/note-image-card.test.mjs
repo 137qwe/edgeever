@@ -53,8 +53,9 @@ describe("note image templates", () => {
 
   test("old export settings resolve to supported templates through either input", () => {
     const mapping = {
+      gradient: "glass",
       paper: "handwritten", press: "book", highlight: "memo", slate: "frame", mint: "quote",
-      aurora: "gradient", sunset: "glass", terminal: "code", midnight: "black-sun", editorial: "frame",
+      aurora: "glass", sunset: "glass", terminal: "code", midnight: "black-sun", editorial: "frame",
       film: "book", lavender: "glass", notepad: "memo", xuan: "handwritten", polaroid: "frame", warm: "glass",
     };
     for (const [old, active] of Object.entries(mapping)) {
@@ -62,9 +63,9 @@ describe("note image templates", () => {
       expect(resolveTheme(undefined, old)).toBe(active);
       expect(buildNoteImageCardMarkup({ title: "Note", bodyHtml: "<p>Text</p>", theme: old })).toContain(`data-theme="${active}"`);
     }
-    expect(resolveTheme()).toBe("gradient");
+    expect(resolveTheme()).toBe("glass");
     expect(resolveTheme("book", "missing")).toBe("book");
-    expect(resolveTheme("__proto__", "constructor")).toBe("gradient");
+    expect(resolveTheme("__proto__", "constructor")).toBe("glass");
   });
 
   test("explicit fonts override both heading and body for every template", () => {

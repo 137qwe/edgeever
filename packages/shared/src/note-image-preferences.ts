@@ -24,7 +24,7 @@ export type NoteImagePreferences = {
 };
 
 export const DEFAULT_NOTE_IMAGE_PREFERENCES: NoteImagePreferences = {
-  theme: "gradient", fontStyle: "auto", fontSize: "lg", cardWidth: "wide", format: "png",
+  theme: "glass", fontStyle: "auto", fontSize: "lg", cardWidth: "wide", format: "png",
   showTitle: true, showNotebook: false, showTags: false, showUpdatedAt: true,
   showReadingTime: false, showAuthor: false, showBranding: true, author: "",
 };
@@ -55,6 +55,7 @@ export const resolveNoteImagePreferences = (
   const preferences = { ...fallback };
   if (!stored || typeof stored !== "object" || Array.isArray(stored)) return preferences;
   const values = stored as Record<string, unknown>;
+  if (values.theme === "gradient") preferences.theme = "glass";
   for (const key of Object.keys(choices) as Array<keyof typeof choices>) {
     const value = values[key];
     if (typeof value === "string" && (choices[key] as readonly string[]).includes(value)) {

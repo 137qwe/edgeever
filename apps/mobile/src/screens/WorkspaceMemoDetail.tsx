@@ -219,7 +219,6 @@ const loadAuthenticatedSvg = (source: AuthenticatedImageSource) => {
 };
 
 const MOBILE_THEME_LABELS = {
-  "gradient": { labelZh: "默认", labelEn: "Classic" },
   "glass": { labelZh: "透明", labelEn: "Glass" },
   "quote": { labelZh: "金句", labelEn: "Quote" },
   "book": { labelZh: "书摘", labelEn: "Book excerpt" },
