@@ -1690,7 +1690,7 @@ export const MemoDetailModal = ({
               </View>
 
               <Text style={styles.actionSheetSectionTitle}>{resolvedLocale !== "zh-CN" ? "Typography" : "字体风格"}</Text>
-              <View style={imageShareStyles.choiceRow}>
+              <View style={imageShareStyles.fontGrid}>
                 {MOBILE_FONT_OPTIONS.map((item) => {
                   const isSelected = imageShareFontStyle === item.id;
                   const label = resolvedLocale !== "zh-CN" ? item.labelEn : item.labelZh;
@@ -1698,9 +1698,11 @@ export const MemoDetailModal = ({
                     <Pressable
                       key={item.id}
                       accessibilityRole="button"
+                      accessibilityState={{ selected: isSelected }}
                       onPress={() => setImageSharePreference("fontStyle", item.id)}
                       style={[
                         imageShareStyles.choice,
+                        imageShareStyles.fontChoice,
                         isSelected && imageShareStyles.choiceActive,
                       ]}
                     >
@@ -2002,6 +2004,18 @@ const imageShareStyles = StyleSheet.create({
   choiceRow: {
     flexDirection: "row",
     gap: 8,
+  },
+  fontGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  fontChoice: {
+    flex: 0,
+    flexBasis: "47%",
+    flexGrow: 1,
+    minWidth: 120,
+    paddingVertical: 10,
   },
   choiceText: {
     color: "#64748b",
