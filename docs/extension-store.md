@@ -5,6 +5,11 @@ workflow **Submit Web Clipper**. This is separate from `bun run release`.
 A stable GitHub Release triggers the store workflow asynchronously. Store
 submission does not block the GitHub Release, and review does not change it.
 
+The extension has its own version in `apps/extension/package.json`, independent
+of the main app version in the root `package.json`. For an extension-only release,
+merge the change, then run the workflow manually on `main` with `release_tag`
+left empty. A new GitHub Release for the main app is not required.
+
 Edge users install the Chrome Web Store item
 `gjadpfmanienmlofajibkfkkpfdkclgo`. One Chrome submission covers that item.
 Firefox is a separate submission for `edgeever-web-clipper`. The workflow does

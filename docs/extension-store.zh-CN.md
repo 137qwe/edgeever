@@ -4,6 +4,10 @@ Chrome、Edge 和 Firefox 的上架由官方仓库工作流 **Submit Web Clipper
 它和 `bun run release` 分开。正式 GitHub Release 发布后会异步触发商店工作流；
 商店提交不阻塞 GitHub Release，审核结果也不会改变已发布的 Release。
 
+扩展使用 `apps/extension/package.json` 中的独立版本号，不跟随根目录
+`package.json` 的主应用版本。仅发布扩展时，合并后手动运行工作流，选择 `main`
+并留空 `release_tag` 即可，不必另发主应用的 GitHub Release。
+
 Edge 用户安装的是 Chrome 网上应用店商品
 `gjadpfmanienmlofajibkfkkpfdkclgo`。一次 Chrome 提交覆盖这个商品。Firefox
 单独提交到 `edgeever-web-clipper`。这条工作流不向 Microsoft Edge 附加组件网站
