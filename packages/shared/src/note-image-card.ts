@@ -75,7 +75,7 @@ const palette = (base: Pick<ThemeStyleConfig, "canvasBg" | "cardBg" | "textColor
 const ACTIVE_THEMES: Record<NoteImageActiveTheme, ThemeStyleConfig> = {
   glass: palette({ canvasBg: "linear-gradient(45deg, #5797f9, #6cd5c4)", cardBg: "rgba(255,255,255,0.7)", textColor: "#000000", cardShadow: "0 5px 10px rgba(99,99,99,0.2), 0 15px 15px rgba(99,99,99,0.2)" }),
   quote: palette({ canvasBg: "#ffffff", cardBg: "transparent", textColor: "#0a7c07", metaColor: "#497447", accentColor: "#0a7c07" }),
-  book: palette({ canvasBg: "#1b1c1e", cardBg: "transparent", textColor: "#e3d2b3", metaColor: "#c5b89f", isDark: true }),
+  book: palette({ canvasBg: "#f8f3e8", cardBg: "transparent", textColor: "#302b24", metaColor: "#786c5c", accentColor: "#66513a" }),
   memo: palette({ canvasBg: "#ffffff", cardBg: "#ffffff", textColor: "#353535", metaColor: "#737377", accentColor: "#e5ae00" }),
   bento: palette({ canvasBg: "linear-gradient(45deg, #5797f9, #6cd5c4)", cardBg: "#f5f4f7", textColor: "#000000", headingColor: "#5797f9", cardShadow: "0 6px 18px rgba(0,0,0,0.15), 0 21px 68px rgba(0,0,0,0.1)" }),
   "black-sun": palette({ canvasBg: "#101010", cardBg: "#020410", textColor: "#ffffff", metaColor: "#9392a4", cardBorder: "1px solid #777681", cardShadow: "0 0 22px rgba(216,213,255,0.65)", isDark: true }),
@@ -90,7 +90,7 @@ export const NOTE_IMAGE_THEMES: Record<NoteImageTheme, ThemeStyleConfig> = {
 } as Record<NoteImageTheme, ThemeStyleConfig>;
 
 const CANVAS_COLORS: Record<NoteImageActiveTheme, string> = {
-  glass: "#5797f9", quote: "#ffffff", book: "#1b1c1e", memo: "#ffffff",
+  glass: "#5797f9", quote: "#ffffff", book: "#f8f3e8", memo: "#ffffff",
   bento: "#5797f9", "black-sun": "#101010", frame: "#ffffff", handwritten: "#e3dfd4", code: "#5797f9",
 };
 export const NOTE_IMAGE_BACKGROUND_COLORS = {
@@ -394,7 +394,14 @@ export const generateCardCss = ({ theme = "glass", fontStyle = "auto", fontSize 
 .edgeever-window-dots i:nth-child(2) { background: #f4bf4f; }
 .edgeever-window-dots i:nth-child(3) { background: #61c554; }
 ${active === "book" ? `
-.edgeever-image-card { min-height: 0; }
+.edgeever-image-wrapper {
+  background-image: linear-gradient(90deg, rgba(101,77,43,0.09), transparent 6%, transparent 96%, rgba(101,77,43,0.04));
+}
+.edgeever-image-wrapper::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--ee-paper) repeat center / ${px(320)}; opacity: 0.045; z-index: 0;
+}
+.edgeever-image-card { min-height: 0; z-index: 1; }
 .edgeever-card-body { font-weight: 400; letter-spacing: ${px(1)}; }
 .edgeever-card-date { margin-bottom: ${px(20)}; }
 .edgeever-card-title { font-weight: 700; line-height: 1.4; margin-bottom: ${px(14)}; }

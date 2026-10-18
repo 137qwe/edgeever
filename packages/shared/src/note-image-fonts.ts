@@ -75,6 +75,8 @@ export const prepareNoteImageAssets = async ({ theme, fontStyle = "auto", text, 
     : embed && blocks.length ? `/*! ${NOTE_IMAGE_FONT_NOTICES.replaceAll("*/", "* /")} */\n${fontFacesCss}` : "";
   const textureCss = embed && active === "handwritten"
     ? `.edgeever-image-wrapper{--ee-paper:url("${await getAsset("paper.png")}");--ee-paper-grain:url("${await getAsset("paper-text.png")}")}`
+    : embed && active === "book"
+    ? `.edgeever-image-wrapper{--ee-paper:url("${await getAsset("paper.png")}")}`
     : "";
   return { fontCss, css: `${fontCss}\n${textureCss}` };
 };
