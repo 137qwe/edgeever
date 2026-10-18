@@ -27,6 +27,17 @@ enum NoteImageFontCatalog {
         (id: "spacegrotesk", zh: "Space Grotesk", en: "Space Grotesk"),
         (id: "jetbrains", zh: "JetBrains Mono", en: "JetBrains Mono"),
     ]
+    static let templateLabels: [String: (zh: String, en: String, ja: String, pl: String)] = [
+        "glass": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "quote": (zh: "汇文明朝体", en: "Huiwen Mincho", ja: "匯文明朝体", pl: "Huiwen Mincho"),
+        "book": (zh: "思源宋体", en: "Source Han Serif", ja: "源ノ明朝", pl: "Source Han Serif"),
+        "memo": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "bento": (zh: "MiSans", en: "MiSans", ja: "MiSans", pl: "MiSans"),
+        "black-sun": (zh: "Geist Mono / MiSans", en: "Geist Mono / MiSans", ja: "Geist Mono / MiSans", pl: "Geist Mono / MiSans"),
+        "frame": (zh: "思源宋体", en: "Source Han Serif", ja: "源ノ明朝", pl: "Source Han Serif"),
+        "handwritten": (zh: "龙藏体", en: "Long Cang", ja: "Long Cang", pl: "Long Cang"),
+        "code": (zh: "Geist Mono", en: "Geist Mono", ja: "Geist Mono", pl: "Geist Mono"),
+    ]
 }
 // END GENERATED FONT CATALOG
 import Observation

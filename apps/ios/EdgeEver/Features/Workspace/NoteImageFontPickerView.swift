@@ -5,7 +5,7 @@ import WebKit
 enum NoteImageFontPickerOptions {
     static func choices(_ preferences: PreferencesStore) -> [(id: String, label: String)] {
         [
-            ("auto", preferences.t("跟随主题", en: "Follow Theme", pl: "Zgodnie z motywem")),
+            ("auto", preferences.t("跟随主题", en: "Follow Theme", pl: "Zgodnie z motywem") + " (" + themeLabel(preferences) + ")"),
             ("kai", preferences.t("文楷手书", en: "Handwritten Kai", pl: "Pismo odręczne Kai")),
             ("serif", preferences.t("文艺衬线", en: "Serif", pl: "Szeryfowa")),
             ("sans", preferences.t("现代无衬线", en: "Sans", pl: "Bezszeryfowa")),
@@ -13,8 +13,14 @@ enum NoteImageFontPickerOptions {
         ] + NoteImageFontCatalog.choices.map { ($0.id, preferences.t($0.zh, en: $0.en, pl: $0.en)) }
     }
 
+    private static func themeLabel(_ preferences: PreferencesStore) -> String {
+        guard let labels = NoteImageFontCatalog.templateLabels[preferences.noteImageShare.theme] else { return "" }
+        return preferences.t(labels.zh, en: labels.en, ja: labels.ja, pl: labels.pl)
+    }
+
     static func label(_ preferences: PreferencesStore) -> String {
-        choices(preferences).first { $0.id == preferences.noteImageShare.fontStyle }?.label ?? ""
+        if preferences.noteImageShare.fontStyle == "auto" { return themeLabel(preferences) }
+        return choices(preferences).first { $0.id == preferences.noteImageShare.fontStyle }?.label ?? ""
     }
 }
 
