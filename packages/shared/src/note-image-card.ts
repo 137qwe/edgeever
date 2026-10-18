@@ -106,19 +106,50 @@ export const NOTE_IMAGE_FONT_FAMILIES: Record<Exclude<NoteImageFontStyle, "auto"
   ...CATALOG_FONT_STACKS,
 };
 
-export const NOTE_IMAGE_TEMPLATE_FONT_FAMILIES: Record<NoteImageActiveTheme, string> = {
-  gradient: "Alibaba-PuHuiTi-Regular", glass: "Alibaba-PuHuiTi-Regular", quote: "Huiwen_mingchao",
-  book: "SourceHanSerifCN_SemiBold", memo: "MiSans-Regular", bento: "Alibaba-PuHuiTi-Regular",
-  "black-sun": "Alibaba-PuHuiTi-Regular", frame: "Alibaba-PuHuiTi-Regular", handwritten: "Long Cang", code: "Geist Mono Variable",
+/** Keep CSS families and asset selection together so defaults cannot silently fall back. */
+export const NOTE_IMAGE_BUNDLED_FONTS = {
+  puhui: { family: "Alibaba-PuHuiTi-Regular", fallback: "sans" },
+  misans: { family: "MiSans", fallback: "sans" },
+  mincho: { family: "Huiwen_mingchao", fallback: "serif" },
+  song: { family: "SourceHanSerifCN_SemiBold", fallback: "serif" },
+  longcang: { family: "Long Cang", fallback: "kai" },
+  geist: { family: "Geist Mono Variable", fallback: "mono" },
+} as const;
+
+type BundledNoteImageFont = keyof typeof NOTE_IMAGE_BUNDLED_FONTS;
+type TemplateTypography = {
+  body: readonly BundledNoteImageFont[];
+  heading: readonly BundledNoteImageFont[];
+  headingWeight: number;
 };
+
+export const NOTE_IMAGE_TEMPLATE_TYPOGRAPHY = {
+  gradient: { body: ["misans"], heading: ["misans"], headingWeight: 700 },
+  glass: { body: ["misans"], heading: ["mincho"], headingWeight: 400 },
+  quote: { body: ["mincho"], heading: ["mincho"], headingWeight: 700 },
+  book: { body: ["song"], heading: ["song"], headingWeight: 700 },
+  memo: { body: ["misans"], heading: ["misans"], headingWeight: 700 },
+  bento: { body: ["misans"], heading: ["song"], headingWeight: 600 },
+  "black-sun": { body: ["geist", "misans"], heading: ["geist", "misans"], headingWeight: 700 },
+  frame: { body: ["song"], heading: ["song"], headingWeight: 600 },
+  handwritten: { body: ["longcang"], heading: ["longcang"], headingWeight: 400 },
+  code: { body: ["geist"], heading: ["geist"], headingWeight: 700 },
+} as const satisfies Record<NoteImageActiveTheme, TemplateTypography>;
+
+const templateFontStack = (fonts: readonly BundledNoteImageFont[]) => [
+  ...fonts.map(font => `"${NOTE_IMAGE_BUNDLED_FONTS[font].family}"`),
+  NOTE_IMAGE_FONT_FAMILIES[NOTE_IMAGE_BUNDLED_FONTS[fonts[0]].fallback],
+].join(", ");
 
 export const resolveNoteImageTypography = (theme: NoteImageTheme, fontStyle: NoteImageFontStyle = "auto") => {
   const active = resolveTheme(undefined, theme);
-  const style = fontStyle !== "auto" ? fontStyle : active === "book" || active === "quote" ? "serif" : active === "handwritten" ? "kai" : active === "code" ? "mono" : "sans";
-  const family = fontStyle === "auto"
-    ? `"${NOTE_IMAGE_TEMPLATE_FONT_FAMILIES[active]}", ${NOTE_IMAGE_FONT_FAMILIES[style]}`
-    : NOTE_IMAGE_FONT_FAMILIES[style];
-  return { bodyFamily: family, headingFamily: family, headingWeight: active === "handwritten" ? 400 : 700, lineHeightAdjustment: 0 };
+  const preset = NOTE_IMAGE_TEMPLATE_TYPOGRAPHY[active];
+  return {
+    bodyFamily: fontStyle === "auto" ? templateFontStack(preset.body) : NOTE_IMAGE_FONT_FAMILIES[fontStyle],
+    headingFamily: fontStyle === "auto" ? templateFontStack(preset.heading) : NOTE_IMAGE_FONT_FAMILIES[fontStyle],
+    headingWeight: fontStyle === "auto" ? preset.headingWeight : active === "handwritten" ? 400 : 700,
+    lineHeightAdjustment: 0,
+  };
 };
 
 export const NOTE_IMAGE_FONT_SIZES = {

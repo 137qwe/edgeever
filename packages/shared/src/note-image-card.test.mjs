@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import {
-  NOTE_IMAGE_THEME_OPTIONS, NOTE_IMAGE_THEMES, NOTE_IMAGE_BACKGROUND_COLORS, NOTE_IMAGE_FONT_FAMILIES,
+  NOTE_IMAGE_BUNDLED_FONTS, NOTE_IMAGE_TEMPLATE_TYPOGRAPHY, NOTE_IMAGE_THEME_OPTIONS, NOTE_IMAGE_THEMES, NOTE_IMAGE_BACKGROUND_COLORS, NOTE_IMAGE_FONT_FAMILIES,
   resolveTheme, resolveNoteImageTypography, buildImageExportBasename, buildNoteImageCardMarkup,
   estimateReadingStats, generateCardCss,
 } from "./note-image-card";
@@ -8,8 +8,26 @@ import { zhCN } from "./i18n/zh-CN";
 import { enUS } from "./i18n/en-US";
 import { ja } from "./i18n/ja";
 import { pl } from "./i18n/pl";
+import { NOTE_IMAGE_FONT_SUBSETS } from "./note-image-font-manifest";
 
 describe("note image templates", () => {
+  test("each template references the font family registered by its bundled assets", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
+      const preset = NOTE_IMAGE_TEMPLATE_TYPOGRAPHY[theme];
+      for (const role of ["body", "heading"]) {
+        const familyStack = resolveNoteImageTypography(theme)[`${role}Family`];
+        for (const font of preset[role]) {
+          const subsets = NOTE_IMAGE_FONT_SUBSETS[font];
+          expect(subsets.length).toBeGreaterThan(0);
+          for (const { family } of subsets) {
+            expect(family).toBe(NOTE_IMAGE_BUNDLED_FONTS[font].family);
+            expect(familyStack).toContain(`"${family}"`);
+          }
+        }
+      }
+    }
+  });
+
   test("every selectable template is localized and has renderable colors", () => {
     for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
       expect(NOTE_IMAGE_THEMES[theme]).toBeDefined();
