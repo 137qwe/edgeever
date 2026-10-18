@@ -1213,7 +1213,7 @@ struct MemoDetailView: View {
         fontStyle: String = "auto",
         fontSize: String = "lg",
         cardWidth: String = "wide",
-        showTitle: Bool = true,
+        showTitle: Bool = false,
         showNotebook: Bool = false,
         showTags: Bool = false,
         showUpdatedAt: Bool = true,

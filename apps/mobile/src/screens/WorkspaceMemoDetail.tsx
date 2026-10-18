@@ -1019,7 +1019,7 @@ export const MemoDetailModal = ({
       fontStyle: options.fontStyle ?? "auto",
       fontSize: options.fontSize ?? "lg",
       cardWidth: options.cardWidth ?? "wide",
-      showTitle: options.showTitle ?? true,
+      showTitle: options.showTitle ?? false,
       showNotebook: options.showNotebook ?? false,
       showTags: options.showTags ?? false,
       showUpdatedAt: options.showUpdatedAt ?? true,

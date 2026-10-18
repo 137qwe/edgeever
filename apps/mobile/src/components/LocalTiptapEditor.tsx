@@ -1287,7 +1287,7 @@ function LocalTiptapEditorImpl(props: LocalTiptapEditorProps) {
         bodyHtml,
         theme: resolvedTheme,
         fontStyle,
-        showTitle: request.showTitle ?? true,
+        showTitle: request.showTitle ?? false,
         showNotebook: request.showNotebook ?? false,
         showTags: request.showTags ?? false,
         showUpdatedAt: request.showUpdatedAt ?? true,

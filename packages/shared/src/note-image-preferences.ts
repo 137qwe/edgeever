@@ -25,7 +25,7 @@ export type NoteImagePreferences = {
 
 export const DEFAULT_NOTE_IMAGE_PREFERENCES: NoteImagePreferences = {
   theme: "glass", fontStyle: "auto", fontSize: "lg", cardWidth: "wide", format: "png",
-  showTitle: true, showNotebook: false, showTags: false, showUpdatedAt: true,
+  showTitle: false, showNotebook: false, showTags: false, showUpdatedAt: true,
   showReadingTime: false, showAuthor: false, showBranding: true, author: "",
 };
 

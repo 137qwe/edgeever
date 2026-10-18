@@ -80,7 +80,7 @@ struct NoteImageSharePreferences: Codable, Equatable {
     var fontSize: String = "lg"
     var cardWidth: String = "wide"
     var format: String = "png"
-    var showTitle: Bool = true
+    var showTitle: Bool = false
     var showNotebook: Bool = false
     var showTags: Bool = false
     var showUpdatedAt: Bool = true
@@ -114,7 +114,7 @@ struct NoteImageSharePreferences: Codable, Equatable {
            ["png", "jpeg"].contains(value) {
             format = value
         }
-        showTitle = (try? values.decode(Bool.self, forKey: .showTitle)) ?? true
+        showTitle = (try? values.decode(Bool.self, forKey: .showTitle)) ?? false
         showNotebook = (try? values.decode(Bool.self, forKey: .showNotebook)) ?? false
         showTags = (try? values.decode(Bool.self, forKey: .showTags)) ?? false
         showUpdatedAt = (try? values.decode(Bool.self, forKey: .showUpdatedAt)) ?? true

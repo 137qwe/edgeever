@@ -107,7 +107,7 @@ test('corrupt fields are isolated and rejected writes keep session choices usabl
     setItem: async () => { throw new Error('Storage unavailable'); },
   });
   await store.load();
-  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'glass', fontSize: 'lg', showTitle: true });
+  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'glass', fontSize: 'lg', showTitle: false });
   store.update('showTitle', false);
   store.update('theme', 'code');
   await store.flush();
