@@ -29,6 +29,17 @@ export const DEFAULT_NOTE_IMAGE_PREFERENCES: NoteImagePreferences = {
   showReadingTime: false, showAuthor: false, showBranding: true, author: "",
 };
 
+/** Selecting a template restores its typography; later font choices override it. */
+export const updateNoteImagePreference = <K extends keyof NoteImagePreferences>(
+  preferences: NoteImagePreferences,
+  key: K,
+  value: NoteImagePreferences[K],
+): NoteImagePreferences => ({
+  ...preferences,
+  [key]: value,
+  ...(key === "theme" ? { fontStyle: "auto" as const } : {}),
+});
+
 const choices = {
   theme: NOTE_IMAGE_THEME_OPTIONS,
   fontStyle: ["auto", "kai", "serif", "sans", "mono", ...FONT_IDS],

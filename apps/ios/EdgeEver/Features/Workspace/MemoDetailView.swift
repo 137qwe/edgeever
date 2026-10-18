@@ -178,7 +178,15 @@ struct MemoDetailView: View {
             NavigationStack {
                 Form {
                     Section(env.preferences.t("主题风格", en: "Theme", pl: "Motyw")) {
-                        Picker(env.preferences.t("主题风格", en: "Theme", pl: "Motyw"), selection: $preferences.noteImageShare.theme) {
+                        Picker(env.preferences.t("主题风格", en: "Theme", pl: "Motyw"), selection: Binding(
+                            get: { preferences.noteImageShare.theme },
+                            set: { theme in
+                                var share = preferences.noteImageShare
+                                share.theme = theme
+                                share.fontStyle = "auto"
+                                preferences.noteImageShare = share
+                            }
+                        )) {
                             Text(env.preferences.t("默认", en: "Classic", pl: "Klasyczny")).tag("gradient")
                             Text(env.preferences.t("透明", en: "Glass", pl: "Szkło")).tag("glass")
                             Text(env.preferences.t("金句", en: "Quote", pl: "Cytat")).tag("quote")

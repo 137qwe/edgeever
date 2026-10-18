@@ -8,6 +8,21 @@ const changed = {
   showTags: true, showUpdatedAt: false, showBranding: false,
 };
 
+test('switching templates persists automatic typography and allows a later manual font', async () => {
+  let raw = JSON.stringify(changed);
+  const storage = { getItem: async () => raw, setItem: async (_key, value) => { raw = value; } };
+  const store = createMobileNoteImagePreferenceStore(storage);
+  await store.load();
+  store.update('theme', 'handwritten');
+  expect(store.getSnapshot()).toEqual({ ...changed, theme: 'handwritten', fontStyle: 'auto' });
+  await store.flush();
+  const restarted = createMobileNoteImagePreferenceStore(storage);
+  await restarted.load();
+  expect(restarted.getSnapshot().fontStyle).toBe('auto');
+  restarted.update('fontStyle', 'sans');
+  expect(restarted.getSnapshot().fontStyle).toBe('sans');
+});
+
 test('all mobile share choices survive switching views and a fresh store after restart', async () => {
   let raw = null;
   const storage = { getItem: async () => raw, setItem: async (_key, value) => { raw = value; } };

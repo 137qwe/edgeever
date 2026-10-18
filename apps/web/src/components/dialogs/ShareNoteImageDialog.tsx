@@ -2,6 +2,7 @@ import type { FontLoadStatus } from "@/lib/font-load-state";
 import { useFontPreviewStatus } from "@/lib/use-font-preview-status";
 import { FontLoadFeedback } from "@/components/FontLoadFeedback";
 import { FONT_CATALOG, FONT_IDS } from "@edgeever/shared/font-catalog";
+import { updateNoteImagePreference } from "@edgeever/shared/note-image-preferences";
 import { prepareNoteImageAssets } from "@edgeever/shared/note-image-fonts";
 import { noteImageAssetUrls } from "@edgeever/shared/note-image-assets";
 import { Check, Copy, Download, LoaderCircle, Palette, Share2, Type } from "lucide-react";
@@ -134,7 +135,7 @@ export const ShareNoteImageDialog = ({
     showUpdatedAt, showReadingTime, showAuthor, author, showBranding,
   } = preferences;
   const setPreference = <K extends keyof NoteImagePreferences>(key: K, value: NoteImagePreferences[K]) => {
-    setPreferences(current => ({ ...current, [key]: value }));
+    setPreferences(current => updateNoteImagePreference(current, key, value));
   };
 
   useEffect(() => {
@@ -333,7 +334,7 @@ export const ShareNoteImageDialog = ({
                     >
                       <NoteImageThemePreview
                         theme={id}
-                        fontStyle={fontStyle}
+                        fontStyle="auto"
                         title={source.title || label}
                         body={t("editor.imageShare.previewBody")}
                         quote={t("editor.imageShare.previewQuote")}
