@@ -47,6 +47,17 @@ version that is already awaiting review is left in place. A Firefox version
 that is awaiting review and has no source archive receives the source archive
 on the next run.
 
+The Actions log and Summary report each store separately: submission action,
+API state, confirmed public version (when available), failure stage, and the
+API's detailed error response or warnings. `submitted` / `already-submitted`
+mean review submission, not publication; `STAGED` means approved but awaiting
+publication. Only an API-confirmed public version or `PUBLISHED` state is
+reported as published. The run does not wait for later review results.
+Diagnostics redact credentials and private review notes; large error responses
+are explicitly truncated. If the API returns only a generic error, use the
+linked developer dashboard for requirements that the API does not expose.
+After fixing a store-specific issue, retry only that platform.
+
 ## Credentials
 
 Add these Actions secrets to `tianma-if/edgeever`. Forks do not run the job.

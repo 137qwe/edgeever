@@ -40,6 +40,15 @@ bun run publish:extension -- --notes "这次改了什么。"
 上同一个版本已经在审核中时，会保持原提交。Firefox 上同一个版本正在审核但还没有
 源码包时，下一次运行会补上源码包。
 
+Actions 日志和 Summary 会分别报告每个商店的提交动作、API 状态、已确认的公开
+版本（如有）、失败阶段，以及 API 返回的详细错误或警告。`submitted` /
+`already-submitted` 表示已提交审核，不代表正式上架；`STAGED` 表示审核通过但仍
+待发布。只有 API 确认的公开版本或 `PUBLISHED` 状态才会标记为已上架。工作流不会
+等待后续审核结果。
+诊断信息会隐藏凭据和私密审核说明，过长的错误响应会明确标记为截断。API 只返回
+通用错误时，仍需打开报告中的开发者后台链接查看 API 未公开的具体缺项。
+修复单个商店的问题后，仅重试对应平台即可。
+
 ## 凭据
 
 把这些 Actions secrets 加到 `tianma-if/edgeever`。Fork 不会运行这个 Job。
