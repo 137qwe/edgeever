@@ -207,9 +207,6 @@ export const buildNoteImageCardMarkup = ({
   const hasTitle = showTitle && Boolean(title.trim());
   const hasAuthor = showAuthor && Boolean(author.trim());
   const authorName = hasAuthor ? escapeCardHtml(author.trim()) : "";
-  const initial = escapeCardHtml(Array.from(author.trim())[0]?.toUpperCase() || "");
-  // Keep identity with the signature, away from the note's reading entry point.
-  const avatar = hasAuthor ? `<div class="edgeever-card-avatar" aria-hidden="true"><span>${initial}</span></div>` : "";
   const meta: string[] = [];
   const dateHtml = showUpdatedAt && updatedAt.trim() ? `<div class="edgeever-card-date"><span class="edgeever-meta-date">${escapeCardHtml(updatedAt)}</span></div>` : "";
   if (showNotebook && notebook.trim()) meta.push(`<span class="edgeever-meta-notebook">${escapeCardHtml(notebook)}</span>`);
@@ -237,7 +234,7 @@ export const buildNoteImageCardMarkup = ({
       </div>`;
   const footer = hasAuthor || showBranding || meta.length ? `<footer class="edgeever-card-footer">
     ${metaHtml}
-    ${hasAuthor ? `<div class="edgeever-footer-author">${avatar}<span>${authorName}</span></div>` : ""}
+    ${hasAuthor ? `<div class="edgeever-footer-author"><span>${authorName}</span></div>` : ""}
     ${showBranding ? brandBadgeHtml : ""}
   </footer>` : "";
   // Only a standalone short paragraph gets the large quotation treatment.
@@ -297,11 +294,6 @@ export const generateCardCss = ({ theme = "gradient", fontStyle = "auto", fontSi
   min-width: 0; overflow: hidden;
 }
 .edgeever-card-header:empty { display: none; }
-.edgeever-card-avatar {
-  display: flex; align-items: center; justify-content: center; width: ${px(24)}; height: ${px(24)};
-  flex-shrink: 0; border-radius: 50%; background: ${cfg.isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)"};
-  color: var(--ee-meta); font: 500 ${px(12)} / 1 ${NOTE_IMAGE_FONT_FAMILIES.sans};
-}
 .edgeever-card-date,
 .edgeever-card-meta {
   display: flex; flex-wrap: wrap; align-items: center; gap: ${px(4)} ${px(12)};

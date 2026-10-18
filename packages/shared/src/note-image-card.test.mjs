@@ -12,6 +12,17 @@ import { pl } from "./i18n/pl";
 import { NOTE_IMAGE_FONT_SUBSETS } from "./note-image-font-manifest";
 
 describe("note image templates", () => {
+  test("author signatures show only the name without a generated avatar in every template", () => {
+    for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
+      const markup = buildNoteImageCardMarkup({ theme, title: "Note", bodyHtml: "<p>Text</p>", author: "天马", showAuthor: true });
+      const { document } = parseHTML(markup);
+      const signature = document.querySelector(".edgeever-footer-author");
+      expect(signature?.textContent).toBe("天马");
+      expect(signature?.children.length).toBe(1);
+      expect(document.querySelector(".edgeever-card-avatar")).toBeNull();
+    }
+  });
+
   test("each template references the font family registered by its bundled assets", () => {
     for (const theme of NOTE_IMAGE_THEME_OPTIONS) {
       const preset = NOTE_IMAGE_TEMPLATE_TYPOGRAPHY[theme];
@@ -118,7 +129,8 @@ describe("note image templates", () => {
       }
     }
     const signed = buildNoteImageCardMarkup({ theme: "bento", title: "Note", bodyHtml: "", author: "天马", showAuthor: true, showBranding: false });
-    expect(signed).toContain('<span>天</span>');
+    expect(signed).not.toContain('class="edgeever-card-avatar"');
+    expect(signed).toContain('<span>天马</span>');
     expect(signed).toContain('<span>天马</span>');
     expect(signed).not.toContain('class="edgeever-brand-badge"');
   });
