@@ -1,5 +1,5 @@
 import { memo, useEffect, useRef, useState } from "react";
-import { Search } from "lucide-react";
+import { RefreshCw, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
 import {
@@ -29,7 +29,9 @@ const Preview = memo(function Preview({
 }) {
   const host = useRef<HTMLButtonElement>(null);
   const [visible, setVisible] = useState(false),
-    [url, setUrl] = useState<string>();
+    [url, setUrl] = useState<string>(),
+    [status, setStatus] = useState<"loading" | "ready" | "error">("loading"),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -45,59 +47,92 @@ const Preview = memo(function Preview({
   }, []);
   useEffect(() => {
     if (!visible) return;
-    let cancelled = false,
-      preview: string | undefined;
-    void buildPosterDesign({
-      id: template.id,
-      title: zh ? "把想法\n变成作品" : "MAKE IDEAS\nWORTH SHARING",
-      subtitle: zh ? "一个好想法，值得被看见。" : "Ideas deserve to be seen.",
-      badge: zh ? "创作笔记" : "CREATIVE NOTES",
-      width,
-      height,
-      zh,
-    })
-      .then(renderPosterThumbnail)
-      .then((next) => {
-        preview = next;
-        if (cancelled) URL.revokeObjectURL(next);
-        else setUrl(next);
-      })
-      .catch(() => {
-        if (!cancelled) setUrl(undefined);
-      });
+    let cancelled = false, expired = false, preview: string | undefined;
+    setUrl(undefined);
+    setStatus("loading");
+    const timer = setTimeout(() => {
+      expired = true;
+      setStatus("error");
+      console.warn("Poster template preview timed out", template.id);
+    }, 15_000);
+    void (async () => {
+      try {
+        const document = await buildPosterDesign({
+          id: template.id,
+          title: zh ? "把想法\n变成作品" : "MAKE IDEAS\nWORTH SHARING",
+          subtitle: zh ? "一个好想法，值得被看见。" : "Ideas deserve to be seen.",
+          badge: zh ? "创作笔记" : "CREATIVE NOTES",
+          width,
+          height,
+          zh,
+        });
+        if (cancelled || expired) return;
+        const next = await renderPosterThumbnail(document);
+        if (cancelled || expired) URL.revokeObjectURL(next);
+        else {
+          preview = next;
+          setUrl(next);
+          setStatus("ready");
+        }
+      } catch (error) {
+        if (!cancelled && !expired) {
+          setStatus("error");
+          console.warn("Poster template preview failed", template.id, error);
+        }
+      } finally {
+        clearTimeout(timer);
+      }
+    })();
     return () => {
       cancelled = true;
+      clearTimeout(timer);
       if (preview) URL.revokeObjectURL(preview);
     };
-  }, [visible, width, height, zh, template.id]);
+  }, [visible, width, height, zh, template.id, attempt]);
   return (
-    <button
-      ref={host}
-      disabled={disabled}
-      data-poster-template={template.id}
-      aria-label={zh ? template.zh : template.en}
-      aria-pressed={selected}
-      onClick={onSelect}
-      className={`group overflow-hidden rounded-lg border p-1.5 text-left transition disabled:opacity-50 ${selected ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500" : "border-slate-200/80 bg-card hover:border-emerald-400"}`}
-    >
-      <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded bg-slate-100">
-        {url ? (
-          <img
-            src={url}
-            alt={zh ? template.zh : template.en}
-            loading="lazy"
-            className="h-full w-full object-contain"
-          />
-        ) : (
-          <span className="text-[10px] text-slate-400">
-            {zh ? "载入版式…" : "Loading layout…"}
-          </span>
-        )}
-      </div>
-      <div className="mt-2 truncate px-1 text-[11px] font-medium">
-        {zh ? template.zh : template.en}
-      </div>
-    </button>
+    <div className="relative">
+      <button
+        ref={host}
+        disabled={disabled}
+        data-poster-template={template.id}
+        aria-label={zh ? template.zh : template.en}
+        aria-busy={status === "loading"}
+        aria-pressed={selected}
+        onClick={onSelect}
+        className={`group w-full overflow-hidden rounded-lg border p-1.5 text-left transition disabled:opacity-50 ${selected ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500" : "border-slate-200/80 bg-card hover:border-emerald-400"}`}
+      >
+        <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded bg-slate-100">
+          {url ? (
+            <img
+              src={url}
+              alt={zh ? template.zh : template.en}
+              loading="lazy"
+              className="h-full w-full object-contain"
+            />
+          ) : (
+            <span className="text-[10px] text-slate-400">
+              {status === "error"
+                ? (zh ? "预览未能加载" : "Preview unavailable")
+                : (zh ? "载入版式…" : "Loading layout…")}
+            </span>
+          )}
+        </div>
+        <div className="mt-2 truncate px-1 text-[11px] font-medium">
+          {zh ? template.zh : template.en}
+        </div>
+      </button>
+      {status === "error" && (
+        <button
+          type="button"
+          disabled={disabled}
+          aria-label={zh ? "重试预览" : "Retry preview"}
+          onClick={() => setAttempt(value => value + 1)}
+          className="absolute right-3 top-3 rounded border bg-card p-1.5 text-muted-foreground hover:text-foreground focus-visible:outline focus-visible:outline-2"
+        >
+          <RefreshCw className="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
   );
 });
 export function PosterTemplatePanel({
