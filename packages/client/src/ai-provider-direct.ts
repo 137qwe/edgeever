@@ -14,6 +14,7 @@ export const discoverAiModels = async (
   if (config.provider === "anthropic") {
     headers.set("x-api-key", config.apiKey);
     headers.set("anthropic-version", "2023-06-01");
+    headers.set("anthropic-dangerous-direct-browser-access", "true");
   } else if (config.provider === "google") {
     headers.set("x-goog-api-key", config.apiKey);
   } else {

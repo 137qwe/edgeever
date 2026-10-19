@@ -54,3 +54,23 @@ test("infographic tools and model loop run on the client after credential prepar
   expect(paths).toEqual(["/api/v1/ai/infographic-agent/prepare"]);expect(calls).toBe(2);
   expect(events).toContainEqual({type:"proposal",...proposal});expect(events.at(-1)).toEqual({type:"finish"});
 });
+
+test("Anthropic client generation and model discovery opt in to browser-direct access", async () => {
+  const { buildAiDirectProviderRequest } = await import("@edgeever/shared/ai-generation");
+  const prepared = { ...credential, provider: "anthropic", baseUrl: "https://api.anthropic.com/v1", system: "Reply", prompt: "OK", maxOutputTokens: 16 };
+  const request = buildAiDirectProviderRequest(prepared);
+  expect(request.headers["anthropic-dangerous-direct-browser-access"]).toBe("true");
+  const { createClientAiModel } = await import("./ai-model.ts");
+  const { generateText } = await import("ai");
+  const paths = [];
+  const fetch = async (url, init) => {
+    paths.push(String(url));expect(new Headers(init.headers).get("anthropic-dangerous-direct-browser-access")).toBe("true");
+    if (String(url).endsWith("/models")) return Response.json({ data: [{ id: "claude-test" }] });
+    return Response.json({ id: "msg-1", type: "message", role: "assistant", model: "claude-test", content: [{ type: "text", text: "OK" }], stop_reason: "end_turn", usage: { input_tokens: 1, output_tokens: 1 } });
+  };
+  const result = await generateText({ model: createClientAiModel({ ...prepared, fetch }), prompt: "OK", maxRetries: 0 });
+  expect(result.text).toBe("OK");
+  const { discoverAiModels } = await import("./ai-provider-direct.ts");
+  expect(await discoverAiModels(prepared, fetch)).toEqual([{ modelId: "claude-test", displayName: "claude-test" }]);
+  expect(paths).toHaveLength(2);
+});
