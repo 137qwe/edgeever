@@ -88,9 +88,13 @@ In the note list or more actions menu, select **"Copy to Official Account / Blog
 
 Paste directly into the WeChat Official Account article editor: tables, callout blocks, code blocks, lists, and typography styles are preserved flawlessly without requiring external styling tools.
 
-| 1. Click "Copy to Official Account / Blog" in note menu | 2. Pasted into WeChat Official Account (tables & layout) | 3. Pasted into WeChat Official Account (code/math/tasks) |
-| :---: | :---: | :---: |
-| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/copy-to-wechat-mp-menu.png) | ![Note pasted into WeChat MP editor (tables)](assets/best-practices/pasted-in-wechat-mp-editor-1.png) | ![Note pasted into WeChat MP editor (formulas and tasks)](assets/best-practices/pasted-in-wechat-mp-editor-2.png) |
+| 1. Click "Copy to Official Account / Blog" in note menu |
+| :---: |
+| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/copy-to-wechat-mp-menu.png) |
+
+| 2. Pasted into WeChat Official Account editor (full layout with tables, styling & card covers) |
+| :---: |
+| ![Note pasted into WeChat MP editor layout](assets/best-practices/show-in-wechat-editor.png) |
 
 ---
 

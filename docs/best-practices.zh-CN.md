@@ -88,9 +88,13 @@
 
 直接粘贴到微信公众号后台图文编辑器中，表格、引述块、代码块、列表及字体排版均能完美保持，无需依赖任何第三方微信排版工具即可直接发布。
 
-| 1. 笔记菜单点击「复制到公众号 / 博客」 | 2. 粘贴到公众号效果（表格与排版） | 3. 粘贴到公众号效果（代码/公式/列表） |
-| :---: | :---: | :---: |
-| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/copy-to-wechat-mp-menu.png) | ![微信公众号后台粘贴后的排版效果（表格）](assets/best-practices/pasted-in-wechat-mp-editor-1.png) | ![微信公众号后台粘贴后的排版效果（公式与待办）](assets/best-practices/pasted-in-wechat-mp-editor-2.png) |
+| 1. 笔记菜单点击「复制到公众号 / 博客」 |
+| :---: |
+| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/copy-to-wechat-mp-menu.png) |
+
+| 2. 粘贴到微信公众号后台图文编辑器排版效果（文字、表格与卡片排版完整还原） |
+| :---: |
+| ![微信公众号后台粘贴后的排版效果](assets/best-practices/show-in-wechat-editor.png) |
 
 ---
 
