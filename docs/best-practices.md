@@ -66,7 +66,6 @@ Select messages in WeChat, tap "Combine and Forward" (合并转发), and choose 
 When reading WeChat Official Account articles on mobile, select **"Open in EdgeEver"** (用 EdgeEver 打开) from the top-right menu.
 
 - Automatically extracts the title, body structure, and embedded images while filtering extraneous page clutter into clean Markdown.
-- Automatically tags notes with `#web-clip` and `#wechat`.
 
 | 1. Select "Open in EdgeEver" | 2. Extracting Content | 3. Generated Markdown Note |
 | :---: | :---: | :---: |
@@ -79,7 +78,7 @@ When reading WeChat Official Account articles on mobile, select **"Open in EdgeE
 Save images directly to EdgeEver when browsing mobile apps (such as X / Twitter, Reddit, Instagram, Pixiv, Zhihu, Weibo, etc.) using the system share sheet.
 
 - Choose **EdgeEver** in the share sheet; the app uploads the original image in the background and creates a note titled "Shared Image".
-- Ready for immediate annotations, tagging, and indexing.
+- Ready for immediate annotations and organization.
 
 | 1. Share Image | 2. Choose EdgeEver | 3. Generated Image Note |
 | :---: | :---: | :---: |
@@ -92,7 +91,7 @@ Save images directly to EdgeEver when browsing mobile apps (such as X / Twitter,
 When viewing Xiaohongshu on the web, right-click and choose **"Save Note to EdgeEver"** using the EdgeEver Web Clipper extension.
 
 - Captures post title, topic tags, body text, publish timestamp, location, and source URL.
-- Converts multi-image sets into multi-column gallery layouts tagged with `#web-clip`.
+- Automatically formats multi-image sets into multi-column gallery layouts.
 
 | 1. Right-Click Clipper Menu | 2. Multi-Column Gallery Note |
 | :---: | :---: |
@@ -105,7 +104,7 @@ When viewing Xiaohongshu on the web, right-click and choose **"Save Note to Edge
 When browsing X (Twitter), right-click any post and select **"Save Tweet to EdgeEver"** with the EdgeEver Web Clipper extension.
 
 - Extracts author info, tweet content, external links, quote tweets, and multi-image attachments.
-- Formats content into a multi-column gallery layout tagged with `#web-clip`.
+- Formats content into a multi-column gallery layout.
 
 | 1. Right-Click Save Tweet | 2. Note with Quotes & Gallery |
 | :---: | :---: |
@@ -117,8 +116,7 @@ When browsing X (Twitter), right-click any post and select **"Save Tweet to Edge
 
 When reading Zhihu on the web, right-click any specific answer or article and select **"Save Answer/Article to EdgeEver"**.
 
-- Parses question title, author, formatted body, timestamp, and permalink.
-- Generates a structured Q&A note tagged with `#web-clip`.
+- Parses question title, author, formatted body, timestamp, and permalink into a structured Q&A note.
 
 | 1. Right-Click Save Answer/Article | 2. Structured Q&A Note Preview |
 | :---: | :---: |
@@ -130,8 +128,7 @@ When reading Zhihu on the web, right-click any specific answer or article and se
 
 When reading Reddit threads, right-click on the post title or body and select **"Save Selection to EdgeEver"**.
 
-- Captures thread title, subreddit (e.g. `r/AskReddit`), author handle, timestamp, and permalink.
-- Preserves community metadata and tags with `#web-clip`.
+- Captures thread title, subreddit (e.g. `r/AskReddit`), author handle, timestamp, and permalink to preserve community metadata.
 
 | 1. Right-Click Save Post | 2. Note with Community Metadata |
 | :---: | :---: |
@@ -143,8 +140,7 @@ When reading Reddit threads, right-click on the post title or body and select **
 
 When browsing GitHub repositories, right-click anywhere on the page and select **"Save Repository Info to EdgeEver"**.
 
-- Extracts repository name (`Owner/Repo`), description, homepage, language, license, topic tags, and URL.
-- Generates a structured technical card tagged with `#web-clip`.
+- Extracts repository name (`Owner/Repo`), description, homepage, language, license, topic tags, and URL into a structured technical card.
 
 | 1. Right-Click Save Repo Info | 2. Structured Repository Card |
 | :---: | :---: |
