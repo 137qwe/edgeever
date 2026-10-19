@@ -154,7 +154,7 @@ describe("direct AI generation client", () => {
     expect(events.filter((event) => event.type === "text-delta").map((event) => event.text).join("")).toBe("Hello");
   });
 
-  test("falls back to the instance proxy when prepare is missing", async () => {
+  test("fails without instance generation when direct prepare is missing", async () => {
     const urls = [];
     const client = createEdgeEverClient({
       baseUrl: "https://notes.example",
@@ -168,15 +168,12 @@ describe("direct AI generation client", () => {
       },
     });
     const events = [];
-    await client.streamAiGeneration(
+    await expect(client.streamAiGeneration(
       { action: "summarize", title: "Note", contentMarkdown: "Body" },
       { onEvent: (event) => events.push(event) },
-    );
-    expect(urls).toEqual([
-      "https://notes.example/api/v1/ai/generate/prepare",
-      "https://notes.example/api/v1/ai/generate",
-    ]);
-    expect(events).toEqual([{ type: "text-delta", text: "proxied" }]);
+    )).rejects.toMatchObject({ code: "ai_direct_unavailable" });
+    expect(urls).toEqual(["https://notes.example/api/v1/ai/generate/prepare"]);
+    expect(events).toEqual([]);
   });
 });
 

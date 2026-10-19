@@ -1,32 +1,18 @@
-import { nodePublicFetch, publicLookup } from "@edgeever/public-network/node";
-import { validatePublicUrl } from "@edgeever/public-network/policy";
-
 const MAX_BODY_BYTES = 12 * 1024 * 1024;
 const MAX_AUDIO_REQUEST_BYTES = 25_000_000;
 const MAX_CONCURRENT = 2;
 
+// AI endpoints are user-configured and may be on the client's private network.
+// Keep this separate from the public-only policy used by plugin requests.
 export const validateAiProviderUrl = (value) => {
-  const url = validatePublicUrl(value);
-  if (url.protocol !== "https:" || url.username || url.password || url.hash) {
-    throw new Error("AI provider requests must use HTTPS without credentials.");
+  const url = new URL(value);
+  if (!["http:", "https:"].includes(url.protocol) || url.username || url.password || url.hash) {
+    throw new Error("AI provider requests must use HTTP or HTTPS without URL credentials or fragments.");
   }
-  if (url.port && url.port !== "443") throw new Error("AI provider requests must use port 443.");
   return url;
 };
 
-export const canUseAiProviderUrl = async (value, lookupImpl = publicLookup) => {
-  try {
-    const url = validateAiProviderUrl(value);
-    await new Promise((resolve, reject) => {
-      lookupImpl(url.hostname, { all: true }, error => error ? reject(error) : resolve());
-    });
-    return true;
-  } catch {
-    return false;
-  }
-};
-
-export const createAiDirectRuntime = ({ fetchImpl = nodePublicFetch, maxConcurrent = MAX_CONCURRENT } = {}) => {
+export const createAiDirectRuntime = ({ fetchImpl = globalThis.fetch, maxConcurrent = MAX_CONCURRENT } = {}) => {
   const active = new Map();
   return {
     async open(requestId, input, { onData, onEnd, onError }) {
