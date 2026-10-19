@@ -19,6 +19,7 @@ A curated collection of practical workflows, showcase examples, and real-world s
 - [14. One-Click Public Online Form Collection from Database Tables](#14-one-click-public-online-form-collection-from-database-tables)
 - [15. Connecting Local Agents via ACP for Note Interaction & Co-pilot](#15-connecting-local-agents-via-acp-for-note-interaction--co-pilot)
 - [16. One-Click Social Media Poster & Cover Design from Notes](#16-one-click-social-media-poster--cover-design-from-notes)
+- [17. Classic Three-Pane Workspace & Distraction-Free Editing](#17-classic-three-pane-workspace--distraction-free-editing)
 
 ---
 
@@ -221,6 +222,22 @@ The studio provides 40+ professionally crafted social media poster templates (su
 | Transform notes into posters with 40+ professional social media templates |
 | :---: |
 | ![EdgeEver Poster Design Studio and template library](assets/best-practices/poster-design-templates.png) |
+
+---
+
+## 17. Classic Three-Pane Workspace & Distraction-Free Editing
+
+EdgeEver embraces the beloved, highly productive classic three-pane workspace layout (Notebook Tree · Note List Stream · Deep Rich-Text Editor):
+
+- **Left-hand Hierarchical Tree**: Features infinite-nesting notebooks, multi-level folders, quick-filtering tag taxonomies, and trash management for clear, comprehensive knowledge organization.
+- **Center Note List Stream**: Offers instant sub-millisecond search filtering, pinned notes, multiple sorting criteria, and rich-text/table card summary previews.
+- **Right-hand Editor & Typography Canvas**: Provides seamless bi-directional switching between WYSIWYG and native Markdown, with built-in multi-dimensional tables, code syntax highlighting, KaTeX math formulas, floating document outlines, and a co-pilot AI assistant.
+
+Each pane width can be dynamically adjusted or collapsed on demand, maintaining rigorous structural organization while delivering a distraction-free, immersive long-form writing environment.
+
+| Classic Three-Pane Workspace (Notebook Tree · Note List · Deep Editor) |
+| :---: |
+| ![EdgeEver Classic Three-Pane Workspace & Typography Editor](assets/best-practices/classic-three-pane-workspace.png) |
 
 ---
 
