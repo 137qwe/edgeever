@@ -15,7 +15,7 @@ describe("mobile note image file URI", () => {
 
   test.each(["中文 [标题] 100% #1.png", "literal %5Bname%5D.png", "普通笔记.jpg"])("preserves the filename %s without double encoding", (filename) => {
     const uri = encodeMobileNoteImageFileUri(PathUtilities.join("file:///cache/exports/", filename));
-    expect(uri).not.toMatch(/[\[\]]/);
+    expect(uri).not.toMatch(/[[\]]/);
     expect(decodeURIComponent(new URL(uri).pathname.split("/").at(-1)!)).toBe(filename);
     expect(encodeMobileNoteImageFileUri(uri)).toBe(uri);
   });
