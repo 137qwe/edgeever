@@ -1648,10 +1648,10 @@ export const MemoDetailModal = ({
               {preparedNoteImage.fontFallback || isExportingImage ? (
                 <View accessibilityLiveRegion="polite">
                   <Text style={imageShareStyles.previewWarning}>{resolvedLocale === "zh-CN"
-                    ? isExportingImage ? "正在加载模板字体，完成后将更新预览…" : "当前使用内置替代字体，字形和换行可能不同。可重试恢复模板原字体。"
-                    : isExportingImage ? "Loading template fonts. The preview will update when ready…" : "Using built-in substitute fonts. Typography and line breaks may differ. Retry to restore the template fonts."}</Text>
+                    ? isExportingImage ? "字体加载中…" : "暂时使用替代字体，加载成功后将自动恢复"
+                    : isExportingImage ? "Loading font…" : "Temporarily using substitute fonts. The original fonts will be restored automatically when loaded."}</Text>
                   {!isExportingImage ? <Pressable accessibilityRole="button" onPress={() => imageFontRecoveryRef.current?.retry()} style={imageShareStyles.previewSecondaryButton}>
-                    <Text>{resolvedLocale === "zh-CN" ? "重试加载字体" : "Retry fonts"}</Text>
+                    <Text>{resolvedLocale === "zh-CN" ? "重试" : "Retry"}</Text>
                   </Pressable> : null}
                 </View>
               ) : null}
@@ -1849,7 +1849,7 @@ export const MemoDetailModal = ({
                   {isExportingImage ? <ActivityIndicator color="#ffffff" size="small" /> : <Share2 color="#ffffff" size={18} />}
                   <Text style={imageShareStyles.shareButtonText}>
                     {isExportingImage
-                      ? (imageFontStatus === "loading" ? (resolvedLocale === "zh-CN" ? "模板字体加载中…" : "Loading template fonts…") : imageExportStage === "render"
+                      ? (imageFontStatus === "loading" ? (resolvedLocale === "zh-CN" ? "字体加载中…" : "Loading font…") : imageExportStage === "render"
                         ? (resolvedLocale !== "zh-CN" ? "Rendering image…" : "正在渲染图片…")
                         : imageExportStage === "transfer"
                           ? (resolvedLocale !== "zh-CN" ? "Saving preview…" : "正在保存预览…")

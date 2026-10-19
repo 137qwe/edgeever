@@ -298,7 +298,7 @@ struct MemoDetailView: View {
         .overlay(alignment: .bottom) {
             if imageExporting && imageExportPreviewPayload == nil {
                 ProgressView(imageFontStatus == "loading"
-                    ? env.preferences.t("模板字体加载中…", en: "Loading template fonts…", ja: "テンプレートのフォントを読み込み中…", pl: "Ładowanie czcionek szablonu…")
+                    ? env.preferences.t("字体加载中…", en: "Loading font…", ja: "フォントを読み込み中…", pl: "Ładowanie czcionki…")
                     : env.preferences.t("正在生成图片…", en: "Generating image…", ja: "画像を生成中…", pl: "Generowanie obrazu…"))
                     .padding().background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12)).padding()
             }
@@ -1454,12 +1454,12 @@ private struct MemoImageExportPreviewView: View {
                         }
                         if payload.fontFallback || isLoadingFonts {
                             if isLoadingFonts {
-                                ProgressView(isPolish ? "Ładowanie czcionek szablonu…" : (isEnglish ? "Loading template fonts…" : "模板字体加载中…"))
+                                ProgressView(isPolish ? "Ładowanie czcionki…" : (isEnglish ? "Loading font…" : "字体加载中…"))
                             } else {
                                 warning(isPolish
-                                    ? "Używane są wbudowane czcionki zastępcze. Krój i podział wierszy mogą się różnić. Ponów próbę, aby przywrócić czcionki szablonu."
-                                    : (isEnglish ? "Using built-in substitute fonts. Typography and line breaks may differ. Retry to restore the template fonts." : "当前使用内置替代字体，字形和换行可能不同。可重试恢复模板原字体。"))
-                                Button(isPolish ? "Ponów ładowanie czcionek" : (isEnglish ? "Retry fonts" : "重试加载字体"), action: onRetryFonts)
+                                    ? "Tymczasowo używane są czcionki zastępcze. Po załadowaniu oryginalne czcionki zostaną przywrócone automatycznie."
+                                    : (isEnglish ? "Temporarily using substitute fonts. The original fonts will be restored automatically when loaded." : "暂时使用替代字体，加载成功后将自动恢复"))
+                                Button(isPolish ? "Ponów próbę" : (isEnglish ? "Retry" : "重试"), action: onRetryFonts)
                             }
                         }
                         if payload.failedImages > 0 {
