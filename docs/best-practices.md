@@ -1,29 +1,53 @@
 # EdgeEver Showcase & Workflows
 
 A curated collection of practical workflows, showcase examples, and real-world scenarios for daily productivity with EdgeEver.
+
 ## Table of Contents
 
-- [1. One-Click WeChat Chat History Archiving](#1-one-click-wechat-chat-history-archiving)
-- [2. One-Click Xiaohongshu (RED) Note Clipping](#2-one-click-xiaohongshu-red-note-clipping)
-- [3. One-Click X (Twitter) Post & Quote Clipping](#3-one-click-x-twitter-post--quote-clipping)
-- [4. One-Click Zhihu Answer & Column Article Clipping](#4-one-click-zhihu-answer--column-article-clipping)
-- [5. One-Click Reddit Discussion Post Clipping](#5-one-click-reddit-discussion-post-clipping)
-- [6. One-Click Note Copy to WeChat Official Account & Blogs](#6-one-click-note-copy-to-wechat-official-account--blogs)
-- [7. AI RSS Daily Digest & Elegant Image Poster Sharing](#7-ai-rss-daily-digest--elegant-image-poster-sharing)
-- [8. One-Click GitHub Repository Metadata Clipping](#8-one-click-github-repository-metadata-clipping)
-- [9. One-Click Mobile Image Sharing to Notes](#9-one-click-mobile-image-sharing-to-notes)
-- [10. One-Click WeChat Article Clipping on Mobile](#10-one-click-wechat-article-clipping-on-mobile)
-- [11. AI Conversational Generation of Mind Maps, Flowcharts & Architecture Diagrams](#11-ai-conversational-generation-of-mind-maps-flowcharts--architecture-diagrams)
-- [12. AI-Powered Generation of Professional Infographics](#12-ai-powered-generation-of-professional-infographics)
-- [13. Instant Multi-Dimensional Database Table Generation via AI Prompt](#13-instant-multi-dimensional-database-table-generation-via-ai-prompt)
-- [14. One-Click Public Online Form Collection from Database Tables](#14-one-click-public-online-form-collection-from-database-tables)
-- [15. Connecting Local Agents via ACP for Note Interaction & Co-pilot](#15-connecting-local-agents-via-acp-for-note-interaction--co-pilot)
+### Core Workspace & Focused Writing
+- [1. Classic Three-Pane Workspace & Distraction-Free Editing](#1-classic-three-pane-workspace--distraction-free-editing)
+
+### Omnichannel Capture & Ingestion
+- [2. One-Click WeChat Chat History Archiving](#2-one-click-wechat-chat-history-archiving)
+- [3. One-Click WeChat Article Clipping on Mobile](#3-one-click-wechat-article-clipping-on-mobile)
+- [4. One-Click Mobile Image Sharing to Notes](#4-one-click-mobile-image-sharing-to-notes)
+- [5. One-Click Xiaohongshu (RED) Note Clipping](#5-one-click-xiaohongshu-red-note-clipping)
+- [6. One-Click X (Twitter) Post & Quote Clipping](#6-one-click-x-twitter-post--quote-clipping)
+- [7. One-Click Zhihu Answer & Column Article Clipping](#7-one-click-zhihu-answer--column-article-clipping)
+- [8. One-Click Reddit Discussion Post Clipping](#8-one-click-reddit-discussion-post-clipping)
+- [9. One-Click GitHub Repository Metadata Clipping](#9-one-click-github-repository-metadata-clipping)
+
+### AI-Powered Structuring & Multi-Dimensional Data
+- [10. AI Conversational Generation of Mind Maps, Flowcharts & Architecture Diagrams](#10-ai-conversational-generation-of-mind-maps-flowcharts--architecture-diagrams)
+- [11. AI-Powered Generation of Professional Infographics](#11-ai-powered-generation-of-professional-infographics)
+- [12. Instant Multi-Dimensional Database Table Generation via AI Prompt](#12-instant-multi-dimensional-database-table-generation-via-ai-prompt)
+- [13. One-Click Public Online Form Collection from Database Tables](#13-one-click-public-online-form-collection-from-database-tables)
+- [14. Connecting Local Agents via ACP for Note Interaction & Co-pilot](#14-connecting-local-agents-via-acp-for-note-interaction--co-pilot)
+
+### Visual Styling & Omnichannel Publishing
+- [15. AI RSS Daily Digest & Elegant Image Poster Sharing](#15-ai-rss-daily-digest--elegant-image-poster-sharing)
 - [16. One-Click Social Media Poster & Cover Design from Notes](#16-one-click-social-media-poster--cover-design-from-notes)
-- [17. Classic Three-Pane Workspace & Distraction-Free Editing](#17-classic-three-pane-workspace--distraction-free-editing)
+- [17. One-Click Note Copy to WeChat Official Account & Blogs](#17-one-click-note-copy-to-wechat-official-account--blogs)
 
 ---
 
-## 1. One-Click WeChat Chat History Archiving
+## Core Workspace & Focused Writing
+
+### 1. Classic Three-Pane Workspace & Distraction-Free Editing
+
+EdgeEver adopts the beloved classic three-pane layout familiar to serious note-takers (Notebook Tree · Note Stream · Editor Canvas):
+
+It delivers the structured clarity of hierarchical notebooks and card feeds, while allowing flexible resizing or one-click sidebar collapse for distraction-free writing. The right-hand editor seamlessly blends WYSIWYG rich text with native Markdown, balancing quick, casual note-taking with deep long-form authoring.
+
+| Classic Three-Pane Workspace Experience (Tree · List · Editor) |
+:---:
+| ![EdgeEver classic three-pane workspace with rich editor](assets/best-practices/classic-three-pane-workspace.png) |
+
+---
+
+## Omnichannel Capture & Ingestion
+
+### 2. One-Click WeChat Chat History Archiving
 
 Select multiple messages in WeChat, click "Combine and Forward" (合并转发), and choose **EdgeEver** under "Forward to Other Apps" to instantly convert conversational threads into clean, structured notes.
 
@@ -35,7 +59,31 @@ Senders, timelines, WeChat emojis, and web links are formatted automatically; im
 
 ---
 
-## 2. One-Click Xiaohongshu (RED) Note Clipping
+### 3. One-Click WeChat Article Clipping on Mobile
+
+When reading WeChat Official Account articles on mobile, tap the top-right menu and choose **"Open in EdgeEver"** (用 EdgeEver 打开) to capture the entire article seamlessly.
+
+EdgeEver automatically extracts the full title, structured body, and embedded image assets while stripping web noise and layout clutters, saving it into clean Markdown with `#web-clip` and `#wechat` tags.
+
+| 1. Select "Open in EdgeEver" from WeChat article menu | 2. Automatically launches EdgeEver and extracts content | 3. Clean, beautifully formatted note generated |
+| :---: | :---: | :---: |
+| ![WeChat article share menu select open in EdgeEver](assets/best-practices/wechat-article-share-trigger.jpg) | ![EdgeEver clipping modal extracting article](assets/best-practices/wechat-article-clipping-modal.jpg) | ![WeChat article clipped into neat note](assets/best-practices/wechat-article-clipped-note.jpg) |
+
+---
+
+### 4. One-Click Mobile Image Sharing to Notes
+
+When browsing social networks or content apps on mobile (such as X / Twitter, Reddit, Instagram, Pixiv, Zhihu, Bilibili, Weibo, etc.) and encountering inspiring images, simply tap the system Share button.
+
+Select **EdgeEver** in the system share sheet. The app opens and uploads original-quality images in the background, generating an independent note titled "Shared Image" ready for notes, tags, and indexing.
+
+| 1. Tap share button on mobile social media app | 2. Choose EdgeEver in system share sheet | 3. Auto-creates note & uploads original image |
+| :---: | :---: | :---: |
+| ![Mobile app tap image share](assets/best-practices/mobile-share-image-trigger.jpg) | ![System share sheet choose EdgeEver](assets/best-practices/mobile-share-image-sheet.jpg) | ![Auto-created note with uploaded image](assets/best-practices/mobile-share-image-note.jpg) |
+
+---
+
+### 5. One-Click Xiaohongshu (RED) Note Clipping
 
 When browsing Xiaohongshu on the web, use the EdgeEver Web Clipper extension to right-click and select **"Save Note to EdgeEver"** (保存笔记到 EdgeEver) to capture posts instantly.
 
@@ -47,7 +95,7 @@ Post titles, hashtags, body text, publish timestamps, locations, and source URLs
 
 ---
 
-## 3. One-Click X (Twitter) Post & Quote Clipping
+### 6. One-Click X (Twitter) Post & Quote Clipping
 
 When browsing X (Twitter), use the EdgeEver Web Clipper extension to right-click any post and select **"Save Tweet to EdgeEver"** (保存推文到 EdgeEver) for instant structured capture.
 
@@ -59,7 +107,7 @@ Author metadata, post content, URLs, quote tweets, and high-res multi-image atta
 
 ---
 
-## 4. One-Click Zhihu Answer & Column Article Clipping
+### 7. One-Click Zhihu Answer & Column Article Clipping
 
 When browsing Zhihu on the web, there is no need to copy messy page layouts manually. Simply right-click on the specific answer or column article and choose **"Save Answer/Article to EdgeEver"** (保存回答/文章到 EdgeEver).
 
@@ -71,7 +119,7 @@ The extension automatically parses the question title, author info, formatted an
 
 ---
 
-## 5. One-Click Reddit Discussion Post Clipping
+### 8. One-Click Reddit Discussion Post Clipping
 
 When exploring Reddit discussions, right-click any post title or body text and select **"Save Selection to EdgeEver"** (保存所选内容到 EdgeEver) to archive the thread into an independent note.
 
@@ -83,7 +131,113 @@ The clipper automatically captures the full post title, community/subreddit (e.g
 
 ---
 
-## 6. One-Click Note Copy to WeChat Official Account & Blogs
+### 9. One-Click GitHub Repository Metadata Clipping
+
+When exploring GitHub repositories on the web, right-click anywhere on a repository page with EdgeEver Web Clipper and select **"Save Repository Info to EdgeEver"** (保存仓库信息到 EdgeEver) to capture structured metadata cards.
+
+Repository names (`Owner/Repo`), project descriptions (About), official websites, primary programming languages, open-source licenses, topic tags, and URLs are neatly parsed and tagged with `#web-clip` for technical research and tool curation.
+
+| 1. Right-click "Save Repository Info to EdgeEver" | 2. Structured repository card note generated |
+| :---: | :---: |
+| ![Right-click save GitHub repo info to EdgeEver](assets/best-practices/github-clip-menu.png) | ![GitHub repo clipped into EdgeEver note card](assets/best-practices/github-clipped-note.png) |
+
+---
+
+## AI-Powered Structuring & Multi-Dimensional Data
+
+### 10. AI Conversational Generation of Mind Maps, Flowcharts & Architecture Diagrams
+
+In EdgeEver's right-side AI Co-pilot (or connected local Agent), simply ask using natural language (e.g., "Help me create a mind map / flowchart / architecture diagram about Large Language Models") to generate interactive, editable diagrams right inside your notes.
+
+Diagrams are natively powered by EdgeEver's diagramming engine with intuitive drag-and-drop node editing, auto-layout, bilingual mind maps, condition branches, and system topologies without needing third-party tools.
+
+| 1. Interactive Mind Map via AI Chat | 2. Standard Flowchart via AI Chat | 3. System Architecture Diagram via AI Chat |
+| :---: | :---: | :---: |
+| ![AI chat generates editable mind map](assets/best-practices/ai-diagram-mindmap.png) | ![AI chat generates editable flowchart](assets/best-practices/ai-diagram-flowchart.png) | ![AI chat generates editable architecture diagram](assets/best-practices/ai-diagram-architecture.png) |
+
+---
+
+### 11. AI-Powered Generation of Professional Infographics
+
+Leverage EdgeEver's built-in infographic templates (including sequential timelines, comparison matrices, list layouts, four quadrants, hierarchical charts, and relation graphs) by prompting the AI Co-pilot with your desired topics.
+
+The AI cross-checks key milestones and facts, generating professionally formatted, visually striking infographic notes in seconds. You can iterate via follow-up prompts or export directly to vector graphics.
+
+| 1. Comprehensive Infographic Template Library | 2. AI-Generated Milestone Timeline Infographic |
+| :---: | :---: |
+| ![EdgeEver infographic templates library](assets/best-practices/ai-infographic-templates.png) | ![AI generated ByteDance milestone timeline](assets/best-practices/ai-infographic-generated.png) |
+
+---
+
+### 12. Instant Multi-Dimensional Database Table Generation via AI Prompt
+
+No need to design schemas manually. Send a single prompt in the AI Co-pilot (e.g., "Create a database table for social media content planning" or "Generate an employee onboarding tracker"), and AI will design the full database structure.
+
+Column types (tags, text, dates, links) are inferred automatically and populated with realistic sample data. Supports views, custom filtering/sorting, and CSV export for instant structured collaboration.
+
+| 1. AI Prompt Generates Media Topic Tracker Table | 2. AI Prompt Generates Employee Directory Table |
+| :---: | :---: |
+| ![AI generated media topic tracker table](assets/best-practices/ai-database-media-topics.png) | ![AI generated employee directory database table](assets/best-practices/ai-database-employee-roster.png) |
+
+---
+
+### 13. One-Click Public Online Form Collection from Database Tables
+
+Click **"Form Collection"** at the top of any EdgeEver database table to transform internal records into a public web form ready for data submission.
+
+Respondents can fill out forms from any desktop or mobile browser without signing in. Form fields, select options, and date pickers stay synchronized with your database schema, streamlining event RSVPs, feedback surveys, and registration workflows.
+
+| 1. Click "Form Collection" in database header | 2. Auto-generated public form submission page |
+| :---: | :---: |
+| ![Click form collection button in database](assets/best-practices/database-form-collection-btn.png) | ![Public online form submission interface](assets/best-practices/database-public-form-page.png) |
+
+---
+
+### 14. Connecting Local Agents via ACP for Note Interaction & Co-pilot
+
+EdgeEver natively embraces the **ACP (Agent Client Protocol)**, allowing desktop clients to bridge local AI agent ecosystems (including Codex, DeepSeek Harness, Claude Code, Antigravity, OpenClaw, WorkBuddy, Hermes Agent, and more).
+
+Once connected via ACP, EdgeEver grants secure read and write permissions to the local Agent. Chat directly with your local Agent from the note sidebar for code reasoning, document synthesis, and multi-step autonomous knowledge base Q&A.
+
+| 1. Connect Local Agents via ACP in Settings | 2. Interactive Note Co-pilot with Local Agent |
+| :---: | :---: |
+| ![ACP client support list in settings](assets/best-practices/acp-support-list.png) | ![Sidebar chat with local ACP Agent](assets/best-practices/acp-support-list-dialog.png) |
+
+---
+
+## Visual Styling & Omnichannel Publishing
+
+### 15. AI RSS Daily Digest & Elegant Image Poster Sharing
+
+EdgeEver's built-in AI RSS feeds aggregate industry news, eliminate spam, and generate concise, structured daily digest notes automatically.
+
+Paired with the **"Share as Image"** feature, choose from 8 exquisite poster themes (Book Quote, Memo, Bento, Monochrome, Frame, Code, etc.), adjust serif/monospace typography, card width, and visible fields, then export high-res long images or copy directly to clipboard for social sharing.
+
+| 1. Auto-generated RSS digest & select "Share as Image" | 2. Customize themes, typography & card styles | 3. Exported high-res long poster card |
+| :---: | :---: | :---: |
+| ![Note menu click share as image](assets/best-practices/rss-daily-menu-share-image.png) | ![EdgeEver share as image poster modal](assets/best-practices/rss-daily-poster-modal.png) | ![Exported high-res RSS daily poster](assets/best-practices/rss-daily-exported-poster.png) |
+
+For code snippets, tech blogs, and hacker notes, switch to the exclusive **"Code"** theme featuring macOS window controls, line numbers, and monospace syntax highlighting for developer-grade visual cards:
+
+| "Code" Theme Configuration & Live Preview |
+| :---: |
+| ![Code theme style configuration in share modal](assets/best-practices/note-export-code-theme.png) |
+
+---
+
+### 16. One-Click Social Media Poster & Cover Design from Notes
+
+Click **"Create Poster"** in any note's action menu (or via "New → Poster") to load key takeaways and titles directly into the **EdgeEver Poster Design Studio**.
+
+Equipped with 40+ professional social media poster templates (covering editorial headlines, creator notes, bold punchlines, neon titles, etc.), supporting Xiaohongshu 3:4, Moments, and landscape aspect ratios. Tweak typography, colors, and geometric elements freely, and export high-res PNGs to turn long notes into eye-catching visual cards.
+
+| Load notes into Poster Studio with 40+ professional social templates |
+| :---: |
+| ![EdgeEver poster studio with rich design templates](assets/best-practices/poster-design-templates.png) |
+
+---
+
+### 17. One-Click Note Copy to WeChat Official Account & Blogs
 
 In the note list or more actions menu, select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) to convert the entire note into beautifully styled rich text with inline CSS.
 
@@ -96,148 +250,3 @@ Paste directly into the WeChat Official Account article editor: tables, callout 
 | 2. Pasted into WeChat Official Account editor (full layout with tables, styling & card covers) |
 | :---: |
 | ![Note pasted into WeChat MP editor layout](assets/best-practices/show-in-wechat-editor.png) |
-
----
-
-## 7. AI RSS Daily Digest & Elegant Image Poster Sharing
-
-EdgeEver's built-in AI RSS subscription capability automatically aggregates industry briefings, filters noise, and compiles structured, high-signal daily digest notes.
-
-Paired with the **"Share as Image"** (分享为图片) feature, you can customize across 8 refined themes (such as Book Excerpt, Memo, Bento, Black & White, Frame, Code, and more), serif/monospace typography, card widths, and display fields—exporting crisp long image posters to clipboard or disk for social and community sharing.
-
-| 1. Auto-generated RSS daily & select "Share as Image" | 2. Customize theme, typography & card layout | 3. Crisp exported image poster |
-| :---: | :---: | :---: |
-| ![EdgeEver note menu select Share as Image](assets/best-practices/rss-daily-menu-share-image.png) | ![EdgeEver share as image configuration modal](assets/best-practices/rss-daily-poster-modal.png) | ![Exported high-res RSS daily image poster](assets/best-practices/rss-daily-exported-poster.png) |
-
-For code snippets, tech notes, and developer thoughts, switch to the dedicated "Code" theme to generate aesthetic technical cards complete with macOS window controls, line numbers, and monospace typography:
-
-| "Code" theme configuration and preview |
-| :---: |
-| ![EdgeEver Share as Image code theme preview](assets/best-practices/note-export-code-theme.png) |
-
----
-
-## 8. One-Click GitHub Repository Metadata Clipping
-
-When browsing open-source projects on GitHub, right-click anywhere on the repository page and choose **"Save Repository Info to EdgeEver"** (保存仓库信息到 EdgeEver) to capture key project facts into a structured card.
-
-The extension automatically parses the repository name (Owner/Repo), About description, official homepage, primary language, open-source license, topic tags, and GitHub URL—tagged with `#web-clip` for streamlined developer tooling and technology stacks research.
-
-| 1. Right-click "Save Repository Info to EdgeEver" | 2. Repository card generated with topics & metadata |
-| :---: | :---: |
-| ![Right-click save GitHub repo info to EdgeEver](assets/best-practices/github-clip-menu.png) | ![GitHub repo clipped into EdgeEver note card](assets/best-practices/github-clipped-note.png) |
-
----
-
-## 9. One-Click Mobile Image Sharing to Notes
-
-When discovering inspiring images across any social media or community apps on your phone (such as X / Twitter, Reddit, Instagram, Pixiv, Zhihu, Bilibili, Weibo, etc.), directly tap the share button to save them into your notes.
-
-Select **EdgeEver** in the system share sheet: the app launches automatically, uploads the full-resolution image silently, and creates a standalone note titled "Shared Image" (分享的图片)—ready for immediate annotation or tag categorization.
-
-| 1. Tap share button in social media app | 2. Select EdgeEver in system share sheet | 3. Note generated with instant image upload |
-| :---: | :---: | :---: |
-| ![Tap share in social app](assets/best-practices/mobile-share-image-trigger.jpg) | ![Select EdgeEver in share sheet](assets/best-practices/mobile-share-image-sheet.jpg) | ![Note created with uploaded image](assets/best-practices/mobile-share-image-note.jpg) |
-
----
-
-## 10. One-Click WeChat Article Clipping on Mobile
-
-When reading WeChat Official Account articles on your phone, tap the top-right menu and choose **"Open with EdgeEver"** (用 EdgeEver 打开) to clip the entire post with a single tap.
-
-The app automatically extracts the complete article title, structured prose, and embedded images while filtering out noisy ads—converting the post into an editable Markdown note tagged with `#web-clip` and `#wechat`.
-
-| 1. Tap menu & select "Open with EdgeEver" | 2. Mobile app launches & extracts article | 3. Clean, beautifully formatted note saved |
-| :---: | :---: | :---: |
-| ![WeChat share menu select Open with EdgeEver](assets/best-practices/wechat-article-share-trigger.jpg) | ![EdgeEver clipping WeChat article modal](assets/best-practices/wechat-article-clipping-modal.jpg) | ![Clean WeChat article note generated](assets/best-practices/wechat-article-clipped-note.jpg) |
-
----
-
-## 11. AI Conversational Generation of Mind Maps, Flowcharts & Architecture Diagrams
-
-In EdgeEver's companion AI assistant (or connected local agents), enter simple natural-language prompts like *"Generate a mind map / flowchart / architecture diagram for AI Large Language Models"* to create fully interactive, editable diagram notes in-place.
-
-The generated canvas integrates seamlessly with EdgeEver's native graph engine—supporting node dragging, automatic auto-layout, mind map branches, decision flows, and system architecture topologies without needing external drawing tools.
-
-| 1. Conversational interactive mind map | 2. Conversational standardized flowchart | 3. Conversational high-availability architecture |
-| :---: | :---: | :---: |
-| ![AI conversational mind map](assets/best-practices/ai-diagram-mindmap.png) | ![AI conversational flowchart](assets/best-practices/ai-diagram-flowchart.png) | ![AI conversational architecture diagram](assets/best-practices/ai-diagram-architecture.png) |
-
----
-
-## 12. AI-Powered Generation of Professional Infographics
-
-Leveraging EdgeEver's built-in Infographic template library (supporting sequential timelines, comparisons, lists, quadrants, hierarchies, relationship graphs, and charts), you can describe the core story and key data points directly in the AI companion sidebar.
-
-The AI automatically cross-checks factual milestones, instantly generating polished, beautifully stylized infographic notes in-place—supporting iterative natural-language refinements and lossless vector exports.
-
-| 1. Rich infographic templates & examples | 2. AI prompt generating a company timeline infographic |
-| :---: | :---: |
-| ![EdgeEver infographic template library](assets/best-practices/ai-infographic-templates.png) | ![AI generated ByteDance development timeline infographic](assets/best-practices/ai-infographic-generated.png) |
-
----
-
-## 13. Instant Multi-Dimensional Database Table Generation via AI Prompt
-
-Without manually configuring fields or option sets, simply tell the AI companion sidebar what you need (e.g. *"Create a multi-dimensional table for a content creator topic bank"* or *"Generate an employee information roster"*).
-
-The AI automatically architects the full table schema—intelligently choosing appropriate column types such as single-select badges, text, dates, and URLs, while pre-populating realistic record rows. It seamlessly supports form capture, filtering, sorting, and CSV export for effortless structured collaboration.
-
-| 1. AI prompt creating media creator topic bank | 2. AI prompt creating employee roster database |
-| :---: | :---: |
-| ![AI generated media creator topic database](assets/best-practices/ai-database-media-topics.png) | ![AI generated employee roster database](assets/best-practices/ai-database-employee-roster.png) |
-
----
-
-## 14. One-Click Public Online Form Collection from Database Tables
-
-Click **"Form Collection"** (表单收集) at the top of any multi-dimensional database table in EdgeEver to instantly generate a public-facing online submission link.
-
-Respondents can fill out and submit responses on mobile or desktop browsers without registering or logging in. Form fields, dropdown selections, and date pickers stay completely synchronized with the database schema, piping submitted data directly into your table in real time for effortless surveys, event registrations, and staff rosters.
-
-| 1. Click "Form Collection" in database header | 2. Auto-generated public form submission page |
-| :---: | :---: |
-| ![Click Form Collection button in database header](assets/best-practices/database-form-collection-btn.png) | ![Public online form submission webpage](assets/best-practices/database-public-form-page.png) |
-
----
-
-## 15. Connecting Local Agents via ACP for Note Interaction & Co-pilot
-
-EdgeEver deeply integrates the **Agent Client Protocol (ACP)**, enabling the desktop app to seamlessly bridge with advanced locally running agents (including Codex, DeepSeek Harness, Claude Code, Antigravity, OpenClaw, WorkBuddy, Hermes Agent, and more).
-
-Once connected via ACP, EdgeEver securely grants the local agent read and write access to notes within the current workspace. Without ever leaving your notes, you can converse directly with your local agent in the right-side companion sidebar for deep code reasoning, note summarization, multi-step analysis, and workspace-wide knowledge retrieval.
-
-| 1. Connect local agent clients (ACP) in Settings | 2. Collaborate directly with local agents in sidebar |
-| :---: | :---: |
-| ![Connect local agent (ACP) client list in settings](assets/best-practices/acp-support-list.png) | ![AI companion sidebar interacting with local agent](assets/best-practices/acp-support-list-dialog.png) |
-
----
-
-## 16. One-Click Social Media Poster & Cover Design from Notes
-
-Click **"Create Poster"** (制作海报) in any note menu (or via "New → Poster") to instantly transform note titles, key quotes, and highlights into the **EdgeEver Poster Design Studio**.
-
-The studio provides 40+ professionally crafted social media poster templates (such as Editorial Headline, Creator Notes, Impact Words, Neon Title, and more), fully optimized for Xiaohongshu 3:4, Moments, and landscape social formats. You can effortlessly customize typography, colors, and geometric elements on the visual canvas, then copy or export high-resolution PNGs in one click to turn written knowledge into captivating visual posts.
-
-| Transform notes into posters with 40+ professional social media templates |
-| :---: |
-| ![EdgeEver Poster Design Studio and template library](assets/best-practices/poster-design-templates.png) |
-
----
-
-## 17. Classic Three-Pane Workspace & Distraction-Free Editing
-
-EdgeEver embraces the beloved, highly productive classic three-pane workspace layout (Notebook Tree · Note List Stream · Deep Rich-Text Editor):
-
-- **Left-hand Hierarchical Tree**: Features infinite-nesting notebooks, multi-level folders, quick-filtering tag taxonomies, and trash management for clear, comprehensive knowledge organization.
-- **Center Note List Stream**: Offers instant sub-millisecond search filtering, pinned notes, multiple sorting criteria, and rich-text/table card summary previews.
-- **Right-hand Editor & Typography Canvas**: Provides seamless bi-directional switching between WYSIWYG and native Markdown, with built-in multi-dimensional tables, code syntax highlighting, KaTeX math formulas, floating document outlines, and a co-pilot AI assistant.
-
-Each pane width can be dynamically adjusted or collapsed on demand, maintaining rigorous structural organization while delivering a distraction-free, immersive long-form writing environment.
-
-| Classic Three-Pane Workspace (Notebook Tree · Note List · Deep Editor) |
-| :---: |
-| ![EdgeEver Classic Three-Pane Workspace & Typography Editor](assets/best-practices/classic-three-pane-workspace.png) |
-
----
-
