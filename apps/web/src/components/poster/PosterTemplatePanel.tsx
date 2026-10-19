@@ -1,7 +1,8 @@
-import { memo, useEffect, useId, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   buildPosterDesign,
   DESIGN_TEMPLATES,
@@ -27,7 +28,6 @@ const Preview = memo(function Preview({
   onSelect: () => void;
   disabled: boolean;
 }) {
-  const descriptionId = useId();
   const host = useRef<HTMLButtonElement>(null);
   const [visible, setVisible] = useState(false),
     [url, setUrl] = useState<string>();
@@ -72,37 +72,40 @@ const Preview = memo(function Preview({
     };
   }, [visible, width, height, zh, template.id]);
   return (
-    <button
-      ref={host}
-      disabled={disabled}
-      data-poster-template={template.id}
-      aria-label={zh ? template.zh : template.en}
-      aria-describedby={descriptionId}
-      aria-pressed={selected}
-      onClick={onSelect}
-      className={`group overflow-hidden rounded-lg border p-1.5 text-left transition disabled:opacity-50 ${selected ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500" : "border-slate-200/80 bg-card hover:border-emerald-400"}`}
-    >
-      <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded bg-slate-100">
-        {url ? (
-          <img
-            src={url}
-            alt={zh ? template.zh : template.en}
-            loading="lazy"
-            className="h-full w-full object-contain"
-          />
-        ) : (
-          <span className="text-[10px] text-slate-400">
-            {zh ? "载入版式…" : "Loading layout…"}
-          </span>
-        )}
-      </div>
-      <div className="mt-2 truncate px-1 text-[11px] font-medium">
-        {zh ? template.zh : template.en}
-      </div>
-      <p id={descriptionId} className="mt-1 px-1 text-[10px] leading-relaxed text-muted-foreground">
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button
+          ref={host}
+          disabled={disabled}
+          data-poster-template={template.id}
+          aria-label={zh ? template.zh : template.en}
+          aria-pressed={selected}
+          onClick={onSelect}
+          className={`group overflow-hidden rounded-lg border p-1.5 text-left transition disabled:opacity-50 ${selected ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500" : "border-slate-200/80 bg-card hover:border-emerald-400"}`}
+        >
+          <div className="relative flex aspect-[3/4] items-center justify-center overflow-hidden rounded bg-slate-100">
+            {url ? (
+              <img
+                src={url}
+                alt={zh ? template.zh : template.en}
+                loading="lazy"
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <span className="text-[10px] text-slate-400">
+                {zh ? "载入版式…" : "Loading layout…"}
+              </span>
+            )}
+          </div>
+          <div className="mt-2 truncate px-1 text-[11px] font-medium">
+            {zh ? template.zh : template.en}
+          </div>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="right" className="max-w-64">
         {zh ? template.zhUse : template.enUse}
-      </p>
-    </button>
+      </TooltipContent>
+    </Tooltip>
   );
 });
 export function PosterTemplatePanel({
