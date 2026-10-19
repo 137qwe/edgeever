@@ -2,7 +2,7 @@ import { memoTemplateSeedTranslations } from "../memo-template-seeds";
 
 // Shared by the PWA and native mobile clients.
 export const pl = {
-  fontLoad: {"loading": "Ładowanie czcionki…", "ready": "Czcionka gotowa", "error": "Nie udało się załadować czcionki", "retry": "Ponów próbę"},
+  fontLoad: {"templateLoading": "Ładowanie czcionek szablonu… Po zakończeniu zostaną przywrócone oryginalne czcionki.", "templateFallback": "Używane są wbudowane czcionki zastępcze, ponieważ nie udało się załadować czcionek szablonu. Krój i podział wierszy mogą się różnić. Ponów próbę, aby przywrócić oryginalne czcionki.", "loading": "Ładowanie czcionki…", "ready": "Czcionka gotowa", "error": "Nie udało się załadować czcionki", "retry": "Ponów próbę"},
   noteProperties: {"heading": "Właściwości notatki", "source": "Pokaż źródło YAML", "name": "Nazwa właściwości", "type": "Typ właściwości", "add": "Dodaj właściwość", "remove": "Usuń {{name}}", "invalidName": "Użyj unikalnej nazwy, która nie jest właściwością systemową.", "invalidYaml": "Sprawdź właściwości:", "invalidNumber": "Wprowadź poprawną liczbę.", "listHint": "Jedna wartość w wierszu", "text": "Tekst", "list": "Lista", "number": "Liczba", "checkbox": "Pole wyboru", "date": "Data"},
   poster: {
     design: {

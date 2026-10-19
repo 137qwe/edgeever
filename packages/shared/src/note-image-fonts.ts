@@ -57,10 +57,13 @@ export const prepareNoteImageAssets = async ({ theme, fontStyle = "auto", text, 
     : [];
   let optionalCss = "";
   let fontFallback = false;
+  let fontsReady: Promise<unknown> | undefined;
   try {
     const optional = isRemoteNoteImageFont(fontStyle)
       ? loadCatalogFont(fontStyle, text, { embed })
       : loadFontBlocks(catalog, text, { embed });
+    // Retain the original operation so renderers can recover after the render deadline.
+    fontsReady = optional;
     optionalCss = await (fallbackOnError ? withFontDeadline(optional) : optional);
   } catch (error) {
     if (!fallbackOnError) throw error;
@@ -76,5 +79,5 @@ export const prepareNoteImageAssets = async ({ theme, fontStyle = "auto", text, 
     : "";
   } catch { /* The template's solid background remains readable if a texture is unavailable. */ }
   const fallbackStyle = fontFallback ? `.edgeever-image-wrapper,.edgeever-image-wrapper *{font-family:"EdgeEver Offline Sans",system-ui,sans-serif!important}.edgeever-image-wrapper pre,.edgeever-image-wrapper code{font-family:"Geist Mono Variable",monospace!important}` : "";
-  return { fontCss, css: `${fontCss}\n${textureCss}\n${fallbackStyle}`, fontFallback };
+  return { fontCss, css: `${fontCss}\n${textureCss}\n${fallbackStyle}`, fontFallback, fontsReady: fontFallback ? fontsReady : undefined };
 };

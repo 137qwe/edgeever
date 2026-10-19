@@ -170,3 +170,32 @@ test('render deadlines allow the shared download to complete and populate the ca
   complete('cached');
   expect(await withFontDeadline(download, 5)).toBe('cached');
 });
+
+
+test('a timed-out template exposes its original download and restores the original face on the next render', async () => {
+  const { readFileSync } = await import('node:fs');
+  const anton = Uint8Array.from(readFileSync(new URL('./font-assets/poster/anton.woff2', import.meta.url))).buffer;
+  await withFontBrowser(async () => {
+    Object.defineProperty(globalThis, 'navigator', { configurable: true, value: { onLine: true } });
+    let finish;
+    const pending = new Promise(resolve => { finish = resolve; });
+    const BaseFace = globalThis.FontFace;
+    globalThis.FontFace = class extends BaseFace {
+      async load() { if (this.family === 'EdgeEver Share Anton') await pending; return this; }
+    };
+    await withNetwork(url => url.endsWith('/anton.woff2') ? { data: anton } : undefined, async () => {
+      const options = { theme: 'memo', fontStyle: 'anton', text: 'Recover template', urls: {} };
+      const fallback = await prepareNoteImageAssets(options);
+      expect(fallback.fontFallback).toBe(true);
+      expect(fallback.fontsReady).toBeInstanceOf(Promise);
+      expect(fallback.css).toContain('sans-serif!important');
+      finish();
+      await fallback.fontsReady;
+      const restored = await prepareNoteImageAssets(options);
+      expect(restored.fontFallback).toBe(false);
+      expect(restored.fontsReady).toBeUndefined();
+      expect(restored.fontCss).toContain('font-family:"EdgeEver Share Anton"');
+      expect(restored.css).not.toContain('sans-serif!important');
+    });
+  });
+});

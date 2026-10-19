@@ -74,6 +74,8 @@ export type DownloadNoteImageOptions = NoteHtmlExportMeta & {
 };
 
 export type PreparedNoteImage = {
+  fontFallback: boolean;
+  fontsReady?: Promise<unknown>;
   blob: Blob;
   filename: string;
   height: number;
@@ -284,6 +286,8 @@ export const createNoteImage = async ({
     const filename = `${basename}.${extension}`;
 
     return {
+      fontFallback: assets.fontFallback,
+      fontsReady: assets.fontsReady,
       blob: image.blob,
       filename,
       height: image.height,
