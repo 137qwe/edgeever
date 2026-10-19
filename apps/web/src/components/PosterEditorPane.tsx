@@ -871,6 +871,7 @@ export default function PosterEditorPane({
     void fontLoadState.run(() => Promise.all(
       value.elements.filter(element => element.type === "text").map(element => loadPosterFont(element.fontFamily, element.text)),
     ))
+      .catch(() => { /* Keep the font failure visible, and render using local defaults. */ })
       .then(() => cancelled ? [] : Promise.all(value.elements.map(element => posterObject(element, readResource))))
       .then((objects) => {
         if (cancelled) return;

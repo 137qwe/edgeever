@@ -118,12 +118,12 @@ export const posterObject = async (
       ? element.fill
       : undefined;
   if (element.type === "text") {
-    await loadPosterFont(element.fontFamily, element.text);
+    await loadPosterFont(element.fontFamily, element.text).catch(() => { /* Local default keeps the canvas usable offline. */ });
     const textOptions = {
       ...options,
       width: element.width,
       fontSize: element.fontSize,
-      fontFamily: element.fontFamily,
+      fontFamily: `${element.fontFamily}, "EdgeEver Offline Sans", sans-serif`,
       fontWeight: element.fontWeight,
       fontStyle: element.fontStyle ?? "normal",
       underline: element.underline ?? false,
