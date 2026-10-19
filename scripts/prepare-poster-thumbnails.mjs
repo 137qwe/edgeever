@@ -1,6 +1,7 @@
 // Used by Vite on startup/build and template saves. Fresh assets need no browser.
 import { createHash } from "node:crypto";
 import { readFile, writeFile, mkdir, readdir, mkdtemp, rename, rm, open, realpath } from "node:fs/promises";
+import { createServer as createHttpServer } from "node:http";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
@@ -69,31 +70,74 @@ async function launchBrowser(root) {
     return chromium.launch({ headless: true });
   }
 }
+async function cacheGeneratorFonts(root, page) {
+  const directory = path.join(root, "node_modules/.cache/edgeever/poster-thumbnail-fonts");
+  await mkdir(directory, { recursive: true });
+  const cacheable = bytes => bytes.length > 48 && bytes.length <= 24_000_000 &&
+    ([0x774f4632, 0x00010000, 0x4f54544f].includes(bytes.readUInt32BE(0)) || bytes.toString("utf8").includes("@font-face"));
+  await page.route("**/*", async route => {
+    const request = route.request();
+    if (!request.url().startsWith("https:") || !["xhr", "font"].includes(request.resourceType())) return route.continue();
+    const file = path.join(directory, `${digest(request.url())}.json`);
+    const respond = (body, contentType) => route.fulfill({ status: 200, body, contentType, headers: { "access-control-allow-origin": "*" } });
+    try {
+      const cached = await readJson(file).catch(() => undefined);
+      if (cached) {
+        const body = Buffer.from(cached.base64, "base64");
+        if (digest(body) === cached.sha256 && cacheable(body)) return respond(body, cached.contentType);
+      }
+      const response = await route.fetch({ timeout: 20_000, maxRetries: 1 });
+      const body = await response.body();
+      const contentType = response.headers()["content-type"] ?? "application/octet-stream";
+      if (response.ok() && cacheable(body)) {
+        const temporary = `${file}.${process.pid}.tmp`;
+        await writeFile(temporary, JSON.stringify({ base64: body.toString("base64"), sha256: digest(body), contentType }));
+        await rename(temporary, file);
+      }
+      return route.fulfill({ response, body });
+    } catch {
+      await route.abort().catch(() => {});
+    }
+  });
+}
+
 export async function openRenderer(root) {
   root = await realpath(root);
-  const { createServer } = await import("vite");
-  // No application config/plugins: this server cannot recursively trigger the
-  // thumbnail hook, authenticate, start an API or touch user notes.
-  const server = await createServer({
-    configFile: false, root, appType: "mpa", logLevel: "error",
-    cacheDir: path.join(tmpdir(), "edgeever-poster-thumbnails-vite", digest(root).slice(0, 16)),
-    resolve: { alias: { "@": path.join(root, "apps/web/src") } },
-    optimizeDeps: { entries: ["tests/browser/poster-thumbnail-generator.html"], include: ["fabric"] },
-    server: { host: "127.0.0.1", port: 0, watch: null, hmr: false, preTransformRequests: false, fs: { allow: [root, projectRoot] } },
+  const { build } = await import("vite");
+  const bundle = await mkdtemp(path.join(tmpdir(), "edgeever-poster-renderer-"));
+  const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".woff2": "font/woff2", ".ttf": "font/ttf", ".png": "image/png" };
+  const server = createHttpServer(async (request, response) => {
+    try {
+      const file = path.resolve(bundle, `.${decodeURIComponent(new URL(request.url, "http://localhost").pathname)}`);
+      if (!file.startsWith(`${bundle}${path.sep}`)) { response.writeHead(403).end(); return; }
+      const bytes = await readFile(file);
+      response.writeHead(200, { "Content-Type": types[path.extname(file)] ?? "application/octet-stream" });
+      response.end(bytes);
+    } catch { response.writeHead(404).end(); }
   });
   const closeServer = async () => {
-    // Bun can otherwise wait on idle development HTTP connections after Chrome
-    // has exited, keeping the generation lock held across subsequent saves.
-    server.httpServer?.closeAllConnections?.();
-    await server.close();
+    if (server.listening) await new Promise((resolve, reject) => {
+      server.close(error => error ? reject(error) : resolve());
+      server.closeAllConnections?.();
+    });
+    await rm(bundle, { recursive: true, force: true });
   };
   let browser;
   try {
-    await server.listen();
+    // Compile a standalone generator, then serve plain static files. A Vite dev
+    // server/optimizer can wait on unfinished module requests when closed after
+    // a failed render; no live development server is needed for this job.
+    await build({
+      configFile: false, root, base: "/", logLevel: "error",
+      resolve: { alias: { "@": path.join(root, "apps/web/src") } },
+      build: { outDir: bundle, emptyOutDir: true, minify: false, rollupOptions: { input: path.join(root, "tests/browser/poster-thumbnail-generator.html") } },
+    });
+    await new Promise((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
     browser = await launchBrowser(root);
     const page = await browser.newPage();
     page.setDefaultTimeout(120_000);
-    await page.goto(`${server.resolvedUrls.local[0]}tests/browser/poster-thumbnail-generator.html`, { waitUntil: "domcontentloaded", timeout: 30_000 });
+    await cacheGeneratorFonts(root, page);
+    await page.goto(`http://127.0.0.1:${server.address().port}/tests/browser/poster-thumbnail-generator.html`, { waitUntil: "domcontentloaded", timeout: 30_000 });
     await page.waitForFunction(() => window.posterThumbnailGenerator, null, { timeout: 30_000 });
     const bounded = async pending => {
       let timer;
@@ -107,11 +151,10 @@ export async function openRenderer(root) {
       list: () => bounded(page.evaluate(() => window.posterThumbnailGenerator.templates)),
       prepare: (id, language) => bounded(page.evaluate(({ id, language }) => window.posterThumbnailGenerator.prepare(id, language === "zh"), { id, language })),
       render: (id, language) => bounded(page.evaluate(({ id, language }) => window.posterThumbnailGenerator.render(id, language === "zh"), { id, language })),
-      close: async () => { await browser.close(); await closeServer(); },
+      close: async () => { try { await browser.close(); } finally { await closeServer(); } },
     };
   } catch (error) {
-    await browser?.close();
-    await closeServer();
+    try { await browser?.close(); } finally { await closeServer(); }
     throw error;
   }
 }
