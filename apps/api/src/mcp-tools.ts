@@ -686,7 +686,7 @@ const MCP_TOOL_DEFINITIONS = [
       properties: {
         memoId: { type: "string" },
         filename: { type: "string" },
-        mimeType: { type: "string", enum: ["image/png", "image/jpeg", "image/gif", "image/webp", "image/avif"] },
+        mimeType: { type: "string", enum: ["image/png", "image/jpeg", "image/gif", "image/webp", "image/avif", "image/svg+xml"] },
         dataBase64: { type: "string" },
         alt: { type: "string" },
       },

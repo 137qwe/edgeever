@@ -1244,6 +1244,7 @@ struct MemoEditView: View {
         let succeeded = await viewModel.performUpload {
             NSLog("MemoEditView insertImageData: start bytes=%d name=%@", data.count, filename)
             let compress = env.preferences.useCompression
+                && TipTapResourceLoader.sniffImageMime(data) != "image/svg+xml"
             let prepared = compress
                 ? ImageCompressor.compressIfNeeded(data) // Android parity: WebP @ 0.82, max edge 2560
                 : Self.preparedUpload(from: data, preferredName: filename)
@@ -1355,6 +1356,7 @@ struct MemoEditView: View {
         case "image/png": ext = "png"
         case "image/gif": ext = "gif"
         case "image/webp": ext = "webp"
+        case "image/svg+xml": ext = "svg"
         default: ext = "jpg"
         }
         let base = (preferredName as NSString).deletingPathExtension
