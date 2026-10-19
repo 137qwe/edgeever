@@ -80,7 +80,7 @@ describe("Docker release contract", () => {
     );
     expect(dockerfile).toContain("RUN bun run build:web && bun run build:self-hosted");
     expect(dockerfile).toContain("scripts/prepare-poster-thumbnails.mjs scripts/prepare-poster-thumbnails.d.mts scripts/");
-    expect(dockerfile).toContain("RUN apk add --no-cache chromium");
+    expect(dockerfile).toContain("RUN apk add --no-cache chromium nodejs");
     expect(dockerfile).toContain("EDGE_EVER_POSTER_CHROME_EXECUTABLE=/usr/bin/chromium");
     expect(dockerfile).toContain("COPY tests/browser/poster-thumbnail-generator.html tests/browser/poster-thumbnail-generator.ts tests/browser/");
     expect(runtimeStage).toContain(

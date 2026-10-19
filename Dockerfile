@@ -25,7 +25,7 @@ RUN bun install --frozen-lockfile \
 
 FROM dependencies AS build
 # Only stale template previews need the build browser; it stays out of runtime.
-RUN apk add --no-cache chromium
+RUN apk add --no-cache chromium nodejs
 ENV EDGE_EVER_POSTER_CHROME_EXECUTABLE=/usr/bin/chromium
 COPY apps/api apps/api
 COPY apps/web apps/web

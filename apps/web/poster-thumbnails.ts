@@ -1,9 +1,9 @@
 import path from "node:path";
 import type { Plugin, ViteDevServer } from "vite";
-import { ensurePosterThumbnails, projectRoot, sources } from "../../scripts/prepare-poster-thumbnails.mjs";
+import { runPosterThumbnailGeneration, projectRoot, sources } from "../../scripts/prepare-poster-thumbnails.mjs";
 
 /** Generate on build/startup and coalesce template saves while rendering. */
-export function automaticPosterThumbnails({ root = projectRoot, generate = ensurePosterThumbnails } = {}): Plugin {
+export function automaticPosterThumbnails({ root = projectRoot, generate = runPosterThumbnailGeneration } = {}): Plugin {
   let command: "build" | "serve";
   let server: ViteDevServer | undefined;
   let timer: ReturnType<typeof setTimeout> | undefined;

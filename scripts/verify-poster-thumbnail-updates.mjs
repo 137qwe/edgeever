@@ -1,4 +1,4 @@
-// Run with Bun. A temporary source fixture and Chrome exercise the real Vite
+// Run with Node (native TypeScript support). A temporary source fixture and Chrome exercise the real Vite
 // watcher and renderer; no working-tree templates or user notes are changed.
 import assert from "node:assert/strict";
 import { mkdtemp, mkdir, cp, readFile, writeFile, symlink, rm, stat } from "node:fs/promises";
@@ -6,7 +6,7 @@ import path from "node:path";
 import { tmpdir } from "node:os";
 import { createServer } from "vite";
 import { automaticPosterThumbnails } from "../apps/web/poster-thumbnails.ts";
-import { sources, projectRoot, ensurePosterThumbnails, openRenderer, sourceState, thumbnailsCurrent } from "./prepare-poster-thumbnails.mjs";
+import { sources, projectRoot, ensurePosterThumbnails, sourceState, thumbnailsCurrent } from "./prepare-poster-thumbnails.mjs";
 
 await ensurePosterThumbnails();
 const root = await mkdtemp(path.join(tmpdir(), "edgeever-poster-watch-"));
@@ -34,18 +34,7 @@ try {
   await symlink(path.join(projectRoot, "apps/web/node_modules"), path.join(root, "apps/web/node_modules"), process.platform === "win32" ? "junction" : "dir");
   server = await createServer({
     configFile: false, root, logLevel: "error", appType: "mpa",
-    plugins: [automaticPosterThumbnails({ root, generate: options => ensurePosterThumbnails({
-      ...options,
-      renderer: async root => {
-        const runtime = await openRenderer(root);
-        const prepare = runtime.prepare;
-        runtime.prepare = async (id, language) => {
-          if (language === "zh") console.log(`[watch test] Inspecting ${id}`);
-          return prepare(id, language);
-        };
-        return runtime;
-      },
-    }) })],
+    plugins: [automaticPosterThumbnails({ root })],
     server: { host: "127.0.0.1", port: 0, fs: { allow: [root, projectRoot] } },
     optimizeDeps: { noDiscovery: true },
   });

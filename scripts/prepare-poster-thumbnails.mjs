@@ -243,12 +243,29 @@ export async function ensurePosterThumbnails({ root = projectRoot, output = path
   }
 }
 
+// Playwright's process/transport lifecycle is supported by Node. Keep browser
+// generation out of the application's Vite/Bun process, including Docker builds.
+export async function runPosterThumbnailGeneration({ root = projectRoot } = {}) {
+  if (await thumbnailsCurrent(path.join(root, "apps/web/src/assets/poster-template-previews"), await sourceState(root))) return { generated: 0, skipped: true };
+  const { stdout, stderr } = await promisify(execFile)("node", [fileURLToPath(import.meta.url), "--json", "--root", root], {
+    cwd: root, maxBuffer: 8 * 1024 * 1024,
+  });
+  if (stderr) process.stderr.write(stderr);
+  return JSON.parse(stdout);
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+  const rootIndex = process.argv.indexOf("--root");
+  const root = rootIndex < 0 ? projectRoot : path.resolve(process.argv[rootIndex + 1]);
   if (process.argv.includes("--check")) {
-    if (!await thumbnailsCurrent(path.join(projectRoot, "apps/web/src/assets/poster-template-previews"), await sourceState())) throw new Error("Poster thumbnails are stale; normal dev/build will regenerate them automatically.");
+    if (!await thumbnailsCurrent(path.join(root, "apps/web/src/assets/poster-template-previews"), await sourceState(root))) throw new Error("Poster thumbnails are stale; normal dev/build will regenerate them automatically.");
     console.log("Poster thumbnails are current");
   } else {
-    const result = await ensurePosterThumbnails();
-    if (result.skipped) console.log("[poster thumbnails] Already current; no renderer needed");
+    const json = process.argv.includes("--json");
+    const result = process.versions.bun
+      ? await runPosterThumbnailGeneration({ root })
+      : await ensurePosterThumbnails({ root, log: json ? message => console.error(message) : console.log });
+    if (json) console.log(JSON.stringify(result));
+    else if (result.skipped) console.log("[poster thumbnails] Already current; no renderer needed");
   }
 }
