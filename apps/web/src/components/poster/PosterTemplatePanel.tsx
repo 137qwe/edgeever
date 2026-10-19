@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useId, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Input } from "@/components/ui/input";
@@ -27,6 +27,7 @@ const Preview = memo(function Preview({
   onSelect: () => void;
   disabled: boolean;
 }) {
+  const descriptionId = useId();
   const host = useRef<HTMLButtonElement>(null);
   const [visible, setVisible] = useState(false),
     [url, setUrl] = useState<string>();
@@ -76,6 +77,7 @@ const Preview = memo(function Preview({
       disabled={disabled}
       data-poster-template={template.id}
       aria-label={zh ? template.zh : template.en}
+      aria-describedby={descriptionId}
       aria-pressed={selected}
       onClick={onSelect}
       className={`group overflow-hidden rounded-lg border p-1.5 text-left transition disabled:opacity-50 ${selected ? "border-emerald-500 bg-emerald-50/50 ring-1 ring-emerald-500" : "border-slate-200/80 bg-card hover:border-emerald-400"}`}
@@ -97,6 +99,9 @@ const Preview = memo(function Preview({
       <div className="mt-2 truncate px-1 text-[11px] font-medium">
         {zh ? template.zh : template.en}
       </div>
+      <p id={descriptionId} className="mt-1 px-1 text-[10px] leading-relaxed text-muted-foreground">
+        {zh ? template.zhUse : template.enUse}
+      </p>
     </button>
   );
 });
