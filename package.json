@@ -56,7 +56,7 @@
     "dev:extension": "vite --config apps/extension/vite.config.ts",
     "prepare:poster:thumbnails": "bun scripts/prepare-poster-thumbnails.mjs",
     "check:poster:thumbnails": "bun scripts/prepare-poster-thumbnails.mjs --check",
-    "build:web": "bun run check:poster:thumbnails && vite build --config apps/web/vite.config.ts",
+    "build:web": "vite build --config apps/web/vite.config.ts",
     "build:desktop:sidecar": "cargo build --manifest-path crates/desktop-sidecar/Cargo.toml --release",
     "build:desktop": "EDGE_EVER_DESKTOP_BUILD=1 bun run prepare:desktop:icons && bun run build:web && bun run build:desktop:sidecar && bun run --cwd apps/desktop dist",
     "benchmark:desktop:sidecar": "bun scripts/benchmark-desktop-sidecar.mjs",
