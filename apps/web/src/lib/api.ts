@@ -334,7 +334,6 @@ const client = createEdgeEverClient({
   shouldAttachToken: (path) => path !== "/api/v1/auth/login",
   onUnauthorized: handleUnauthorized,
   directAiGeneration: desktopAiDirectEnabled,
-  tryDirectAiGeneration: !desktopAiDirectEnabled,
   providerFetch: desktopAiDirectEnabled ? desktopProviderFetch : undefined,
 });
 

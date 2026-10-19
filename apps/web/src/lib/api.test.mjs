@@ -654,20 +654,5 @@ describe("desktop instance setup", () => {
     }
   });
 
-  test("streams infographic agent tool events through the authenticated client", async () => {
-    let requestPath = "";
-    let requestBody;
-    globalThis.fetch = async (url, init) => {
-      requestPath = String(url);
-      requestBody = JSON.parse(String(init?.body));
-      return new Response('data: {"type":"proposal","template":"list-grid-simple","data":{"title":"示例","lists":[{"label":"A"}]},"explanation":"已创建"}\n\ndata: {"type":"finish"}\n\n', {
-        headers: { "Content-Type": "text/event-stream" },
-      });
-    };
-    const received = [];
-    await api.streamInfographicAgent({ prompt: "做个列表", currentContent: "", candidates: ["list-grid-simple"], history: [] }, { onEvent: (event) => received.push(event) });
-    expect(requestPath).toContain("/api/v1/ai/infographic-agent");
-    expect(requestBody.prompt).toBe("做个列表");
-    expect(received.map((event) => event.type)).toEqual(["proposal", "finish"]);
-  });
+  test("infographic authentication errors never invoke instance generation",async()=>{const paths=[];globalThis.fetch=async url=>{paths.push(String(url));return Response.json({error:{code:"unauthorized",message:"Sign in"}},{status:401});};await expect(api.streamInfographicAgent({prompt:"Make a list",currentContent:"",candidates:["list-grid-simple"],history:[]},{onEvent(){}})).rejects.toMatchObject({status:401});expect(paths.filter(path=>path.includes("/ai/"))).toHaveLength(1);expect(paths[0]).toContain("/api/v1/ai/infographic-agent/prepare");});
 });

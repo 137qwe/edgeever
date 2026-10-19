@@ -20,7 +20,8 @@ export const createAiDirectRuntime = ({ fetchImpl = globalThis.fetch, maxConcurr
         throw new Error("Invalid AI provider request.");
       }
       if (!input || typeof input !== "object") throw new Error("Invalid AI provider request.");
-      if ((input.method ?? "POST") !== "POST") throw new Error("AI provider requests must use POST.");
+      const method = input.method ?? "POST";
+      if (method !== "POST" && !(method === "GET" && new URL(input.url).pathname.endsWith("/models"))) throw new Error("AI provider requests must use POST, or GET for model discovery.");
       const binaryBody = input.bodyBytes instanceof Uint8Array
         ? input.bodyBytes
         : input.bodyBytes instanceof ArrayBuffer ? new Uint8Array(input.bodyBytes) : null;
@@ -56,9 +57,9 @@ export const createAiDirectRuntime = ({ fetchImpl = globalThis.fetch, maxConcurr
       active.set(requestId, controller);
       try {
         const response = await fetchImpl(url.href, {
-          method: "POST",
+          method,
           headers,
-          body: binaryBody ?? input.body,
+          body: method === "GET" ? undefined : binaryBody ?? input.body,
           redirect: "error",
           signal: controller.signal,
         });
