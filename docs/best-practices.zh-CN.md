@@ -42,7 +42,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 三栏工作区布局（目录树 · 笔记列表 · 编辑区） |
 :---:
-| ![EdgeEver 经典三栏工作区与沉浸排版编辑效果](assets/best-practices/classic-three-pane-workspace.png) |
+| ![EdgeEver 经典三栏工作区与沉浸排版编辑效果](assets/best-practices/original-image/class-three-pane/image.png) |
 
 ---
 
@@ -57,7 +57,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 微信合并转发至 EdgeEver | 2. 结构化笔记预览 |
 | :---: | :---: |
-| ![微信转发到其他应用选择 EdgeEver](assets/best-practices/wechat-share-to-edgeever.png) | ![EdgeEver 导入后的微信聊天记录笔记效果](assets/best-practices/wechat-chat-imported-note.png) |
+| ![微信转发到其他应用选择 EdgeEver](assets/best-practices/original-image/wechat-chat-message-import/select-export.png) | ![EdgeEver 导入后的微信聊天记录笔记效果](assets/best-practices/original-image/wechat-chat-message-import/import-as-note.png) |
 
 ---
 
@@ -69,7 +69,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 选择「用 EdgeEver 打开」 | 2. 内容提取中 | 3. 剪藏生成的 Markdown 笔记 |
 | :---: | :---: | :---: |
-| ![微信文章分享菜单选择用EdgeEver打开](assets/best-practices/wechat-article-share-trigger.jpg) | ![EdgeEver正在剪藏文章提取中](assets/best-practices/wechat-article-clipping-modal.jpg) | ![生成排版工整的微信文章笔记](assets/best-practices/wechat-article-clipped-note.jpg) |
+| ![微信文章分享菜单选择用EdgeEver打开](assets/best-practices/original-image/app-share/wechat-article/share-enter.jpg) | ![EdgeEver正在剪藏文章提取中](assets/best-practices/original-image/app-share/wechat-article/sharing.jpg) | ![生成排版工整的微信文章笔记](assets/best-practices/original-image/app-share/wechat-article/in-note.jpg) |
 
 ---
 
@@ -82,7 +82,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 分享图片 | 2. 选择 EdgeEver | 3. 生成图片笔记 |
 | :---: | :---: | :---: |
-| ![社媒App点击图片分享](assets/best-practices/mobile-share-image-trigger.jpg) | ![系统分享面板选择EdgeEver](assets/best-practices/mobile-share-image-sheet.jpg) | ![自动生成笔记并上传图片](assets/best-practices/mobile-share-image-note.jpg) |
+| ![社媒App点击图片分享](assets/best-practices/original-image/app-share/socia-image/share-enter.jpg) | ![系统分享面板选择EdgeEver](assets/best-practices/original-image/app-share/socia-image/sharing.jpg) | ![自动生成笔记并上传图片](assets/best-practices/original-image/app-share/socia-image/share-in-note.jpg) |
 
 ---
 
@@ -95,7 +95,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 右键菜单剪藏 | 2. 多栏画廊笔记效果 |
 | :---: | :---: |
-| ![右键保存小红书笔记到 EdgeEver](assets/best-practices/xiaohongshu-clip-menu.png) | ![EdgeEver 剪藏后的小红书笔记多栏画廊效果](assets/best-practices/xiaohongshu-clipped-note.png) |
+| ![右键保存小红书笔记到 EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) | ![EdgeEver 剪藏后的小红书笔记多栏画廊效果](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
 
 ---
 
@@ -108,7 +108,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 右键保存推文 | 2. 包含引用与图集的笔记效果 |
 | :---: | :---: |
-| ![右键保存推文到 EdgeEver](assets/best-practices/twitter-clip-menu.png) | ![EdgeEver 剪藏后的 X 推文笔记效果](assets/best-practices/twitter-clipped-note.png) |
+| ![右键保存推文到 EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) | ![EdgeEver 剪藏后的 X 推文笔记效果](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
 
 ---
 
@@ -120,7 +120,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 右键保存回答/文章 | 2. 问答结构笔记预览 |
 | :---: | :---: |
-| ![右键保存知乎回答到 EdgeEver](assets/best-practices/zhihu-clip-menu.png) | ![EdgeEver 剪藏后的知乎回答笔记效果](assets/best-practices/zhihu-clipped-note.png) |
+| ![右键保存知乎回答到 EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) | ![EdgeEver 剪藏后的知乎回答笔记效果](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
 
 ---
 
@@ -185,7 +185,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 选题库多维表格 | 2. 员工信息多维表格 |
 | :---: | :---: |
-| ![AI生成自媒体选题库多维表格](assets/best-practices/ai-database-media-topics.png) | ![AI生成员工信息登记多维表格](assets/best-practices/ai-database-employee-roster.png) |
+| ![AI生成自媒体选题库多维表格](assets/best-practices/original-image/database-note/database-hot-select.png) | ![AI生成员工信息登记多维表格](assets/best-practices/original-image/database-note/database-employee-register.png) |
 
 ---
 
@@ -198,7 +198,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 开启「表单收集」 | 2. 在线表单填报页面 |
 | :---: | :---: |
-| ![多维表格顶部点击表单收集按钮](assets/best-practices/database-form-collection-btn.png) | ![对外公开的在线表单填报界面](assets/best-practices/database-public-form-page.png) |
+| ![多维表格顶部点击表单收集按钮](assets/best-practices/original-image/database-note/database-form-create.png) | ![对外公开的在线表单填报界面](assets/best-practices/original-image/database-note/database-form-online.png) |
 
 ---
 
@@ -211,7 +211,7 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 | 1. 设置中心连接本地 Agent (ACP) | 2. 笔记侧边栏协同交互 |
 | :---: | :---: |
-| ![设置中心连接本机 Agent (ACP) 列表](assets/best-practices/acp-support-list.png) | ![右侧 AI 伴随助手与本机 Agent 协同问答](assets/best-practices/acp-support-list-dialog.png) |
+| ![设置中心连接本机 Agent (ACP) 列表](assets/best-practices/original-image/acp/acp-support-list.png) | ![右侧 AI 伴随助手与本机 Agent 协同问答](assets/best-practices/original-image/acp/acp-support-list-dialog.png) |
 
 ---
 
@@ -230,7 +230,7 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 | 「代码」主题样式预览 |
 | :---: |
-| ![EdgeEver 分享为图片代码风格主题效果](assets/best-practices/note-export-code-theme.png) |
+| ![EdgeEver 分享为图片代码风格主题效果](assets/best-practices/original-image/note-export-image/code-theme.png) |
 
 ---
 
@@ -243,7 +243,7 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 | 海报设计工作台与模板库 |
 | :---: |
-| ![EdgeEver 海报设计工作台与丰富设计模板](assets/best-practices/poster-design-templates.png) |
+| ![EdgeEver 海报设计工作台与丰富设计模板](assets/best-practices/original-image/poster/ai-generate-poster.png) |
 
 ---
 
@@ -256,8 +256,8 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 | 1. 复制到公众号 / 博客 |
 | :---: |
-| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/copy-to-wechat-mp-menu.png) |
+| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) |
 
 | 2. 公众号后台编辑器粘贴效果 |
 | :---: |
-| ![微信公众号后台粘贴后的排版效果](assets/best-practices/show-in-wechat-editor.png) |
+| ![微信公众号后台粘贴后的排版效果](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |

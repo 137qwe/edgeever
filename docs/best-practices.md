@@ -42,7 +42,7 @@ EdgeEver features a classic three-pane structure (Notebook Tree · Note Stream �
 
 | Three-Pane Workspace Layout (Tree · Stream · Editor) |
 :---:
-| ![EdgeEver classic three-pane workspace with rich editor](assets/best-practices/classic-three-pane-workspace.png) |
+| ![EdgeEver classic three-pane workspace with rich editor](assets/best-practices/original-image/class-three-pane/image.png) |
 
 ---
 
@@ -57,7 +57,7 @@ Select messages in WeChat, tap "Combine and Forward" (合并转发), and choose 
 
 | 1. Forward to EdgeEver | 2. Structured Note Preview |
 | :---: | :---: |
-| ![WeChat share to EdgeEver](assets/best-practices/wechat-share-to-edgeever.png) | ![WeChat chat history imported into EdgeEver note](assets/best-practices/wechat-chat-imported-note.png) |
+| ![WeChat share to EdgeEver](assets/best-practices/original-image/wechat-chat-message-import/select-export.png) | ![WeChat chat history imported into EdgeEver note](assets/best-practices/original-image/wechat-chat-message-import/import-as-note.png) |
 
 ---
 
@@ -69,7 +69,7 @@ When reading WeChat Official Account articles on mobile, select **"Open in EdgeE
 
 | 1. Select "Open in EdgeEver" | 2. Extracting Content | 3. Generated Markdown Note |
 | :---: | :---: | :---: |
-| ![WeChat article share menu select open in EdgeEver](assets/best-practices/wechat-article-share-trigger.jpg) | ![EdgeEver clipping modal extracting article](assets/best-practices/wechat-article-clipping-modal.jpg) | ![WeChat article clipped into neat note](assets/best-practices/wechat-article-clipped-note.jpg) |
+| ![WeChat article share menu select open in EdgeEver](assets/best-practices/original-image/app-share/wechat-article/share-enter.jpg) | ![EdgeEver clipping modal extracting article](assets/best-practices/original-image/app-share/wechat-article/sharing.jpg) | ![WeChat article clipped into neat note](assets/best-practices/original-image/app-share/wechat-article/in-note.jpg) |
 
 ---
 
@@ -82,7 +82,7 @@ Save images directly to EdgeEver when browsing mobile apps (such as X / Twitter,
 
 | 1. Share Image | 2. Choose EdgeEver | 3. Generated Image Note |
 | :---: | :---: | :---: |
-| ![Mobile app tap image share](assets/best-practices/mobile-share-image-trigger.jpg) | ![System share sheet choose EdgeEver](assets/best-practices/mobile-share-image-sheet.jpg) | ![Auto-created note with uploaded image](assets/best-practices/mobile-share-image-note.jpg) |
+| ![Mobile app tap image share](assets/best-practices/original-image/app-share/socia-image/share-enter.jpg) | ![System share sheet choose EdgeEver](assets/best-practices/original-image/app-share/socia-image/sharing.jpg) | ![Auto-created note with uploaded image](assets/best-practices/original-image/app-share/socia-image/share-in-note.jpg) |
 
 ---
 
@@ -95,7 +95,7 @@ When viewing Xiaohongshu on the web, right-click and choose **"Save Note to Edge
 
 | 1. Right-Click Clipper Menu | 2. Multi-Column Gallery Note |
 | :---: | :---: |
-| ![Right-click save Xiaohongshu note to EdgeEver](assets/best-practices/xiaohongshu-clip-menu.png) | ![Xiaohongshu note clipped into multi-column gallery](assets/best-practices/xiaohongshu-clipped-note.png) |
+| ![Right-click save Xiaohongshu note to EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) | ![Xiaohongshu note clipped into multi-column gallery](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
 
 ---
 
@@ -108,7 +108,7 @@ When browsing X (Twitter), right-click any post and select **"Save Tweet to Edge
 
 | 1. Right-Click Save Tweet | 2. Note with Quotes & Gallery |
 | :---: | :---: |
-| ![Right-click save tweet to EdgeEver](assets/best-practices/twitter-clip-menu.png) | ![X tweet clipped into EdgeEver note with quote](assets/best-practices/twitter-clipped-note.png) |
+| ![Right-click save tweet to EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) | ![X tweet clipped into EdgeEver note with quote](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
 
 ---
 
@@ -120,7 +120,7 @@ When reading Zhihu on the web, right-click any specific answer or article and se
 
 | 1. Right-Click Save Answer/Article | 2. Structured Q&A Note Preview |
 | :---: | :---: |
-| ![Right-click save Zhihu answer to EdgeEver](assets/best-practices/zhihu-clip-menu.png) | ![Zhihu answer clipped into EdgeEver note](assets/best-practices/zhihu-clipped-note.png) |
+| ![Right-click save Zhihu answer to EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) | ![Zhihu answer clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
 
 ---
 
@@ -185,7 +185,7 @@ Send a prompt to the AI Co-pilot (e.g., "Create a database table for social medi
 
 | 1. Content Planning Table | 2. Employee Directory Table |
 | :---: | :---: |
-| ![AI generated media topic tracker table](assets/best-practices/ai-database-media-topics.png) | ![AI generated employee directory database table](assets/best-practices/ai-database-employee-roster.png) |
+| ![AI generated media topic tracker table](assets/best-practices/original-image/database-note/database-hot-select.png) | ![AI generated employee directory database table](assets/best-practices/original-image/database-note/database-employee-register.png) |
 
 ---
 
@@ -198,7 +198,7 @@ Click **"Form Collection"** at the top of any database table to generate a publi
 
 | 1. Open "Form Collection" | 2. Public Form Page |
 | :---: | :---: |
-| ![Click form collection button in database](assets/best-practices/database-form-collection-btn.png) | ![Public online form submission interface](assets/best-practices/database-public-form-page.png) |
+| ![Click form collection button in database](assets/best-practices/original-image/database-note/database-form-create.png) | ![Public online form submission interface](assets/best-practices/original-image/database-note/database-form-online.png) |
 
 ---
 
@@ -211,7 +211,7 @@ EdgeEver natively supports **ACP (Agent Client Protocol)**, allowing desktop cli
 
 | 1. Connect Local Agents via ACP in Settings | 2. Note Sidebar Interaction |
 | :---: | :---: |
-| ![ACP client support list in settings](assets/best-practices/acp-support-list.png) | ![Sidebar chat with local ACP Agent](assets/best-practices/acp-support-list-dialog.png) |
+| ![ACP client support list in settings](assets/best-practices/original-image/acp/acp-support-list.png) | ![Sidebar chat with local ACP Agent](assets/best-practices/original-image/acp/acp-support-list-dialog.png) |
 
 ---
 
@@ -230,7 +230,7 @@ Built-in AI RSS feeds aggregate news sources and generate structured daily diges
 
 | "Code" Theme Preview |
 | :---: |
-| ![Code theme style configuration in share modal](assets/best-practices/note-export-code-theme.png) |
+| ![Code theme style configuration in share modal](assets/best-practices/original-image/note-export-image/code-theme.png) |
 
 ---
 
@@ -243,7 +243,7 @@ Click **"Create Poster"** in any note's action menu (or via "New → Poster") to
 
 | Poster Design Studio & Templates |
 | :---: |
-| ![EdgeEver poster studio with rich design templates](assets/best-practices/poster-design-templates.png) |
+| ![EdgeEver poster studio with rich design templates](assets/best-practices/original-image/poster/ai-generate-poster.png) |
 
 ---
 
@@ -256,8 +256,8 @@ Select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) from 
 
 | 1. Copy to Official Account / Blog |
 | :---: |
-| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/copy-to-wechat-mp-menu.png) |
+| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) |
 
 | 2. WeChat Official Account Editor Layout |
 | :---: |
-| ![Note pasted into WeChat MP editor layout](assets/best-practices/show-in-wechat-editor.png) |
+| ![Note pasted into WeChat MP editor layout](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
