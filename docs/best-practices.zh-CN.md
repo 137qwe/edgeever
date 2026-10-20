@@ -25,9 +25,12 @@
 - [14. 连接本机 Agent (ACP) 实现笔记协同](#14-连接本机-agent-acp-实现笔记协同)
 
 ### 排版与多渠道分发
-- [15. AI RSS 订阅日报与长图分享](#15-ai-rss-订阅日报与长图分享)
+- [15. 笔记导出多主题长图与代码卡片](#15-笔记导出多主题长图与代码卡片)
 - [16. 笔记制作社交媒体海报与封面](#16-笔记制作社交媒体海报与封面)
 - [17. 复制笔记至微信公众号排版](#17-复制笔记至微信公众号排版)
+
+### 开放生态与插件扩展
+- [18. 开放插件 API 与自定义插件开发](#18-开放插件-api-与自定义插件开发)
 
 ---
 
@@ -217,20 +220,16 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 ## 排版与多渠道分发
 
-### 15. AI RSS 订阅日报与长图分享
+### 15. 笔记导出多主题长图与代码卡片
 
-内置的 AI RSS 订阅功能可自动聚合订阅源资讯，生成结构清晰的日报笔记。
+EdgeEver 提供「分享为图片」功能，可将笔记直接转换为高分辨率长图，方便在社交媒体、社群或团队中优雅分发。
 
-- **多款样式导出**：配合「分享为图片」功能，提供 8 款卡片主题、字体与版式调整，支持导出长图或复制到剪贴板。
-- **技术代码卡片**：提供专属「代码」主题，包含 macOS 窗口控件、行号与等宽代码排版。
+- **多款卡片样式**：内置 8 款卡片主题（涵盖透明质感、金句、书摘、备忘录、黑日等），支持字体、行距与排版微调，一键导出高清长图或复制至剪贴板。
+- **技术代码卡片**：提供专属「代码」等特色主题，内置 macOS 窗口控件、行号与等宽代码排版。
 
-| 1. 菜单选择「分享为图片」 | 2. 配置主题与排版 | 3. 导出长图预览 |
-| :---: | :---: | :---: |
-| ![EdgeEver 笔记菜单点击分享为图片](assets/best-practices/rss-daily-menu-share-image.png) | ![EdgeEver 分享为图片配置弹窗](assets/best-practices/rss-daily-poster-modal.png) | ![导出的高清 RSS 日报长图](assets/best-practices/rss-daily-exported-poster.png) |
-
-| 「代码」主题样式预览 |
-| :---: |
-| ![EdgeEver 分享为图片代码风格主题效果](assets/best-practices/original-image/note-export-image/code-theme.png) |
+| 1. 「透明」等多款卡片主题预览 | 2. 字体风格与排版微调 |
+| :---: | :---: |
+| ![EdgeEver 分享为图片透明主题卡片预览](assets/best-practices/original-image/note-export-image/clear-theme.png) | ![EdgeEver 分享为图片字体与主题排版调整](assets/best-practices/original-image/note-export-image/code-theme.png) |
 
 ---
 
@@ -261,3 +260,21 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 | 2. 公众号后台编辑器粘贴效果 |
 | :---: |
 | ![微信公众号后台粘贴后的排版效果](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
+
+---
+
+## 开放生态与插件扩展
+
+### 18. 开放插件 API 与自定义插件开发
+
+EdgeEver 内置现代插件 API 与扩展管理能力，支持通过 GitHub 仓库或 Manifest 地址一键安装扩展，配置在 Web 与桌面端跨设备隔离同步。
+
+- **强大开放的插件 API**：提供文档双向读写、注册自定义 DOM 面板/嵌入块、统一设置管理、本地隔离存储以及直接调用工作区已配置的 AI 模型等完整能力。
+- **官方开源参考范式**：
+  - **待办任务 ([EdgeEver Tasks](https://github.com/tianma-if/edgeever-tasks))**：跨笔记自动汇总 Markdown 待办任务，支持状态过滤与一键定位跳转回原笔记。
+  - **AI RSS 订阅助手 ([EdgeEver AI RSS](https://github.com/tianma-if/edgeever-ai-rss))**：自动抓取精选 RSS/Atom 订阅源，结合 AI 生成分类清晰的每日简报笔记。
+- 更多 API 规范与接入指南详见 [EdgeEver 插件开发指南](plugin-development.zh-CN.md)。
+
+| 1. 插件与主题管理中心 | 2. 官方 AI RSS 插件生成的日报笔记效果 |
+| :---: | :---: |
+| ![EdgeEver 插件市场与官方插件管理](assets/best-practices/original-image/plugin/official-in.png) | ![EdgeEver AI RSS 插件自动生成的结构化日报笔记](assets/best-practices/original-image/plugin/ai-daily.png) |
