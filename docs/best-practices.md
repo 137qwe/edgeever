@@ -40,10 +40,10 @@ A practical guide to core workflows, key features, and real-world usage scenario
 
 EdgeEver features a classic three-pane structure (Notebook Tree · Note Stream · Editor Canvas):
 
-- **Flexible Layout**: Resizable and collapsible sidebars allow quick toggling into full-screen writing mode.
-- **Hybrid Editing**: The main editor seamlessly supports both WYSIWYG rich text and native Markdown formatting.
+- **Focus Mode**: Resizable and collapsible sidebars allow instant toggling into full-screen writing mode.
+- **Hybrid Editing**: The main editor supports both WYSIWYG rich text and Markdown syntax.
 
-| Three-Pane Workspace Layout (Tree · Stream · Editor) |
+| Three-Pane Workspace Layout |
 :---:
 | ![EdgeEver classic three-pane workspace with rich editor](assets/best-practices/original-image/class-three-pane/image.png) |
 
@@ -53,10 +53,10 @@ EdgeEver features a classic three-pane structure (Notebook Tree · Note Stream �
 
 ### 2. WeChat Chat History Archiving
 
-Select messages in WeChat, tap "Combine and Forward" (合并转发), and choose **EdgeEver** under "Forward to Other Apps" to convert conversational threads into structured notes.
+Select messages in WeChat, tap "Combine and Forward" (合并转发), and choose **EdgeEver** under "Forward to Other Apps" to convert conversations into structured notes.
 
-- **Format Parsing**: Senders, timestamps, emojis, and links are parsed into clean layouts.
-- **Media Preservation**: Images are embedded inline, while documents and media files (`.xlsx`, `.pdf`, `.mp4`) are saved as searchable attachments.
+- **Format Parsing**: Parses senders, timestamps, emojis, and links into clean layouts.
+- **Media Preservation**: Images are embedded inline; documents and media files (`.xlsx`, `.pdf`, `.mp4`) are saved as attachments with full-text search support.
 
 | 1. Forward to EdgeEver | 2. Structured Note Preview |
 | :---: | :---: |
@@ -68,7 +68,7 @@ Select messages in WeChat, tap "Combine and Forward" (合并转发), and choose 
 
 When reading WeChat Official Account articles on mobile, select **"Open in EdgeEver"** (用 EdgeEver 打开) from the top-right menu.
 
-- Automatically extracts the title, body structure, and embedded images while filtering extraneous page clutter into clean Markdown.
+- Automatically extracts the title, body structure, and embedded images into clean Markdown.
 
 | 1. Select "Open in EdgeEver" | 2. Extracting Content | 3. Generated Markdown Note |
 | :---: | :---: | :---: |
@@ -78,10 +78,7 @@ When reading WeChat Official Account articles on mobile, select **"Open in EdgeE
 
 ### 4. Mobile Image Sharing to Notes
 
-Save images directly to EdgeEver when browsing mobile apps (such as X / Twitter, Reddit, Instagram, Pixiv, Zhihu, Weibo, etc.) using the system share sheet.
-
-- Choose **EdgeEver** in the share sheet; the app uploads the original image in the background and creates a note titled "Shared Image".
-- Ready for immediate annotations and organization.
+Select **EdgeEver** in the mobile system share sheet from any app to upload images and create notes titled "Shared Image" in the background.
 
 | 1. Share Image | 2. Choose EdgeEver | 3. Generated Image Note |
 | :---: | :---: | :---: |
@@ -91,9 +88,9 @@ Save images directly to EdgeEver when browsing mobile apps (such as X / Twitter,
 
 ### 5. Xiaohongshu (RED) Note Clipping
 
-When viewing Xiaohongshu on the web, right-click and choose **"Save Note to EdgeEver"** using the EdgeEver Web Clipper extension.
+Right-click any note page and select **"Save Note to EdgeEver"** using the EdgeEver Web Clipper extension.
 
-- Captures post title, topic tags, body text, publish timestamp, location, and source URL.
+- Captures title, topic tags, body text, publish timestamp, and source URL.
 - Automatically formats multi-image sets into multi-column gallery layouts.
 
 | 1. Right-Click Clipper Menu | 2. Multi-Column Gallery Note |
@@ -104,7 +101,7 @@ When viewing Xiaohongshu on the web, right-click and choose **"Save Note to Edge
 
 ### 6. X (Twitter) Post & Quote Clipping
 
-When browsing X (Twitter), right-click any post and select **"Save Tweet to EdgeEver"** with the EdgeEver Web Clipper extension.
+Right-click any post and select **"Save Tweet to EdgeEver"** with the EdgeEver Web Clipper extension.
 
 - Extracts author info, tweet content, external links, quote tweets, and multi-image attachments.
 - Formats content into a multi-column gallery layout.
@@ -117,9 +114,9 @@ When browsing X (Twitter), right-click any post and select **"Save Tweet to Edge
 
 ### 7. Zhihu Answer & Column Article Clipping
 
-When reading Zhihu on the web, right-click any specific answer or article and select **"Save Answer/Article to EdgeEver"**.
+Right-click any specific answer or article and select **"Save Answer/Article to EdgeEver"**.
 
-- Parses question title, author, formatted body, timestamp, and permalink into a structured Q&A note.
+- Parses question title, author, body, timestamp, and permalink into a structured Q&A note.
 
 | 1. Right-Click Save Answer/Article | 2. Structured Q&A Note Preview |
 | :---: | :---: |
@@ -129,7 +126,7 @@ When reading Zhihu on the web, right-click any specific answer or article and se
 
 ### 8. Reddit Discussion Post Clipping
 
-When reading Reddit threads, right-click on the post title or body and select **"Save Selection to EdgeEver"**.
+Right-click on the post title or body and select **"Save Selection to EdgeEver"**.
 
 - Captures thread title, subreddit (e.g. `r/AskReddit`), author handle, timestamp, and permalink to preserve community metadata.
 
@@ -141,9 +138,9 @@ When reading Reddit threads, right-click on the post title or body and select **
 
 ### 9. GitHub Repository Metadata Clipping
 
-When browsing GitHub repositories, right-click anywhere on the page and select **"Save Repository Info to EdgeEver"**.
+Right-click anywhere on the GitHub repository page and select **"Save Repository Info to EdgeEver"**.
 
-- Extracts repository name (`Owner/Repo`), description, homepage, language, license, topic tags, and URL into a structured technical card.
+- Extracts repository name (`Owner/Repo`), description, homepage, language, license, and topic tags into a structured technical card.
 
 | 1. Right-Click Save Repo Info | 2. Structured Repository Card |
 | :---: | :---: |
@@ -157,8 +154,7 @@ When browsing GitHub repositories, right-click anywhere on the page and select *
 
 Prompt the AI Co-pilot (or connected local Agent) with natural language (e.g., "Generate a mind map / flowchart / architecture diagram about LLMs") to create editable diagrams directly in notes.
 
-- Powered by EdgeEver's native diagramming engine with drag-and-drop node editing, auto-layout, conditional branches, and system topologies.
-- Saved directly within notes without needing third-party drawing tools.
+- Supports drag-and-drop node editing, auto-layout, conditional branches, and system topologies.
 
 | 1. Interactive Mind Map | 2. Standard Flowchart | 3. System Architecture Diagram |
 | :---: | :---: | :---: |
@@ -168,9 +164,9 @@ Prompt the AI Co-pilot (or connected local Agent) with natural language (e.g., "
 
 ### 11. AI Generation of Structured Infographics (Timelines, Matrices & Quadrants)
 
-Use the built-in infographic templates (timelines, comparison matrices, quadrants, and hierarchy charts) by prompting the AI Co-pilot with your topic.
+Use built-in infographic templates (timelines, comparison matrices, quadrants, and hierarchy charts) by prompting the AI Co-pilot with your topic.
 
-- AI organizes key facts and milestones into structured visual infographic notes.
+- Organizes key facts and milestones into structured visual infographic notes.
 - Refine through conversational follow-ups or export directly to vector graphics.
 
 | 1. Infographic Template Library | 2. Milestone Timeline Preview |
@@ -183,7 +179,7 @@ Use the built-in infographic templates (timelines, comparison matrices, quadrant
 
 Send a prompt to the AI Co-pilot (e.g., "Create a database table for social media content planning" or "Generate an employee onboarding tracker") to construct complete data tables.
 
-- Inferred column types (tags, text, dates, links) with realistic sample rows.
+- Infers column types (tags, text, dates, links) with initial sample rows.
 - Supports views, filtering, sorting, and CSV export.
 
 | 1. Content Planning Table | 2. Employee Directory Table |
@@ -197,7 +193,7 @@ Send a prompt to the AI Co-pilot (e.g., "Create a database table for social medi
 Click **"Form Collection"** at the top of any database table to generate a public online data entry form.
 
 - External respondents can submit information via browser without logging in.
-- Form fields and dropdown options sync directly with the database table, writing submissions in real time.
+- Submissions sync directly to the database table in real time.
 
 | 1. Open "Form Collection" | 2. Public Form Page |
 | :---: | :---: |
@@ -222,10 +218,10 @@ EdgeEver natively supports **ACP (Agent Client Protocol)**, allowing desktop cli
 
 ### 15. Note Export to Long Image & Code Cards
 
-EdgeEver features a built-in "Share as Image" capability to render any note into a clean, high-resolution long image for effortless sharing across social platforms, chat groups, and teams.
+Use the "Share as Image" feature to render notes into high-resolution long images or cards.
 
-- **Multiple Card Themes**: Choose from 8 curated card themes (Transparent, Quote, Book Excerpt, Memo, Dark, and more) with customizable typography, font sizes, and layout options. Export high-res long images or copy directly to the clipboard.
-- **Technical Code Cards**: A dedicated "Code" theme features macOS-style window controls, line numbers, and monospace syntax-highlighted typography.
+- **Multiple Card Themes**: Choose from 8 curated card themes (Transparent, Quote, Book Excerpt, Memo, Dark, and more) with customizable typography and layout. Export high-res long images or copy directly to the clipboard.
+- **Technical Code Cards**: A dedicated "Code" theme features macOS-style window controls, line numbers, and monospace syntax highlighting.
 
 | 1. Card Theme Previews (e.g. Transparent) | 2. Font & Layout Customization |
 | :---: | :---: |
@@ -238,28 +234,23 @@ EdgeEver features a built-in "Share as Image" capability to render any note into
 Click **"Create Poster"** in any note's action menu (or via "New → Poster") to load key takeaways and titles into the Poster Design Studio.
 
 - Offers 40+ design templates supporting Xiaohongshu 3:4, Moments 1:1, and landscape aspect ratios.
-- Adjust typography, color palette, and geometric elements on the canvas, then export high-resolution PNGs.
+- Customize layout, colors, and design elements on the canvas, then export high-resolution PNGs.
 
 | Poster Design Studio & Templates |
-| :---: |
+:---:
 | ![EdgeEver poster studio with rich design templates](assets/best-practices/original-image/poster/ai-generate-poster.png) |
 
 ---
 
 ### 17. Copying Notes to WeChat Official Account & Blogs
 
-Select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) from the note list or action menu to convert notes into rich text with inline CSS.
+Select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) from the note menu to convert notes into rich text with inline CSS.
 
 - Paste directly into the WeChat Official Account editor while preserving tables, callouts, code blocks, lists, and typography styles.
-- Eliminates the need for external third-party formatting tools.
 
-| 1. Copy to Official Account / Blog |
-| :---: |
-| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) |
-
-| 2. WeChat Official Account Editor Layout |
-| :---: |
-| ![Note pasted into WeChat MP editor layout](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
+| 1. Copy to Official Account / Blog | 2. WeChat Official Account Editor Layout |
+| :---: | :---: |
+| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) | ![Note pasted into WeChat MP editor layout](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
 
 ---
 
@@ -267,12 +258,12 @@ Select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) from 
 
 ### 18. Open Plugin API & Custom Plugin Development
 
-EdgeEver features a modern client plugin API and extension manager, supporting one-click installation via GitHub repository URLs or Manifest links, with cross-device workspace synchronization between Web and Desktop.
+EdgeEver features an extension manager supporting one-click installation via GitHub repository URLs or Manifest links, with cross-device workspace synchronization between Web and Desktop.
 
-- **Powerful Plugin APIs**: Comprehensive APIs for bidirectional note read/write, custom DOM panels/embed blocks, unified settings management, isolated local storage, and direct invocation of workspace-configured AI models.
+- **Core API Capabilities**: Bidirectional note read/write, custom DOM panels/embed blocks, unified settings, isolated storage, and direct invocation of workspace-configured AI models.
 - **Official Open-Source Reference Implementations**:
-  - **Task Aggregation ([EdgeEver Tasks](https://github.com/tianma-if/edgeever-tasks))**: Aggregates Markdown todo items across all notes with status filtering and two-way source navigation.
-  - **AI RSS Feed Assistant ([EdgeEver AI RSS](https://github.com/tianma-if/edgeever-ai-rss))**: Automatically captures curated RSS/Atom feeds and utilizes AI to generate structured daily digest notes.
+  - **Task Aggregation ([EdgeEver Tasks](https://github.com/tianma-if/edgeever-tasks))**: Aggregates Markdown todo items across all notes with status filtering and two-way navigation.
+  - **AI RSS Feed Assistant ([EdgeEver AI RSS](https://github.com/tianma-if/edgeever-ai-rss))**: Automatically captures RSS/Atom feeds and uses AI to generate structured daily digest notes.
 - For complete API documentation and development workflows, refer to the [EdgeEver Plugin Development Guide](plugin-development.md).
 
 | 1. Extension & Plugin Management Center | 2. AI Digest Note Generated by Official AI RSS Plugin |
