@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test } from "bun:test";
+import { afterAll, beforeAll, describe, expect, test } from "bun:test";
 import { parseHTML } from "linkedom";
 import {
   activateHeadingAnchorClick,
@@ -7,13 +7,29 @@ import {
   parseHeadingAnchorHref,
 } from "./editor-heading-anchor.ts";
 
+// Bun runs later editor tests in the same worker. Install linkedom as `window`
+// for `instanceof` checks, then put the previous globals back. Leaving only
+// `document` replaced makes TipTap call a `window` with no addEventListener.
+const domKeys = ["window", "document", "HTMLElement", "Element", "Node", "HTMLDetailsElement"];
+const originalDom = new Map(
+  domKeys.map((key) => [key, Object.getOwnPropertyDescriptor(globalThis, key)]),
+);
+
 beforeAll(() => {
   const window = parseHTML("<!DOCTYPE html><html><body></body></html>");
+  globalThis.window = window;
   globalThis.document = window.document;
   globalThis.HTMLElement = window.HTMLElement;
   globalThis.Element = window.Element;
   globalThis.Node = window.Node;
   globalThis.HTMLDetailsElement = window.HTMLDetailsElement;
+});
+
+afterAll(() => {
+  for (const [key, descriptor] of originalDom) {
+    if (descriptor) Object.defineProperty(globalThis, key, descriptor);
+    else delete globalThis[key];
+  }
 });
 
 const docWith = (entries) => ({
