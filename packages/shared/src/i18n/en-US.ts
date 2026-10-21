@@ -2083,6 +2083,7 @@ export const enUS = {
       updatedDesc: "Recently updated",
       createdDesc: "Created time",
       titleAsc: "Title A-Z",
+      titleDesc: "Title Z-A",
     },
     notebookSort: {
       custom: "Custom",

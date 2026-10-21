@@ -131,7 +131,7 @@ export type InstanceRelease = {
 };
 
 export type MemoFilterMode = "all" | "tagged" | "untagged" | "pinned";
-export type MemoSortMode = "updated-desc" | "created-desc" | "title-asc";
+export type MemoSortMode = "updated-desc" | "created-desc" | "title-asc" | "title-desc";
 
 export type ListNotebooksResponse = {
   notebooks: Notebook[];

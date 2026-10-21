@@ -2072,6 +2072,7 @@ export const ja = {
       updatedDesc: "最近の更新",
       createdDesc: "作成日時",
       titleAsc: "タイトル A-Z",
+      titleDesc: "タイトル Z-A",
     },
     notebookSort: {
       custom: "カスタム",

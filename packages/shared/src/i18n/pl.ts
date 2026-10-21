@@ -2072,6 +2072,7 @@ export const pl = {
       updatedDesc: "Ostatnio zaktualizowane",
       createdDesc: "Data utworzenia",
       titleAsc: "Tytuł A–Z",
+      titleDesc: "Tytuł Z–A",
     },
     notebookSort: {
       custom: "Własna",

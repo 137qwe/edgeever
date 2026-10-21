@@ -2083,6 +2083,7 @@ export const zhCN = {
       updatedDesc: "最近更新",
       createdDesc: "创建时间",
       titleAsc: "标题 A-Z",
+      titleDesc: "标题 Z-A",
     },
     notebookSort: {
       custom: "自定义",
