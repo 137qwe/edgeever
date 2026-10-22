@@ -17,6 +17,14 @@
   }
 }
 
+/* The note title is already the first-page heading. A running header there
+   repeats the same text above it. Later pages still carry the title. */
+@page :first {
+  @top-center {
+    content: none;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
