@@ -9,5 +9,18 @@ describe("note print page margin", () => {
     expect(css).not.toContain("@top-center");
     expect(css).not.toContain("edgeever-note-title");
     expect(css).not.toContain("string-set:");
+    expect(css).not.toContain("edgeever-print-toc");
+  });
+
+  test("uses the editor's neutral prose colors", () => {
+    expect(css).toContain("color: #27272a");
+    expect(css).toContain("background: #f3f5f7");
+    expect(css).toContain("color: #3d4450");
+    expect(css).toContain("border-top: 1px solid #1a1d21");
+    expect(css).toContain("font-weight: 800");
+    expect(css).not.toContain("#047857");
+    expect(css).not.toContain("#10b981");
+    expect(css).not.toContain("#172033");
+    expect(css).not.toContain("#0f172a");
   });
 });
