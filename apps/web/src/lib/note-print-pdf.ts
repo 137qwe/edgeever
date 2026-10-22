@@ -19,7 +19,7 @@ export const buildPdfFilename = (title: string, fallback: string) =>
   buildMarkdownFilename(title, fallback).replace(/\.md$/i, ".pdf");
 
 export const downloadPdfBytes = (bytes: Uint8Array, filename: string) => {
-  const blob = new Blob([bytes], { type: "application/pdf" });
+  const blob = new Blob([bytes as unknown as BlobPart], { type: "application/pdf" });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -32,7 +32,7 @@ export const downloadPdfBytes = (bytes: Uint8Array, filename: string) => {
 };
 
 /** Browser export. Each preview page is captured, then the heading outline is attached. */
-export const renderPagedPreviewPdf = async (root: ParentNode) => {
+export const renderPagedPreviewPdf = async (root: Pick<ParentNode, "querySelectorAll">) => {
   const pageElements = [...root.querySelectorAll<HTMLElement>(".pagedjs_page")];
   if (pageElements.length === 0) throw new Error("Print preview has no pages");
 
@@ -73,7 +73,7 @@ type PrintBridge = {
   savePdf?: () => Promise<Uint8Array>;
 };
 
-export const downloadNotePrintPdf = async (root: ParentNode, title: string, fallback: string) => {
+export const downloadNotePrintPdf = async (root: Pick<ParentNode, "querySelectorAll">, title: string, fallback: string) => {
   const bridge = (window as Window & { edgeeverPrint?: PrintBridge }).edgeeverPrint;
   const bytes = bridge?.savePdf ? await bridge.savePdf() : await renderPagedPreviewPdf(root);
   if (bytes.byteLength === 0) throw new Error("PDF export returned an empty file");

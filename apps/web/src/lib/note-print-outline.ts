@@ -57,7 +57,7 @@ const nestHeadings = (headings: readonly FlatHeading[]): PrintOutlineEntry[] => 
 };
 
 /** Headings in the paginated preview, in the same order as the editor outline. */
-export const collectPrintOutline = (root: ParentNode): PrintOutlineEntry[] => {
+export const collectPrintOutline = (root: Pick<ParentNode, "querySelectorAll">): PrintOutlineEntry[] => {
   const pages = [...root.querySelectorAll<HTMLElement>(".pagedjs_page")];
   const headings: FlatHeading[] = [];
 

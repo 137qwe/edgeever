@@ -270,7 +270,7 @@
   color: #3d4450;
   font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: var(--editor-code-font-size, 14px);
-  font-weight: 450;
+  font-weight: 400;
 }
 
 .edgeever-print-content pre,
