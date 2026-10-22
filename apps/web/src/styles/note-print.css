@@ -2,26 +2,11 @@
   size: A4;
   margin: 18mm 17mm 20mm;
 
-  @top-center {
-    content: string(edgeever-note-title);
-    color: #64748b;
-    font-family: "Noto Sans SC Variable", sans-serif;
-    font-size: 8.5pt;
-  }
-
   @bottom-center {
     content: counter(page) " / " counter(pages);
     color: #64748b;
     font-family: "Noto Sans SC Variable", sans-serif;
     font-size: 8.5pt;
-  }
-}
-
-/* The note title is already the first-page heading. A running header there
-   repeats the same text above it. Later pages still carry the title. */
-@page :first {
-  @top-center {
-    content: none;
   }
 }
 
@@ -45,7 +30,6 @@
 }
 
 .edgeever-print-title {
-  string-set: edgeever-note-title content(text);
   margin: 0 0 4mm;
   color: #0f172a;
   font-size: 24pt;
