@@ -2315,6 +2315,8 @@ export const ja = {
     previewImage: "画像をプレビュー",
     imageGallery: {
       toolbar: "画像ギャラリーのレイアウト",
+      fitLabel: "画像のフィット",
+      fits: { width: "幅に合わせる", height: "高さに合わせる" },
       layouts: {
         auto: "自動",
         "2": "2 列",

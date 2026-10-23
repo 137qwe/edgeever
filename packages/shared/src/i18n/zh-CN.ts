@@ -2326,6 +2326,8 @@ export const zhCN = {
     previewImage: "预览大图",
     imageGallery: {
       toolbar: "图片画廊布局",
+      fitLabel: "图片适应方式",
+      fits: { width: "适应宽度", height: "适应高度" },
       layouts: {
         auto: "自动",
         "2": "2 栏",

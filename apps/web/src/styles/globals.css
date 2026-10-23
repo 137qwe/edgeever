@@ -2241,6 +2241,25 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
   object-fit: cover;
 }
 
+/* Height fit keeps the full source image inside a consistent gallery tile. */
+.ProseMirror [data-edgeever-image-gallery][data-image-gallery-fit="height"] > img,
+.ProseMirror [data-edgeever-image-gallery][data-image-gallery-fit="height"] .edgeever-image-gallery__content img {
+  height: 18rem;
+  min-height: 0;
+  object-fit: contain;
+}
+
+.ProseMirror .edgeever-image-gallery__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.ProseMirror .edgeever-image-gallery__group + .edgeever-image-gallery__group {
+  border-inline-start: 1px solid rgba(var(--brand-green-200-rgb), 0.95);
+  padding-inline-start: 0.25rem;
+}
+
 .ProseMirror .edgeever-image-gallery__toolbar {
   position: relative;
   display: flex;

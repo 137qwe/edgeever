@@ -2315,6 +2315,8 @@ export const pl = {
     previewImage: "Podgląd obrazu",
     imageGallery: {
       toolbar: "Układ galerii obrazów",
+      fitLabel: "Dopasowanie obrazu",
+      fits: { width: "Dopasuj szerokość", height: "Dopasuj wysokość" },
       layouts: {
         auto: "Automatyczny",
         "2": "2 kolumny",

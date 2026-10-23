@@ -2326,6 +2326,8 @@ export const enUS = {
     previewImage: "Preview image",
     imageGallery: {
       toolbar: "Image gallery layout",
+      fitLabel: "Image fit",
+      fits: { width: "Fit width", height: "Fit height" },
       layouts: {
         auto: "Auto",
         "2": "2 columns",
