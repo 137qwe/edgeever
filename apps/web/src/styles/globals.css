@@ -2132,11 +2132,13 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
 }
 
 .ProseMirror .edgeever-image-controls {
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
+  position: relative;
   z-index: 2;
   display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
   align-items: center;
   gap: 0.35rem;
   border: 1px solid rgba(var(--brand-green-200-rgb), 0.95);
@@ -2327,8 +2329,37 @@ html[data-edgeever-extension-theme] .edgeever-memo-divider {
 
 .ProseMirror .edgeever-image-presets {
   display: flex;
+  max-width: 100%;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.2rem;
+}
+
+.ProseMirror .edgeever-image-alignments {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.ProseMirror .edgeever-image-alignment {
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  color: #475569;
+}
+
+.ProseMirror .edgeever-image-alignment:hover,
+.ProseMirror .edgeever-image-alignment.is-active {
+  background: var(--brand-green-muted);
+  color: var(--brand-green-text);
+}
+
+.ProseMirror .edgeever-image-alignment:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 2px;
 }
 
 .ProseMirror .edgeever-image-preset {

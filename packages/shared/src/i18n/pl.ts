@@ -2304,6 +2304,8 @@ export const pl = {
   },
   editor: {
     imageScale: "Skala obrazu",
+    imageAlignment: "Wyrównanie obrazu",
+    imageAlignments: { left: "Wyrównaj obraz do lewej", center: "Wyśrodkuj obraz", right: "Wyrównaj obraz do prawej" },
     scaleTo: "Skaluj do {{percent}}%",
     imageSizeSmall: "Mały",
     imageSizeMedium: "Średni",

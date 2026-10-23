@@ -2315,6 +2315,8 @@ export const enUS = {
   },
   editor: {
     imageScale: "Image scale",
+    imageAlignment: "Image alignment",
+    imageAlignments: { left: "Align image left", center: "Center image", right: "Align image right" },
     scaleTo: "Scale to {{percent}}%",
     imageSizeSmall: "Small",
     imageSizeMedium: "Medium",

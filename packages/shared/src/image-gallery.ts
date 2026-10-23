@@ -1,5 +1,6 @@
 import { mergeAttributes, Node } from "@tiptap/core";
 import type { TiptapDoc, TiptapNode, TiptapTextNode } from "./content";
+import { parseImageAlignment } from "./image-alignment";
 
 export const IMAGE_GALLERY_NODE_TYPE = "edgeeverImageGallery" as const;
 export const IMAGE_GALLERY_LAYOUTS = ["auto", "2", "3", "1"] as const;
@@ -81,6 +82,12 @@ export const groupConsecutiveImagesIntoGalleries = (nodes: TiptapNode[]): Tiptap
   };
 
   for (const node of nodes) {
+    // Explicitly positioned images remain standalone during Markdown import.
+    if (node.type === "image" && parseImageAlignment(node.attrs?.alignment)) {
+      flushImages();
+      grouped.push(node);
+      continue;
+    }
     if (node.type === "image") {
       images.push(node);
       continue;

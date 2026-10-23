@@ -2315,6 +2315,8 @@ export const zhCN = {
   },
   editor: {
     imageScale: "图片缩放",
+    imageAlignment: "图片对齐",
+    imageAlignments: { left: "图片左对齐", center: "图片居中", right: "图片右对齐" },
     scaleTo: "缩放到 {{percent}}%",
     imageSizeSmall: "较小",
     imageSizeMedium: "适中",

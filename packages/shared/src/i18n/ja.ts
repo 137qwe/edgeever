@@ -2304,6 +2304,8 @@ export const ja = {
   },
   editor: {
     imageScale: "画像の倍率",
+    imageAlignment: "画像の配置",
+    imageAlignments: { left: "画像を左揃え", center: "画像を中央揃え", right: "画像を右揃え" },
     scaleTo: "{{percent}}% に拡大縮小",
     imageSizeSmall: "小",
     imageSizeMedium: "中",
