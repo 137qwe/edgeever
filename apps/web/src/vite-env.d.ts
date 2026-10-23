@@ -28,6 +28,14 @@ interface DesktopGlobalShortcutState {
   error?: "invalid" | "unavailable" | "saveFailed";
 }
 
+interface DesktopLoginItemState {
+  supported: boolean;
+  openAtLogin: boolean;
+  launchMode: "window" | "tray";
+  status: "disabled" | "enabled" | "requires-approval" | "disabled-by-system" | "unavailable";
+  error?: "invalid" | "saveFailed";
+}
+
 interface EdgeEverDesktopBridge {
   isAvailable: boolean;
   canClearLocalData: boolean;
@@ -83,6 +91,8 @@ interface EdgeEverDesktopBridge {
   }>;
   globalShortcut(): Promise<DesktopGlobalShortcutState>;
   setGlobalShortcut(binding: DesktopGlobalShortcutBinding | null): Promise<DesktopGlobalShortcutState>;
+  loginItem(): Promise<DesktopLoginItemState | null>;
+  setLoginItem(patch: { openAtLogin?: boolean; launchMode?: "window" | "tray" }): Promise<DesktopLoginItemState | null>;
   captureGlobalShortcut(capturing: boolean): Promise<boolean>;
   setAccountScope(accountId: string | null): Promise<{ ready: true; scope: string }>;
   updateStatus(): Promise<DesktopUpdateStatus>;
