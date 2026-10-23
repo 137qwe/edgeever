@@ -107,6 +107,14 @@ contextBridge.exposeInMainWorld("edgeeverDesktop", Object.freeze({
     ipcRenderer.on("desktop:command", listener);
     return () => ipcRenderer.removeListener("desktop:command", listener);
   },
+  setRichTextHeadingShortcutActive: (active) => {
+    ipcRenderer.sendSync("desktop:rich-text-heading-shortcut", active === true);
+  },
+  onHeadingShortcut: (callback) => {
+    const listener = (_event, level) => callback(level);
+    ipcRenderer.on("desktop:heading-shortcut", listener);
+    return () => ipcRenderer.removeListener("desktop:heading-shortcut", listener);
+  },
   onHibernatePrepare: (callback) => {
     const listener = async () => {
       try {

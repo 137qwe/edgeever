@@ -45,6 +45,7 @@ import { createRendererStartupGuard } from "./renderer-startup-guard.mjs";
 import { waitForChildProcessSpawn } from "./child-process-start.mjs";
 import { ScheduledTaskScheduler } from "./scheduled-task-scheduler.mjs";
 import { desktopMenuCopy } from "./desktop-menu.mjs";
+import { createHeadingShortcutGuard } from "./heading-shortcut.mjs";
 import { buildEditContextMenuTemplate } from "./edit-context-menu.mjs";
 import {
   fetchTrustedWindowsUpdate,
@@ -78,6 +79,7 @@ import {
 } from "./renderer-storage-migration.mjs";
 
 const { autoUpdater } = electronUpdater;
+const headingShortcutGuard = createHeadingShortcutGuard();
 
 const linuxUpdateTestMode = process.platform === "linux"
   && process.env.GITHUB_ACTIONS === "true"
@@ -1517,6 +1519,7 @@ const createWindow = async () => {
     }
   });
   attachEditContextMenu(mainWindow.webContents);
+  headingShortcutGuard.attach(mainWindow.webContents);
   mainWindow.webContents.on("did-create-window", (childWindow) => attachEditContextMenu(childWindow.webContents));
   mainWindow.on("hide", syncRendererHibernate);
   mainWindow.on("hide", () => globalShortcut.setSuspended(false));
@@ -1561,6 +1564,7 @@ const createWindow = async () => {
     void writeDiagnostic("renderer.loaded", { url: mainWindow?.webContents.getURL() || "" });
   });
   mainWindow.webContents.on("render-process-gone", (_event, details) => {
+    headingShortcutGuard.reset();
     globalShortcut.setSuspended(false);
     clearRendererUnresponsiveTimer();
     void writeDiagnostic("renderer.gone", details);
@@ -1758,6 +1762,11 @@ const startApplication = async () => {
     if (!nextSidecar) throw new Error("EdgeEver sidecar is unavailable");
     await nextSidecar.waitUntilReady();
     return { ready: true, scope: nextScopeKey };
+  });
+  ipcMain.on("desktop:rich-text-heading-shortcut", (event, active) => {
+    if (event.sender !== mainWindow?.webContents || event.senderFrame !== event.sender.mainFrame) return;
+    headingShortcutGuard.setActive(active);
+    event.returnValue = true;
   });
   ipcMain.on("desktop:renderer-ready", (event) => {
     if (event.sender !== mainWindow?.webContents) return;
