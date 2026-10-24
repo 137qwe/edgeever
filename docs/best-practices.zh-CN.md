@@ -156,9 +156,17 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 - 支持节点拖拽编辑、自动布局、条件分支与系统拓扑展示。
 
-| 1. 交互式思维导图 | 2. 标准流程图 | 3. 系统架构图 |
-| :---: | :---: | :---: |
-| ![AI对话生成可编辑思维导图](assets/best-practices/ai-diagram-mindmap.png) | ![AI对话生成可编辑流程图](assets/best-practices/ai-diagram-flowchart.png) | ![AI对话生成可编辑系统架构图](assets/best-practices/ai-diagram-architecture.png) |
+| 1. 交互式思维导图 |
+| :---: |
+| ![AI对话生成可编辑思维导图](assets/best-practices/original-image/ai-diagram/ai-mindmap.png) |
+
+| 2. 标准流程图 |
+| :---: |
+| ![AI对话生成可编辑流程图](assets/best-practices/original-image/ai-diagram/ai-flowchart.png) |
+
+| 3. 系统架构图 |
+| :---: |
+| ![AI对话生成可编辑系统架构图](assets/best-practices/original-image/ai-diagram/ai-architecture.png) |
 
 ---
 
@@ -169,9 +177,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 - 涵盖时间线、对比矩阵、四象限、层级图等模板。
 - 支持对话微调内容，或直接导出为矢量图。
 
-| 1. 信息图模板库 | 2. 时间线信息图生成效果 |
-| :---: | :---: |
-| ![EdgeEver信息图示例与模板库](assets/best-practices/ai-infographic-templates.png) | ![AI生成字节跳动发展历程时间线信息图](assets/best-practices/ai-infographic-generated.png) |
+| 1. 技术演进路线信息图 |
+| :---: |
+| ![AI生成大模型技术演进路线信息图](assets/best-practices/original-image/ai-diagram/ai-infographic-ai-roadmap.png) |
+
+| 2. 发展历程时间线信息图 |
+| :---: |
+| ![AI生成字节跳动发展历程时间线信息图](assets/best-practices/original-image/ai-diagram/ai-infographic-bytedance.png) |
 
 ---
 
@@ -182,9 +194,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 - 自动配置单选标签、文本、日期、链接等字段类型。
 - 自动填充初始示例数据，支持视图切换、筛选排序与 CSV 导出。
 
-| 1. 选题库多维表格 | 2. 员工信息多维表格 |
-| :---: | :---: |
-| ![AI生成自媒体选题库多维表格](assets/best-practices/original-image/database-note/database-hot-select.png) | ![AI生成员工信息登记多维表格](assets/best-practices/original-image/database-note/database-employee-register.png) |
+| 1. 选题库多维表格 |
+| :---: |
+| ![AI生成自媒体选题库多维表格](assets/best-practices/original-image/database-note/database-hot-select.png) |
+
+| 2. 员工信息多维表格 |
+| :---: |
+| ![AI生成员工信息登记多维表格](assets/best-practices/original-image/database-note/database-employee-register.png) |
 
 ---
 
