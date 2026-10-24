@@ -264,9 +264,13 @@ EdgeEver 支持 **ACP (Agent Client Protocol)** 协议，允许桌面端连接�
 
 - 粘贴至微信公众号后台，完整保留表格、引用块、代码块、列表及字体样式。
 
-| 1. 复制到公众号 / 博客 | 2. 公众号后台编辑器粘贴效果 |
-| :---: | :---: |
-| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) | ![微信公众号后台粘贴后的排版效果](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
+| 1. 复制到公众号 / 博客 |
+| :---: |
+| ![EdgeEver 笔记菜单点击复制到公众号](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) |
+
+| 2. 公众号后台编辑器粘贴效果 |
+| :---: |
+| ![微信公众号后台粘贴后的排版效果](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
 
 ---
 

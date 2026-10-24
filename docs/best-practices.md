@@ -264,9 +264,13 @@ Select **"Copy to Official Account / Blog"** (复制到公众号 / 博客) from 
 
 - Paste directly into the WeChat Official Account editor while preserving tables, callouts, code blocks, lists, and typography styles.
 
-| 1. Copy to Official Account / Blog | 2. WeChat Official Account Editor Layout |
-| :---: | :---: |
-| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) | ![Note pasted into WeChat MP editor layout](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
+| 1. Copy to Official Account / Blog |
+| :---: |
+| ![EdgeEver note menu copy to WeChat MP](assets/best-practices/original-image/wechat-article-copy-to/right-menu.png) |
+
+| 2. WeChat Official Account Editor Layout |
+| :---: |
+| ![Note pasted into WeChat MP editor layout](assets/best-practices/original-image/wechat-article-copy-to/show-in-wechat-editor.png) |
 
 ---
 
