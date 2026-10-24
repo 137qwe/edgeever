@@ -93,9 +93,13 @@ Right-click any note page and select **"Save Note to EdgeEver"** using the EdgeE
 - Captures title, topic tags, body text, publish timestamp, and source URL.
 - Automatically formats multi-image sets into multi-column gallery layouts.
 
-| 1. Right-Click Clipper Menu | 2. Multi-Column Gallery Note |
-| :---: | :---: |
-| ![Right-click save Xiaohongshu note to EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) | ![Xiaohongshu note clipped into multi-column gallery](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
+| 1. Right-Click Clipper Menu |
+| :---: |
+| ![Right-click save Xiaohongshu note to EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) |
+
+| 2. Multi-Column Gallery Note |
+| :---: |
+| ![Xiaohongshu note clipped into multi-column gallery](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
 
 ---
 
@@ -106,9 +110,13 @@ Right-click any post and select **"Save Tweet to EdgeEver"** with the EdgeEver W
 - Extracts author info, tweet content, external links, quote tweets, and multi-image attachments.
 - Formats content into a multi-column gallery layout.
 
-| 1. Right-Click Save Tweet | 2. Note with Quotes & Gallery |
-| :---: | :---: |
-| ![Right-click save tweet to EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) | ![X tweet clipped into EdgeEver note with quote](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
+| 1. Right-Click Save Tweet |
+| :---: |
+| ![Right-click save tweet to EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) |
+
+| 2. Note with Quotes & Gallery |
+| :---: |
+| ![X tweet clipped into EdgeEver note with quote](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
 
 ---
 
@@ -118,9 +126,13 @@ Right-click any specific answer or article and select **"Save Answer/Article to 
 
 - Parses question title, author, body, timestamp, and permalink into a structured Q&A note.
 
-| 1. Right-Click Save Answer/Article | 2. Structured Q&A Note Preview |
-| :---: | :---: |
-| ![Right-click save Zhihu answer to EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) | ![Zhihu answer clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
+| 1. Right-Click Save Answer/Article |
+| :---: |
+| ![Right-click save Zhihu answer to EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) |
+
+| 2. Structured Q&A Note Preview |
+| :---: |
+| ![Zhihu answer clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
 
 ---
 
@@ -130,9 +142,13 @@ Right-click on the post title or body and select **"Save Selection to EdgeEver"*
 
 - Captures thread title, subreddit (e.g. `r/AskReddit`), author handle, timestamp, and permalink to preserve community metadata.
 
-| 1. Right-Click Save Post | 2. Note with Community Metadata |
-| :---: | :---: |
-| ![Right-click save Reddit post to EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) | ![Reddit post clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
+| 1. Right-Click Save Post |
+| :---: |
+| ![Right-click save Reddit post to EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) |
+
+| 2. Note with Community Metadata |
+| :---: |
+| ![Reddit post clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
 
 ---
 
@@ -142,9 +158,13 @@ Right-click anywhere on the GitHub repository page and select **"Save Repository
 
 - Extracts repository name (`Owner/Repo`), description, homepage, language, license, and topic tags into a structured technical card.
 
-| 1. Right-Click Save Repo Info | 2. Structured Repository Card |
-| :---: | :---: |
-| ![Right-click save GitHub repo info to EdgeEver](assets/best-practices/github-clip-menu.png) | ![GitHub repo clipped into EdgeEver note card](assets/best-practices/github-clipped-note.png) |
+| 1. Right-Click Save Repo Info |
+| :---: |
+| ![Right-click save GitHub repo info to EdgeEver](assets/best-practices/github-clip-menu.png) |
+
+| 2. Structured Repository Card |
+| :---: |
+| ![GitHub repo clipped into EdgeEver note card](assets/best-practices/github-clipped-note.png) |
 
 ---
 

@@ -93,9 +93,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 - 提取标题、话题标签、正文、发布时间与原文链接。
 - 多图内容自动排版为多栏画廊。
 
-| 1. 右键菜单剪藏 | 2. 多栏画廊笔记效果 |
-| :---: | :---: |
-| ![右键保存小红书笔记到 EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) | ![EdgeEver 剪藏后的小红书笔记多栏画廊效果](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
+| 1. 右键菜单剪藏 |
+| :---: |
+| ![右键保存小红书笔记到 EdgeEver](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu.png) |
+
+| 2. 多栏画廊笔记效果 |
+| :---: |
+| ![EdgeEver 剪藏后的小红书笔记多栏画廊效果](assets/best-practices/original-image/web-clipper/xiaohongshu/xiaohongshu-in-note.png) |
 
 ---
 
@@ -106,9 +110,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 - 提取作者、推文正文、外链、引用推文（Quote Tweet）及附带图集。
 - 自动渲染为多栏画廊排版。
 
-| 1. 右键保存推文 | 2. 包含引用与图集的笔记效果 |
-| :---: | :---: |
-| ![右键保存推文到 EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) | ![EdgeEver 剪藏后的 X 推文笔记效果](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
+| 1. 右键保存推文 |
+| :---: |
+| ![右键保存推文到 EdgeEver](assets/best-practices/original-image/web-clipper/twitter/twitter.png) |
+
+| 2. 包含引用与图集的笔记效果 |
+| :---: |
+| ![EdgeEver 剪藏后的 X 推文笔记效果](assets/best-practices/original-image/web-clipper/twitter/twitter-in-note.png) |
 
 ---
 
@@ -118,9 +126,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 - 解析问题标题、作者、正文、发布时间与原始链接，生成问答结构笔记。
 
-| 1. 右键保存回答/文章 | 2. 问答结构笔记预览 |
-| :---: | :---: |
-| ![右键保存知乎回答到 EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) | ![EdgeEver 剪藏后的知乎回答笔记效果](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
+| 1. 右键保存回答/文章 |
+| :---: |
+| ![右键保存知乎回答到 EdgeEver](assets/best-practices/original-image/web-clipper/zhihu/zhihu.png) |
+
+| 2. 问答结构笔记预览 |
+| :---: |
+| ![EdgeEver 剪藏后的知乎回答笔记效果](assets/best-practices/original-image/web-clipper/zhihu/zhihu-in-note.png) |
 
 ---
 
@@ -130,9 +142,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 - 捕获帖子标题、所属版块（Subreddit，如 `r/AskReddit`）、作者、时间戳及链接，保留社区元数据。
 
-| 1. 右键保存帖子 | 2. 包含社区元数据的笔记预览 |
-| :---: | :---: |
-| ![右键保存 Reddit 帖子到 EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) | ![EdgeEver 剪藏后的 Reddit 帖子笔记效果](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
+| 1. 右键保存帖子 |
+| :---: |
+| ![右键保存 Reddit 帖子到 EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) |
+
+| 2. 包含社区元数据的笔记预览 |
+| :---: |
+| ![EdgeEver 剪藏后的 Reddit 帖子笔记效果](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
 
 ---
 
@@ -142,9 +158,13 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 - 提取仓库名称（Owner/Repo）、简介、官方主页、编程语言、许可证与话题标签，生成技术卡片。
 
-| 1. 右键保存仓库信息 | 2. 结构化仓库卡片预览 |
-| :---: | :---: |
-| ![右键保存 GitHub 仓库信息到 EdgeEver](assets/best-practices/github-clip-menu.png) | ![EdgeEver 剪藏后的 GitHub 仓库卡片笔记](assets/best-practices/github-clipped-note.png) |
+| 1. 右键保存仓库信息 |
+| :---: |
+| ![右键保存 GitHub 仓库信息到 EdgeEver](assets/best-practices/github-clip-menu.png) |
+
+| 2. 结构化仓库卡片预览 |
+| :---: |
+| ![EdgeEver 剪藏后的 GitHub 仓库卡片笔记](assets/best-practices/github-clipped-note.png) |
 
 ---
 
