@@ -1027,10 +1027,6 @@ export const zhCN = {
     loginItem: {
       title: "开机后启动",
       aria: "开机后启动 EdgeEver",
-      description: "开机后自动打开 EdgeEver。",
-      launchModeLabel: "启动后",
-      launchModeWindow: "打开主窗口",
-      launchModeTray: "只在托盘运行",
       requiresApproval: "还需要在系统设置里允许 EdgeEver 开机后启动。",
       saveFailed: "无法保存这项设置。",
     },

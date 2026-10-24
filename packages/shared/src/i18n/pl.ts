@@ -1016,10 +1016,6 @@ export const pl = {
     loginItem: {
       title: "Uruchamiaj po włączeniu komputera",
       aria: "Uruchamiaj EdgeEver po włączeniu komputera",
-      description: "Otwieraj EdgeEver po uruchomieniu komputera.",
-      launchModeLabel: "Po uruchomieniu",
-      launchModeWindow: "Otwórz główne okno",
-      launchModeTray: "Zostaw w zasobniku",
       requiresApproval: "Zezwól EdgeEver w ustawieniach systemu, aby dokończyć włączanie.",
       saveFailed: "Nie udało się zapisać tego ustawienia.",
     },

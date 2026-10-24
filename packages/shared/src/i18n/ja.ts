@@ -1016,10 +1016,6 @@ export const ja = {
     loginItem: {
       title: "起動後に開く",
       aria: "パソコンの起動後に EdgeEver を開く",
-      description: "パソコンの起動後、EdgeEver を自動で開きます。",
-      launchModeLabel: "起動後",
-      launchModeWindow: "メインウィンドウを開く",
-      launchModeTray: "トレイに残す",
       requiresApproval: "システム設定で EdgeEver の起動を許可すると、この設定が有効になります。",
       saveFailed: "この設定を保存できませんでした。",
     },
