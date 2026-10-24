@@ -289,6 +289,10 @@ EdgeEver 内置插件扩展管理，支持通过 GitHub 仓库或 Manifest 地�
   - **AI RSS 订阅助手 ([EdgeEver AI RSS](https://github.com/tianma-if/edgeever-ai-rss))**：抓取订阅源并结合 AI 生成分类每日简报。
 - 更多规范与指南详见 [EdgeEver 插件开发指南](plugin-development.zh-CN.md)。
 
-| 1. 插件与主题管理中心 | 2. 官方 AI RSS 插件生成的日报笔记效果 |
-| :---: | :---: |
-| ![EdgeEver 插件市场与官方插件管理](assets/best-practices/original-image/plugin/official-in.png) | ![EdgeEver AI RSS 插件自动生成的结构化日报笔记](assets/best-practices/original-image/plugin/ai-daily.png) |
+| 1. 插件与主题管理中心 |
+| :---: |
+| ![EdgeEver 插件市场与官方插件管理](assets/best-practices/original-image/plugin/official-in.png) |
+
+| 2. 插件 API 体系与开发文档 |
+| :---: |
+| ![EdgeEver 插件开发 API 命名空间与规范文档](assets/best-practices/original-image/plugin/plugin-api.png) |
