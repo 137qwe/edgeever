@@ -132,7 +132,7 @@ Right-click on the post title or body and select **"Save Selection to EdgeEver"*
 
 | 1. Right-Click Save Post | 2. Note with Community Metadata |
 | :---: | :---: |
-| ![Right-click save Reddit post to EdgeEver](assets/best-practices/reddit-clip-menu.png) | ![Reddit post clipped into EdgeEver note](assets/best-practices/reddit-clipped-note.png) |
+| ![Right-click save Reddit post to EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) | ![Reddit post clipped into EdgeEver note](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
 
 ---
 

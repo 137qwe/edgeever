@@ -132,7 +132,7 @@ EdgeEver 采用「目录树 · 笔记列表 · 编辑区」三栏布局：
 
 | 1. 右键保存帖子 | 2. 包含社区元数据的笔记预览 |
 | :---: | :---: |
-| ![右键保存 Reddit 帖子到 EdgeEver](assets/best-practices/reddit-clip-menu.png) | ![EdgeEver 剪藏后的 Reddit 帖子笔记效果](assets/best-practices/reddit-clipped-note.png) |
+| ![右键保存 Reddit 帖子到 EdgeEver](assets/best-practices/original-image/web-clipper/reddit/reddit.png) | ![EdgeEver 剪藏后的 Reddit 帖子笔记效果](assets/best-practices/original-image/web-clipper/reddit/reddit-in-note.png) |
 
 ---
 
